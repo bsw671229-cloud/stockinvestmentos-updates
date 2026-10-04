@@ -1,0 +1,66 @@
+Stock Investment OS v1.54.1 RELEASE Validation
+================================================
+Validation date: 2026-10-04
+
+RESULT: PASS
+
+Purpose
+-------
+Updater2 Release Publisher same-version publication hotfix.
+
+Root cause fixed
+----------------
+v1.54.0 Publisher reused the installation version-precedence rule.
+Therefore, after v1.54.0 had already been installed, publishing that same
+final release was blocked with:
+
+Target v1.54.0 is not newer than current v1.54.0 under prerelease/final precedence.
+
+v1.54.1 behavior
+----------------
+Installation / Apply:
+- target VERSION must still be newer than installed VERSION.
+
+Publisher:
+- publisher workstation VERSION is no longer used as a publication blocker.
+- publication order is evaluated against the existing trusted release feed.
+- empty feed + valid final RELEASE: allowed.
+- same feed version + same package SHA-256: idempotent / allowed.
+- same feed version + different package SHA-256: BLOCKED.
+- older target than existing feed: BLOCKED.
+- newer target than existing feed: allowed.
+
+Validation performed
+--------------------
+Python compile validation: PASS
+Release package manifest entries: 130
+Final release ZIP entries: 131
+
+v1.54.0 -> v1.54.1 transactional upgrade test:
+- Preview: PASS
+- Added files: 1
+- Changed files: 4
+- Unchanged files: 125
+- Removed files: 0
+- Collisions: 0
+- Approve: APPROVED
+- Apply: APPLIED
+- Installed VERSION: v1.54.1
+- Post-apply managed_code_clean: true
+
+Publisher regression tests after v1.54.1 install:
+- same installed version + empty feed: READY_TO_PUBLISH
+- same version + same SHA: idempotent / PASS
+- same version + different SHA: BLOCKED
+- target older than existing feed: BLOCKED
+
+Safety boundary preserved
+-------------------------
+Auto Approval = DISABLED
+Auto Apply = DISABLED
+Execution Authorization = NONE
+
+Final package
+-------------
+Package: StockInvestmentOS_v1_54_1_RELEASE.zip
+SHA-256: de94e49285de03db230838a9445a4be404227f26e0f30f96ad79ab8f4f67cc80

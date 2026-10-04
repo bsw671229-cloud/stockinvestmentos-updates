@@ -1,0 +1,16 @@
+{
+  "channel": "stable",
+  "feed_id": "stock-investment-os-stable",
+  "releases": [
+    {
+      "package_name": "StockInvestmentOS_v1_54_1_RELEASE.zip",
+      "package_sha256": "de94e49285de03db230838a9445a4be404227f26e0f30f96ad79ab8f4f67cc80",
+      "published_at": "2026-10-04T13:29:31.016770+09:00",
+      "validation_name": "V1541_RELEASE_VALIDATION_20261004.txt",
+      "validation_sha256": "b0cb1628cacc219f42ced2ffbb3fbd8ccb761a3f79ec500f25031bf3470f6ec7",
+      "version": "v1.54.1"
+    }
+  ],
+  "schema_version": 1,
+  "updated_at": "2026-10-04T13:29:31.016770+09:00"
+}
