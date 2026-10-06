@@ -1,0 +1,22 @@
+StockInvestmentOS v1.58.2 RELEASE VALIDATION
+Date: 2026-10-07 Asia/Seoul
+RESULT: PASS
+Target version: v1.58.2
+Package: StockInvestmentOS_v1_58_2_RELEASE.zip
+SHA-256: da53ea5194dfde1d37e36a014c70831f183e0ca4d36bd01af7209dde35dd770d
+Source: verified v1.58.1 copy. Disposable upgrade simulations from v1.57.0 and v1.58.1.
+v1.58.0 support inherited, separate v1.58.0 upgrade simulation NOT RUN for this patch.
+Managed manifest: 153 entries. Python compile: 119 PASS.
+Final ZIP CRC, every managed manifest hash, VERSION: PASS.
+No runtime-data, secrets or data directories packaged.
+
+Evidence: user Windows install_readiness took 164.1 seconds and returned READY_TO_INSTALL, eligible=true, blockers=[], current=v1.57.0, target=v1.58.1. This does NOT prove why the earlier installation did not complete.
+Root cause of redundant UI work: preflight/readiness invoked on selection and every checkbox rerun; advanced sections evaluated even without explicit inspection; startup opted-in feed sync could precede visible navigation.
+Changes: explicit 0A status/Preflight/readiness buttons; labeled historical display snapshots; selection changes invalidate display result; all original Publish/Install fresh transaction gates retained. Advanced controls stop execution until opened. Release Manager auto-feed sync deferred; manual Feed check remains available, other pages retain opted-in sync after navigation.
+Install progress: readiness/public reverify, backup/apply/post-apply integrity, applied result. Callback failures cannot skip gates or interrupt transaction. No invented percent complete or time guarantee.
+Console companion outside managed app: no overwrite, no manual VERSION change, no bypass. Exact expected ZIP SHA required. Separate typed PUBLISH or INSTALL consent; original installed updater performs action. Default action is check. Stage observer and 15-second heartbeat. Existing v1.57 retains legacy repeated verification and may remain slow, but console exposes stages.
+
+39 automated tests PASS, including actual extracted 0A code with UI doubles (not a real Streamlit browser): initial view no inspection; status on click; selection no automatic check; confirmation no repeated readiness; selection mismatch disables install; progress exceptions preserve fresh gates; helper SHA mismatch and missing consent prevent mutation; invalid ZIP/validation/drift/recovery corruption failures retained.
+25 isolated simulation checks PASS: Preview eligible=true/blockers=[]; SHA/approval/apply; v1.57.0 and v1.58.1 upgrades; post-apply managed code clean; predecessor rollback in disposable fixtures; injected state persistence failure triggers own-transaction restoration; wrong SHA and managed drift block; non-mutating recovery drill; actual local Git push and trusted loopback HTTPS Public Verify; orchestrator install; E2E+Recovery FINAL_PASS; audit history and safety boundary.
+Auto Approval=false; Auto Apply=false; Execution Authorization=NONE; app credentials storage=false. Actual rollback remains separately authorized.
+Actual user Windows installation, browser render timing, real GitHub publication and Public Feed have NOT been executed for v1.58.2. No measured end-user speed claim.
