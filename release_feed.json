@@ -1,12 +1,12 @@
 {
   "channel": "stable",
   "feed_id": "stock-investment-os-stable",
-  "generated_at": "2026-10-06T12:03:46.784129+09:00",
+  "generated_at": "2026-10-06T12:48:26.877424+09:00",
   "release": {
     "package_name": "StockInvestmentOS_v1_58_0_RELEASE.zip",
     "package_sha256": "529e2ce637045138656fcd3d8438c39f3f44f15119a8ba9dc2989e9cf692a0a7",
     "package_url": "https://bsw671229-cloud.github.io/stockinvestmentos-updates/releases/v1.58.0/StockInvestmentOS_v1_58_0_RELEASE.zip",
-    "published_at": "2026-10-06T12:03:46.784129+09:00",
+    "published_at": "2026-10-06T12:48:26.877424+09:00",
     "validation_name": "V157_RELEASE_VALIDATION_20261005.txt",
     "validation_sha256": "101b6c0eb7625316acc859ec16f4f6594da5acc5f2e068fd277b4fee3ab37e87",
     "validation_url": "https://bsw671229-cloud.github.io/stockinvestmentos-updates/releases/v1.58.0/V157_RELEASE_VALIDATION_20261005.txt",
