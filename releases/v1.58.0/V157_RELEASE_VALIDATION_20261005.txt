@@ -1,0 +1,113 @@
+Stock Investment OS v1.57.0 RELEASE Validation
+================================================
+Validation date: 2026-10-05
+
+RESULT: PASS
+
+Release theme
+-------------
+Safe Update Orchestrator / One-Click Publish & Install.
+
+Purpose
+-------
+Reduce the repeated manual Updater2 workflow while preserving explicit
+human authorization for remote publication and software installation.
+
+New functionality
+-----------------
+1. Release Manager 0A Safe Update Orchestrator
+2. Automatic inbox preflight after an out-of-band SHA-256 is entered
+3. One confirmed action:
+   Approve -> Local Publish -> Deployment Preview -> Git Push -> Public Verify
+4. Separate confirmed install action for a publicly verified Approved RELEASE
+5. Post-restart E2E Health + non-mutating Recovery Drill finalize action
+6. Idempotent retry when static hosting propagation delays Public Verify
+7. Public version and package SHA-256 must match the Approved RELEASE before install
+8. CLI fallback commands for preflight/release/install/finalize
+9. 0B/0C/0D/0E remain available as detailed Advanced controls
+
+Package validation
+------------------
+Package: StockInvestmentOS_v1_57_0_RELEASE.zip
+Package SHA-256: 20a128a187d51c8b57828e8acbefe67fcb46623d195321894483280d579796d0
+Target VERSION: v1.57.0
+Managed manifest entries: 146
+ZIP entries: 147
+Python compile validation: PASS
+Internal manifest/hash validation: PASS
+Unsafe ZIP paths: NONE
+ZIP CRC errors: NONE
+
+Transactional upgrade validation
+--------------------------------
+Source VERSION: v1.56.0
+
+Preview:
+- eligible: true
+- blockers: 0
+- added: 5
+- changed: 3
+- removed: 0
+- collisions: 0
+
+Approve:
+- status: APPROVED
+
+Apply:
+- status: APPLIED
+- target_version: v1.57.0
+- restart_required: true
+
+Post-apply:
+- VERSION: v1.57.0
+- managed_code_clean: true
+- managed_manifest_entries: 146
+
+Safe Update Orchestrator functional validation
+----------------------------------------------
+A synthetic v1.57.1 validation release was used in an isolated temporary
+environment to exercise the new orchestrator end-to-end.
+
+Preflight:
+- status: READY_TO_APPROVE_PUBLISH_DEPLOY
+- package SHA-256 match: true
+- validation report pass: true
+- publisher preview eligible: true
+- deployment connector: CONNECTED
+
+One-click release orchestration:
+- approval: APPROVED
+- local publish: PUBLISHED_LOCAL_REPOSITORY
+- Git deployment: DEPLOYED_TO_GIT_REMOTE
+- public verify: PUBLIC_FEED_VERIFIED
+- overall: RELEASE_READY_TO_INSTALL
+
+Install readiness:
+- status: READY_TO_INSTALL
+- public version equals approved target: PASS
+- public package SHA-256 equals approved package: PASS
+
+Install:
+- status: INSTALL_APPLIED_RESTART_REQUIRED
+
+Recovery:
+- non-mutating recovery drill: PASS in isolated validation flow
+
+Production safety boundary
+--------------------------
+Auto Approval = DISABLED
+Auto Apply = DISABLED
+Publish requires an explicit confirmation
+Install requires a separate explicit confirmation
+Execution Authorization = NONE
+Git credentials stored by app = false
+Transactional backup / post-apply verify / automatic rollback-on-failure preserved
+Actual rollback remains a separate explicit human action
+
+Note on isolated public-feed validation
+---------------------------------------
+The isolated automated test uses a controlled file:// static endpoint rather
+than the production GitHub Pages HTTPS endpoint. HTTPS host-pin/E2E transport
+remains covered by the already-operational v1.56.0 Trusted Release baseline.
+On the user's configured production installation, 0A uses the existing
+GitHub Pages HTTPS configuration unchanged.
