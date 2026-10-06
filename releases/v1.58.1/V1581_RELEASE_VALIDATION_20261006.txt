@@ -1,0 +1,59 @@
+StockInvestmentOS v1.58.1 — RELEASE VALIDATION
+Date: 2026-10-06 (Asia/Seoul)
+RESULT: PASS
+Scope: source/static checks, automated tests, isolated upgrade/failure/recovery and local Git + HTTPS simulation.
+LIVE WINDOWS / ACTUAL STREAMLIT UI / REAL GITHUB / REAL PUBLIC FEED: NOT TESTED.
+
+Source versions: v1.57.0 and v1.58.0. Target version: v1.58.1.
+Source v1.58.0 managed manifest: 149 entries, zero mismatches.
+Source v1.58.0 ZIP SHA: 529e2ce637045138656fcd3d8438c39f3f44f15119a8ba9dc2989e9cf692a0a7
+Target ZIP: StockInvestmentOS_v1_58_1_RELEASE.zip
+Target ZIP SHA-256: 7f765eb3db10896e5b8f9528c7bd576e3a3966dcd88de576b3d21b277485f293
+Target manifest: 151 managed entries; 152 ZIP members.
+Python compile: 119 files PASS.
+Final ZIP CRC and every manifest SHA-256: PASS.
+Protected runtime-data/secrets/data/.env/pyc content: not packaged. Live runtime-data/secrets were not accessed.
+
+Problem evidence (user Windows screenshot): RELEASE 83.6s, GIT 0.2s, E2E 75.1s, RECOVERY 78.2s.
+Root cause: repeated full ZIP / manifest / Python compilation of unrelated Inbox/Approved candidates during status rendering.
+Minimal change: separate filename inventory and fresh managed/health status from full candidate verification. Verify only selected release for preflight/readiness.
+Inventory is NOT_CHECKED, eligible=null, approval_ok=null, filename-only version. No eligibility/approval/PASS inferred from inventory.
+Persistent verification cache: NONE. Existing full CLI scan/status compatibility retained.
+Actual Publish/Install/Apply SHA, Validation, manifest, compile, approval, precedence, managed-code and Public Verify safety gates retained.
+Recovery CRC, predecessor manifest/hash/compile and state-to-backup lineage checks retained.
+
+Preview v1.57.0 -> v1.58.1: eligible=true, blockers=[]; final_release_name=true; matching SHA; validation PASS; newer target; managed_code_clean=true.
+Preview counts: {"counts": {"added": 5, "changed": 8, "unchanged": 138, "removed": 0, "collisions": 0}, "blockers": []}
+Automated regression: 30 tests PASS (includes 2 executions of actual 0A code with UI doubles, not full Streamlit UI).
+Fresh selected validation after changed Validation report: blocked.
+Tampered approved ZIP after inventory: Apply blocked; current version preserved.
+Invalid ZIP with final filename: inventory unverified; verifier rejects.
+Managed-code drift: detected by fast status and blocked by upgrade preview.
+Corrupt latest recovery backup after successful drill: Recovery fails; live managed code remains clean.
+Nested archive / external selected path / symlink inventory safeguards: PASS.
+
+Isolated integration: 25 checks PASS.
+v1.58.0 -> v1.58.1 approve/apply: PASS; post-apply managed_code_clean=true.
+v1.58.1 -> v1.58.0 isolated rollback: PASS; clean restored.
+v1.57.0 -> v1.58.1 approve/apply: PASS; post-apply managed_code_clean=true.
+v1.58.1 -> v1.57.0 isolated rollback: PASS; clean restored.
+Injected update-state write failure after apply: transaction automatically restored; v1.57.0 clean.
+Wrong SHA and current managed drift: BLOCKED.
+Non-mutating recovery drill: RECOVERY_DRILL_PASS, live_root_modified=false, rollback_executed=false.
+Recovery readiness: PASS with valid backup and drill.
+Git simulation: actual push to isolated local bare repository.
+Public simulation: actual loopback HTTPS with a trusted test certificate, feed/SHA/version checks.
+0A approve+local publish+Git deploy+Public verify -> install -> post-update E2E/recovery finalize: FINAL_PASS in isolated simulation.
+No real remote publish/install/rollback or investment execution.
+
+Performance fixture: 14 Inbox + 10 Approved ZIPs; valid predecessor recovery backup and completed non-mutating drill.
+Full status with candidate verification: 32.8222 sec, 48 package reads.
+Quick managed status: 0.0071 sec, zero package reads.
+0A status including actual latest-backup integrity: 0.7727 sec, zero release package reads.
+Quick manager reduction: 99.98% in this isolated Linux environment.
+Not a measurement/promise of user Windows startup, selected-package action, network latency, or browser render time.
+
+Safety: Auto Approval=false; Auto Apply=false; Execution Authorization=NONE; credentials_stored_by_app=false.
+Publish/Install/Actual Rollback approvals remain separate. Install consent includes restoration only of its own failed transaction.
+Known limitation: selected preflight/readiness still performs full verification and can take time. Full CLI status retains legacy complete scans. No dependency reinstall required.
+Operator: install v1.58.1 directly from v1.57.0; do not first install v1.58.0. Publish and Install remain operator-approved through 0A.
