@@ -1,0 +1,11 @@
+StockInvestmentOS v1.58.3 RELEASE VALIDATION
+Date: 2026-10-07 Asia/Seoul
+RESULT: PASS
+Target version: v1.58.3
+Package: StockInvestmentOS_v1_58_3_RELEASE.zip
+SHA-256: 46b90a82b155a80510eb59485802196089e0aeabc5d0a56abf0f194e5b064ee1
+59 Korean sidebar menu labels: original option keys and session key retained. Actual radio expression executed with a UI double for every menu. All 59 returned their original routing keys. Removing only mapping and format_func reproduces original app.py exactly.
+155 managed files: Python compile, ZIP CRC and every manifest hash PASS.
+23 persisted isolated integration checks PASS: upgrade from v1.58.2 and v1.57.0; clean code; backup and isolated rollback; transaction failure restoration; wrong SHA and managed drift block; local Git publication and trusted loopback HTTPS verification; original orchestrator install and E2E plus non-mutating Recovery FINAL_PASS.
+Only sidebar display labels change. Updater safety logic unchanged. Auto Approval and Apply disabled, Execution Authorization NONE.
+Real Windows install, Streamlit browser rendering, real GitHub deployment and public feed verification NOT performed for this release.
