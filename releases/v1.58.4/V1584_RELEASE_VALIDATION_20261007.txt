@@ -1,0 +1,36 @@
+RESULT: PASS
+StockInvestmentOS v1.58.4
+검증일: 2026-10-07
+PACKAGE_SHA256: baf4c9508d3e50c11ab617fd1dd5389374c9aa47146a517cc50769dbea32c2f2
+
+검증 범위: 격리된 개발 환경. 실제 사용자 Windows PC 및 GitHub 공개 서버는 이번 검증에 포함되지 않음.
+Python 전체 컴파일, 표시 문구 외 AST 동등성, ZIP CRC, 157개 관리 파일 SHA-256: PASS
+25개 통합 모의 검증: PASS
+v158_to_v1582_approve: PASS
+v158_to_v1582_apply_clean: PASS
+v158_predecessor_rollback: PASS
+preview: PASS
+approve: PASS
+apply: PASS
+post_apply_integrity: PASS
+recovery_drill: PASS
+drill_preserves_live_code: PASS
+post_apply_quick_status_recovery_pass_no_package_compile: PASS
+recovery_readiness: PASS
+isolated_actual_rollback: PASS
+apply_failure_auto_restore: PASS
+wrong_sha_blocked: PASS
+managed_drift_blocked: PASS
+local_config: PASS
+local_publisher_seed: PASS
+local_git_connected: PASS
+orchestrator_preflight: PASS
+orchestrator_local_publish_deploy_verify: PASS
+local_bootstrap: PASS
+orchestrator_install: PASS
+orchestrator_finalize_local_e2e: PASS
+dashboard_history: PASS
+safety_boundary: PASS
+
+로컬 HTTPS와 로컬 Git 저장소에서 게시·배포·피드 검증·설치·최종 점검 완료. FINAL_PASS.
+자동 승인 및 자동 설치 비활성화 유지. 투자 실행 권한 NONE 유지.
