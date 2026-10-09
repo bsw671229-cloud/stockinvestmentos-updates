@@ -1,0 +1,61 @@
+﻿StockInvestmentOS v2.1.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Scope: code, isolated mock/UI tests and upgrade/recovery simulations only.
+Broker readiness: CHECK REQUIRED. Real KIS authentication, balances, paper/live orders, fills and cancellations NOT EXECUTED.
+Source Version: v2.0.0
+Target Version: v2.1.0
+Package: StockInvestmentOS_v2_1_0_RELEASE.zip
+SHA-256: 8136fb8247f6a9c23b2564628c3a4f72a1b4df5de2624382418867d5665e67e1
+Checked at: 2026-10-09T13:44:32.706924+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem/Evidence/Root Cause/Acceptance/Minimal Design: ../DESIGN.txt.
+Official API references checked 2026-10-09: Korea Investment & Securities open-trading-api repository; ../official-reference/sources.json.
+Changes: 60 lazy-loaded legacy pages; KIS Korea/US cash whole-share limit-order screen/adapter/journal; exact package validation binding; inherited v2.0.1 recovery-status cache.
+Source compile: PASS (187 Python files).
+ZIP CRC / manifest hashes: PASS (230 files).
+60 legacy page rendering AST equivalence and allowlisted loader: PASS.
+Unit/regression: PASS (149 tests; includes previous v2 risk contracts/cache/scenario tests).
+Representative integrated UI: PASS (Start Here, Dashboard, Portfolio, Release Manager, Decision Workbench v2, KIS Execution).
+Mocked broker UI: PASS (default PAPER, missing configuration block, frozen preview, wrong-confirmation rejection, one send, halt, currency/environment change).
+Browser 1280px: PASS (initial page and unconfigured KIS page). Mobile/responsive: NOT RETESTED.
+
+Order safeguards (synthetic accounts and mocked responses): PASS.
+- KR/US BUY/SELL, PAPER/LIVE route separation, US paper sell VTTT1001U per official documentation.
+- No margin/credit/short-selling path, whole shares, cash/position checks, no automatic currency conversion.
+- User-defined notional/scenario-loss/gap bounds, explicit attestation, exact confirmation, 60-second expiry.
+- Fresh checks immediately before send; durable SENDING before HTTP; single outstanding account order enforced at send.
+- Duplicate/concurrent submit, insufficient cash/position, changed price, halt, token reuse, malformed response and timeout.
+- Failed local write before send prevents HTTP; failed write after send leaves durable SENDING and blocks restart resend.
+- ACKNOWLEDGED is not FILLED. Quantity/price/date/symbol/side/exchange/time identity checks; partial/fill/cancel states.
+- Cancellation request is not cancellation proof; repeated cancel blocked while outcome uncertain; stale reconciliation cannot regress terminal state.
+- Tokens/keys only in memory, environment-based configuration, no raw credentials/accounts in journal or returned errors.
+- New order halt persists; explicit cancellation and reconciliation remain available.
+
+Validation selection: PASS (exact package/version/SHA binding; mismatched patch/hash/name rejected; conflicting reports fail closed; duplicate PASS/FAIL rejected; legacy pre-v2.1 compatibility).
+Preview eligible=true/blockers=[]/final filename/newer version: PASS (isolated).
+Wrong SHA blocking / approve fixture / v2.0.0 -> v2.1.0 apply: PASS.
+Post-apply managed code clean: PASS.
+Non-mutating recovery drill and readiness: PASS.
+Isolated rollback to v2.0.0: PASS; new page/broker code removed; synthetic operational ledger preserved.
+Injected post-apply failure auto-restoration and managed-code drift blocking: PASS.
+Software auto-approval/auto-apply DISABLED. Updater execution authorization NONE. Brokerage orders require separate per-order user action.
+Actual production v2.0.0 unchanged: PASS (164 managed files checked).
+Real secrets/runtime-data: NOT ACCESSED.
+
+Performance (same PC, isolated fixture, warm server/browser reload, three samples each):
+v2.0.1 reload median 5.975 s -> v2.1.0 0.280 s (95.31% reduction).
+Streamlit entry preprocessing median 4.5380 s -> 0.0226 s.
+Browser reload <=5 s target: MET. Cold process boot / production data / real KIS network latency: NOT MEASURED.
+Inherited pandas Copy-on-Write warning persists; representative tested pages had no exceptions.
+
+Known operational limits:
+- Actual broker contracts, account entitlements, exchange price rules/hours and live order/fill/cancel behavior require broker-side acceptance tests.
+- No order number after an ambiguous send remains blocked; this version has no automatic/manual ledger-clear override. Check the broker app and preserve records.
+- One unresolved/open order per account blocks subsequent sends until reconciliation confirms a terminal outcome.
+- Scenario loss is an estimate, not a guaranteed maximum loss or stop-loss instruction.
+- Domestic KRX only; US NASD/NYSE/AMEX; no fractions, market/credit/derivative/automated strategy orders.
+- Separate PAPER/LIVE environment keys; initial broker testing must be user-operated. Agent placed no order.
+Remote publication, production installation/restart, post-install E2E and actual rollback: NOT EXECUTED.
+Report filename uses V201 compatibility prefix for the installed v2.0.0 major/minor report finder; content target and SHA are v2.1.0.
+Evidence: SIMULATION_RESULTS.json and ../evidence/. This PASS is not broker execution certification.
