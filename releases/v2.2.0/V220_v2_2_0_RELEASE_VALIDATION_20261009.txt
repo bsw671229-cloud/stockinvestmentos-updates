@@ -1,0 +1,72 @@
+﻿StockInvestmentOS v2.2.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Scope: isolated source, unit/regression/UI, packaging and upgrade/failure/recovery simulations.
+Source Version: v2.1.0
+Target Version: v2.2.0
+Package: StockInvestmentOS_v2_2_0_RELEASE.zip
+SHA-256: 01e609fd6556bd4951ee586784892a208f19e7ff8b7490391e6a00b38e9635f6
+Checked at: 2026-10-09T15:31:35.387110+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem/Evidence/Root Cause/Acceptance/Minimal Design: ../DESIGN.txt.
+Observed incident: historical US quote HTTP 500 prevented a combined buying-power workflow.
+Historical separate user-operated USD buying-power check later passed; that does not prove quote recovery.
+Broker-side HTTP 500 root cause: UNKNOWN (original status record did not preserve an error code).
+Local causes addressed: coupled inquiry workflow, discarded structured HTTP diagnostics, missing session-only input UI.
+Official API sources checked 2026-10-09: ../official-reference/sources.json.
+
+Changes:
+- Default inquiry screen with independent quote, paginated positions and buying-power buttons.
+- Reuse the authenticated session; no API request on ordinary widget reruns, no order journal in inquiry mode.
+- Masked credential form; clear form values after success/failure; current session memory only.
+- Clear previous results on account, mode, market, exchange or instrument change; failed refresh replaces prior success.
+- Calculation basis and KST check time; 60-second API reference gate or explicitly labelled manual calculation price.
+- Zero cash/quantity and empty positions are valid responses; malformed or wrong-currency replies fail closed.
+- Only allowlisted read-only GET transient HTTP 429/500/502/503/504 with UNKNOWN or EGW00201 code may retry once.
+- Authentication/order/cancel POST, timeouts, unknown routes and definite business rejections never automatically retry.
+- Diagnostics expose allowlisted operation/status/code/attempts only; raw broker messages, keys and full accounts omitted.
+
+Source compile: PASS (188 Python files).
+ZIP CRC / manifest / package SHA: PASS (232 managed files).
+Package excludes credentials, real data, databases, bytecode and preview/test harnesses: PASS.
+Unit/regression: PASS (193 tests; zero failures/errors/skips).
+Inquiry UI synthetic tests: PASS (default inquiry, no journal, no rerun API, independent failures, reference invalidation,
+  account/market changes, disconnect cleanup, masked entry callback success/failure).
+Broker/protocol regression: PASS (existing KR/US PAPER/LIVE order safeguards, confirmed single send, expiry,
+  durable journal, duplicate protection, halt, reconciliation and cancellation semantics under mocked responses).
+Integrated UI: PASS (Start Here, Dashboard, Portfolio, Release Manager, Decision Workbench v2, KIS Execution).
+Integrated synthetic order UI: PASS (explicit ORDERS selection, wrong confirmation rejection, one mocked send,
+  halt, currency/environment change; zero broker requests).
+Browser visual/UI: PASS (1280x720 synthetic preview, KR three inquiries, US manual power without quote,
+  stale result invalidation on market change, zero quantity normal status, manual basis label).
+Mobile/responsive: NOT RETESTED. Browser screenshots: ../evidence/.
+
+Preview eligible=true, blockers=[], final release name, target newer: PASS (isolated).
+Wrong SHA blocking / approval fixture / v2.1.0 -> v2.2.0 apply: PASS.
+Post-apply managed code clean: PASS.
+Non-mutating recovery drill and recovery readiness: PASS.
+Isolated rollback to v2.1.0: PASS (new inquiry module removed, existing broker UI restored, synthetic ledger preserved).
+Injected post-apply integrity failure auto-restoration: PASS.
+Managed-code drift blocks preview: PASS.
+Legacy app/pages/loader and order engine unchanged byte-for-byte: PASS.
+Software auto-approval/auto-apply DISABLED; updater execution authorization NONE: PASS.
+Actual production remains v2.1.0: PASS (230 managed file hashes verified).
+Actual production secrets/runtime-data: NOT ACCESSED.
+
+Performance scope:
+Repeated ordinary inquiry reruns issue zero broker calls in automated tests. Authentication is reused.
+Real API latency and production startup speed for v2.2.0: NOT MEASURED. No percentage speedup claim.
+At most one HTTP read retry adds a one-second delay plus a bounded request; orders/cancels are never retried.
+Existing pandas Copy-on-Write deprecation warning remains; tested screens completed without exceptions.
+
+Operational limits:
+- v2.2.0 real authentication/quote/balance/buying-power acceptance: NOT EXECUTED.
+- Actual US quote incident recovery and broker-side cause: CHECK REQUIRED / UNKNOWN.
+- Quote API retrieval time is not exchange execution time or a guarantee of real-time pricing.
+- Manual calculation price is not a current quote; displayed inquiry success does not authorize an order.
+- Existing order safety gates remain; actual order/fill/cancel acceptance: NOT EXECUTED.
+- No background polling, FX conversion, margin, fractional orders or automatic strategy execution added.
+- API credentials/results exist only in the current session; browser session loss/restart requires reconnection.
+- Release/install approval does not grant investment execution permission.
+Remote publication, production installation/restart, post-install E2E and actual rollback: NOT EXECUTED.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/. This PASS is development validation, not live brokerage certification.
