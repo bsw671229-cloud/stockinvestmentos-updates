@@ -1,0 +1,57 @@
+﻿StockInvestmentOS v2.5.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.4.0
+Target Version: v2.5.0
+Package: StockInvestmentOS_v2_5_0_RELEASE.zip
+SHA-256: d560e40bb6b7a107a396a2e9e3a8edb8aaf759a1f6a1c5f5eb3a065398c23e25
+Checked at: 2026-10-09T22:44:00.946164+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / evidence / root cause / acceptance / minimal design: ../DESIGN.txt.
+Baseline LIVE combined inquiry success was user-reported, not directly observed.
+Prior EGW02007 was PAPER per user correction; its root cause remains unconfirmed.
+This feature does not claim to fix the PAPER error.
+
+Implementation: connected read-only order precheck view. Click-only form submission
+validates order and risk limits before fresh quote and buying power / sellable quantity.
+Reuse existing validate_order, validate_limits and check_snapshot with an inquiry-only
+facade. Quote currency and timestamp (0..60s) validated before account inquiry.
+Separate KRW/USD fields, visible LIVE/PAPER label, fixed inspected order and timestamp.
+No journal opens, executable preparation, sending, cancelling, halt mutation, exports,
+polling, credential persistence or automatic transfer into the executable order form.
+Account/mode/disconnect/navigation and submitted input changes invalidate session result.
+Unsubmitted form edits do not alter the fixed previous check; UI states this explicitly.
+Results are historical records; later reruns mark >60s results old. No automatic timer.
+PASS covers only inputs and queries, not trading hours/ticks, journal halt/unresolved
+orders, order authorization, fill probability or maximum possible real loss.
+
+Synthetic before/after: same two logical queries; prepared order records 1 -> 0;
+candidate journal opens 0; send controls absent; rerun requests 0. No live speed claim.
+Static compile: PASS (192 packaged Python files).
+ZIP CRC / manifest / SHA-256: PASS (242 managed files).
+Exact tested Python source SHA binding to packaged bytes: PASS.
+Changed: VERSION, broker_workbench.py.
+Added: broker_precheck.py, broker_precheck_service.py, RELEASE_NOTES_v2_5_0.txt.
+Manifest regenerated. No removals. Existing inquiry, adapter, order engine and updater unchanged.
+Package excludes account data, secrets, databases, tests/support and diagnostic evidence: PASS.
+Unit/regression: PASS (509 tests; 58 new; zero errors/failures/skips; external HTTP blocked).
+New tests cover LIVE/PAPER, KR/US, buy/sell, cash/quantity/limit/loss/gap failures,
+invalid inputs before network, stale/future/wrong-currency quotes, precision, error
+redaction, exact EGW02007 preservation, real adapter mocked allowed GET routes,
+no journal/send controls, no rerun requests, fixed state invalidation and stale display.
+Representative AppTest screens: PASS (Start Here, Dashboard, Portfolio, Release Manager,
+Decision Workbench v2, KIS Execution). Existing mocked prepare/confirm/send/halt/isolation: PASS.
+Real-browser visual/responsive: NOT EXECUTED; native UI logic checked with AppTest.
+
+Final name/newer version/eligible/blockers preview simulation: PASS.
+Wrong SHA blocked; approve/apply v2.4.0 -> v2.5.0 simulation: PASS.
+Post-apply managed clean and managed-drift block: PASS.
+Non-mutating recovery/readiness: PASS. Isolated rollback to v2.4.0: PASS.
+Rollback removes new modules/note, restores workbench, preserves synthetic ledger: PASS.
+Injected post-apply integrity failure restores predecessor: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.4.0 managed files unchanged: PASS (239 files).
+Production runtime-data/secrets NOT ACCESSED. Operating app restart NOT EXECUTED.
+Live v2.5.0 queries, actual orders/fills/cancels/FX, publication, installation and actual rollback
+NOT EXECUTED. User acceptance follows separate publication and installation approvals.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/.
