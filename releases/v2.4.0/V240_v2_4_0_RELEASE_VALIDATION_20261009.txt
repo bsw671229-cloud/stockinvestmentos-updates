@@ -1,0 +1,50 @@
+﻿StockInvestmentOS v2.4.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.3.0
+Target Version: v2.4.0
+Package: StockInvestmentOS_v2_4_0_RELEASE.zip
+SHA-256: d361e6ccfa044b20bba26a386f2b7db7ebb70eb3298128a3b130bdfef3851429
+Checked at: 2026-10-09T22:10:31.763723+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / evidence / root cause / acceptance / minimal design: ../DESIGN.txt.
+Baseline combined single-market inquiry success was user-reported, not directly observed.
+Baseline synthetic UI: market change clears prior results; two market checks need two buttons.
+Candidate: one explicit button; both markets' six outcomes and durations remain visible.
+Six logical inquiries are retained. Retry/pagination can make extra HTTP calls. No live latency claim.
+
+Implementation: fixed KR then US sequence using each fresh exact quote for its own buying power.
+Quote failure skips dependent power; balance and the other market remain independent.
+Only allowlisted metadata enters the combined session report and download. No account identifiers,
+credentials, holdings, symbols, cash, prices, raw messages or server bodies in the report.
+Progress between markets is presentation only. Results clear on input/account/mode/disconnect/range
+changes and before a recheck. Reruns and downloads do not fetch. No credential persistence/polling.
+Existing service helpers are AST-identical; broker adapter, throttling/retries, order engine,
+connection/workbench, updater and legacy pages unchanged. No order/journal access in inquiry UI.
+
+Static compile: PASS (190 packaged Python files).
+ZIP CRC / manifest / SHA-256: PASS (239 managed files).
+Exact tested Python source SHA binding to packaged bytes: PASS.
+Changed: VERSION, broker_inquiries.py, broker_inquiry_service.py.
+Added: broker_market_overview.py, RELEASE_NOTES_v2_4_0.txt. Manifest regenerated; no removals.
+Package excludes account data, secrets, databases, tests/support and diagnostic evidence: PASS.
+Unit/regression: PASS (451 tests; 46 new; zero errors/failures/skips; external HTTP blocked).
+New coverage: LIVE/PAPER, US venues, exact currency/price separation, all per-market failure
+combinations, stale/future/wrong-currency quotes, six existing adapter GETs, privacy allowlisting,
+progress failure tolerance, six-row UI, report download, state invalidation and no rerun requests.
+Representative AppTest screens: PASS (Start Here, Dashboard, Portfolio, Release Manager,
+Decision Workbench v2, KIS Execution). Existing mocked order confirmation/halt/isolation: PASS.
+Real-browser visual/responsive: NOT RETESTED; native UI behavior checked with AppTest.
+
+Isolated final-name/newer-version/eligible/blockers preview: PASS.
+Wrong SHA blocked; approve/apply v2.3.0 -> v2.4.0 simulation: PASS.
+Post-apply managed clean and managed-drift block: PASS.
+Non-mutating recovery/readiness: PASS. Isolated rollback to v2.3.0: PASS.
+Rollback removes new module/note, restores prior inquiry modules, preserves synthetic ledger: PASS.
+Injected post-apply integrity failure automatically restores predecessor: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.3.0 managed files unchanged: PASS (237 files).
+Production runtime-data/secrets: NOT ACCESSED. Operating app restart: NOT EXECUTED.
+Live v2.4.0 queries, actual orders/fills/cancels/FX, publication, installation and production rollback:
+NOT EXECUTED. Live dual-market acceptance remains pending after separate publication/install approval.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/.
