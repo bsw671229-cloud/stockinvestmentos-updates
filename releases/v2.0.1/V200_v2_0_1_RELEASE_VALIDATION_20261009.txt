@@ -1,0 +1,50 @@
+﻿StockInvestmentOS v2.0.1 RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Scope: functional/integrity/release-simulation gates; production publication/install NOT EXECUTED.
+Performance advisory: browser reload <=5 s target NOT MET (5.936 s median).
+Source Version: v2.0.0
+Target Version: v2.0.1
+Package: StockInvestmentOS_v2_0_1_RELEASE.zip
+SHA-256: 42ce90033147be3b47986c6b0a72171a3436991d751ee5c09f700f423e16725a
+Checked at: 2026-10-09T13:13:29.796459+09:00
+Runtime tested: Python 3.14.6, Streamlit 1.65.0
+
+Problem / evidence / root cause / minimal design: ../DESIGN.txt
+Changed code: app.py; updater/release_recovery.py; updater/backup_validation_cache.py.
+60 page bodies, literal strings and shared code AST equivalence: PASS.
+Packaged Python compile: PASS (123 files).
+ZIP CRC / manifest SHA-256: PASS (166 entries).
+Unit/regression: PASS (55 contract/cache + 5 existing scenario regressions = 60 tests).
+Integrated form and Start Here/Dashboard/Portfolio/Release Manager/Workbench: PASS.
+Browser 1280px example workbench and initial Start Here rendering: PASS.
+Small-screen layout: NOT RETESTED; no layout changes in this release.
+
+Preview eligible=true / blockers=[] / final RELEASE name / newer version: PASS (isolated).
+Wrong SHA rejected / approve simulation: PASS.
+v2.0.0 -> v2.0.1 apply simulation / managed_code_clean: PASS.
+Non-mutating recovery drill / technical recovery readiness: PASS.
+Isolated rollback to v2.0.0 / injected post-apply failure auto-restore: PASS.
+Managed-code drift blocks update: PASS.
+Auto approval DISABLED / auto apply DISABLED / execution authorization NONE: PASS.
+Production v2.0.0 manifest unchanged: PASS (164 files verified).
+
+Timing (same PC; isolated fixtures; elapsed measurements include automation overhead):
+Browser reload, 3 samples each, median: 16.093 -> 5.936 s (63.11% lower).
+Streamlit compile preparation, 3 samples each: 14.661 -> 4.619 s median.
+Full backend status after first call, 3 samples each: 4.170 -> 0.571 s median.
+Candidate first backend status (full backup validation): 4.067 s.
+Candidate workbench menu transition, 3 samples: 0.447 s median.
+Browser <=5 s stretch target: NOT MET; warm status <=2 s and menu <=1 s: MET.
+Real-data production performance after installation / cold process start: NOT MEASURED.
+The status fixture has REVIEW due to copied absolute operational lineage; both implementations use the same fixture. Separate original simulation recovery technical gate passed.
+
+Cache: every call reads and hashes current backup bytes; only identical content PASS results are reused.
+Memory-only, max 8 entries, max 600 s; validator revision and Python runtime in key.
+Full-validation timestamp preserved; return values isolated by deep copy.
+Missing file, corruption, CRC/hash/Python errors, same-size/same-mtime replacement, revision/runtime change, expiry, concurrency and snapshot-race checks: PASS.
+Recovery drill always fully validates; actual apply/rollback implementation unchanged.
+Inherited pandas Copy-on-Write deprecation warning remains; tested UI renders without exceptions.
+
+This incremental update targets the existing v2.0.0 installation.
+Remote publish, actual installation, post-install E2E and real rollback: NOT EXECUTED.
+Evidence: SIMULATION_RESULTS.json and ../evidence/.
