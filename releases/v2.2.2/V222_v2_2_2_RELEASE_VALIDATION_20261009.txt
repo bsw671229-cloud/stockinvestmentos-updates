@@ -1,0 +1,69 @@
+﻿StockInvestmentOS v2.2.2 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Scope: isolated code/UI validation and release simulations; live acceptance pending.
+Source Version: v2.2.1
+Target Version: v2.2.2
+Package: StockInvestmentOS_v2_2_2_RELEASE.zip
+SHA-256: 87b1c787013a4df7164689fb1a158c0c18f8ee9879a81923951762748827f96d
+Checked at: 2026-10-09T17:13:12.826746+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem -> Evidence -> Root Cause -> Acceptance -> Minimal Design: ../DESIGN.txt.
+Actual user-triggered diagnostic at 2026-10-09T17:03:50.6825751+09:00:
+  authentication PASS, HTTP 200, first-page codes OTCB and NYSE, no continuation.
+  v2.2.1 rejects OTCB as unsupported; NYSE is accepted. Diagnostic does not retain holdings/account/credentials.
+Confirmed local defect: four-code response allowlist cannot display an observed OTCB holding.
+Synthetic reproduction uses these exchange codes and FABRICATED symbols/quantities only:
+  v2.2.1 blocks mixed OTCB/NYSE response, v2.2.2 preserves both rows and original exchange identities.
+Official KIS request/field references checked 2026-10-09; ../official-reference/sources.json.
+OTCB exact exchange name, account trading eligibility and broker order support are NOT inferred.
+
+Minimal patch:
+- Add observed OTCB only to US balance RESPONSE parsing; preserve original identity.
+- Display OTCB holdings as inquiry-only with an explicit app order unsupported notice.
+- Display original validated quantities; the broker sellable quantity is not app trading authorization.
+- Do not skip rows, convert failed balance to zero, or map OTCB to NASD/NYSE/AMEX.
+- Unknown/missing/malformed identities, bad currency/numbers and incomplete pagination remain blocked.
+- All KisClient methods unchanged by AST comparison, including auth, requests, positions, quote,
+  buying-power, sellable, send and cancel. Only helper response allowlist changes in the adapter.
+- All order engine/workbench, page wrappers, legacy app entrypoints and authorization code unchanged.
+
+Compile: PASS (188 Python files).
+ZIP CRC / manifest / SHA-256: PASS (234 managed files).
+Change inventory: VERSION, connectors/kis_broker.py, broker_inquiries.py,
+  new RELEASE_NOTES_v2_2_2.txt and regenerated manifest only.
+Package excludes secrets, account data, databases, test support, bytecode and diagnostic output: PASS.
+Unit/regression: PASS (287 tests; zero failures/errors/skips).
+Initial restricted-shell attempt stalled in Python local socketpair creation before a UI test;
+  only the identified test processes were stopped. Final suite runs with local socket access and
+  an explicit external HTTP request blocker. No product workaround was made for this environment issue.
+New OTCB tests: 45, including LIVE/PAPER responses, case/ASCII padding, mixed exchanges,
+  BUY/SELL order/request gates, malformed numbers/currency/identity, pagination and synthetic UI.
+UI test: both rows displayed; OTCB inquiry-only label, no extra request on rerun, no order journal,
+  failing refresh removes old balance/notice, quote/power stay independent, subsequent refresh recovers.
+Integrated AppTest: PASS (six pages: Start Here, Dashboard, Portfolio, Release Manager,
+  Decision Workbench v2, KIS Execution).
+Integrated order flow: PASS with synthetic account and mocked send only, including wrong confirmation,
+  one send, halt and environment reset. Real order/fill/cancel: NOT EXECUTED.
+Browser visual/responsive: NOT RETESTED; native Streamlit table/info behavior covered by AppTest.
+Existing pandas Copy-on-Write deprecation warning does not block these tests.
+
+Preview eligible=true, blockers=[], final release name, newer target: PASS (isolated).
+Wrong SHA rejection / approval / v2.2.1 -> v2.2.2 upgrade simulation: PASS.
+Post-apply managed code clean: PASS.
+Non-mutating recovery drill / recovery readiness: PASS.
+Isolated predecessor rollback: PASS; new note removed, adapter restored, synthetic ledger preserved.
+Injected post-apply integrity failure automatic restoration: PASS.
+Managed-code drift blocks preview: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Actual production remains v2.2.1: PASS (233 managed files hash-verified unchanged).
+Actual production runtime-data/secrets: NOT ACCESSED. Restart: NOT EXECUTED.
+
+Limits:
+- Complete real account row content was not collected. Other account-specific validation issues can remain.
+- Actual v2.2.2 balance acceptance: PENDING separate publish/install approval and user-triggered refresh.
+- No live speed measurement, real trading certification or new exchange trading support.
+- Publish, install, actual rollback and investment execution require their respective authorizations.
+Remote publication, production installation and post-install E2E: NOT EXECUTED.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+This PASS is development validation, not live brokerage acceptance.
