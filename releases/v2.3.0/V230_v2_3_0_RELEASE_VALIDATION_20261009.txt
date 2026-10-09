@@ -1,0 +1,57 @@
+﻿StockInvestmentOS v2.3.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.2.3
+Target Version: v2.3.0
+Package: StockInvestmentOS_v2_3_0_RELEASE.zip
+SHA-256: a1ff6d022e5a72adaa51cab47e4172bb5dc32f871d9610515df3c24135b611d3
+Checked at: 2026-10-09T21:43:38.132077+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / evidence / cause / acceptance / minimal design: ../DESIGN.txt.
+Baseline US quote and buying power succeeded according to the user; no raw live response was observed.
+Baseline synthetic UI requires three buttons; a 61-second-old quote blocks buying power without network.
+Candidate synthetic UI requires one explicit button: fresh quote -> exact-price buying power -> balance.
+This reduces user interactions, not the number or duration of broker requests.
+
+Implementation:
+- Extract existing resolve_reference and _run pure helpers, AST-equivalent to baseline.
+- Add explicit serial read-only orchestration; no prior/manual price reuse or parallel requests.
+- Quote failure skips dependent buying power; balance is independently checked. Stale/future/currency
+  validation still blocks power before a request. Per-query failures and zero buying quantity are distinct.
+- Individual queries remain. Market/exchange/symbol/account/mode/disconnect changes clear check reports.
+- No rerun polling. Download uses on_click=ignore and only allowlisted metadata.
+- Export omits credentials, tokens, account identifiers/masks/hashes, symbols, positions, amounts,
+  prices, quantities, exception text and raw broker bodies. Status/time/HTTP/validation codes remain.
+- A completed inquiry check does not authorize an order or certify fills.
+- Broker adapter, token handling, rate limits/retries, order engine, confirmation and workbench unchanged.
+
+Static compile: PASS (189 packaged Python files).
+ZIP CRC / manifest / SHA-256: PASS (237 managed files).
+Exact tested Python-source SHA binding to packaged files: PASS.
+Inventory: changed VERSION and broker_inquiries.py; added broker_inquiry_service.py and
+  RELEASE_NOTES_v2_3_0.txt; regenerated manifest. No removed files.
+No account data, secrets, databases, test code/support, bytecode or diagnostic evidence in package: PASS.
+Unit/regression: PASS (405 tests, including 52 new; zero errors/failures/skips; external HTTP blocked).
+New coverage: KR/US and LIVE/PAPER existing GET routes; all failure combinations; exact US decimals;
+  stale/future/currency failure; preserved adapter transient retry; invalid balance with independent
+  quote/power success; allowlist export; no journal; no rerun fetch; manual-to-fresh-quote mode switch;
+  invalidation on individual actions/account/environment/context changes; no order controls in inquiry view.
+Integrated AppTest: PASS (Start Here, Dashboard, Portfolio, Release Manager, Decision Workbench v2,
+  KIS Execution). Existing order UI: wrong confirmation, one MOCK send, halt and isolation PASS.
+Existing pandas Copy-on-Write deprecation warning remains; no screen exceptions.
+Real-browser visual/responsive: NOT RETESTED; native UI behavior verified with AppTest.
+
+Preview eligible=true, blockers=[], final name, newer target: PASS (isolated).
+Wrong-SHA block / approval / v2.2.3 -> v2.3.0 apply simulation: PASS.
+Post-apply managed clean: PASS. Managed drift blocks update: PASS.
+Non-mutating recovery drill/readiness: PASS. Isolated rollback to v2.2.3: PASS.
+Rollback removes new module/note and restores inquiry UI while preserving synthetic ledger: PASS.
+Injected post-apply integrity failure restores predecessor: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Actual operating v2.2.3 managed files unchanged: PASS (235 files).
+Production runtime-data/secrets: NOT ACCESSED. Live app restart: NOT EXECUTED.
+
+Limits: synthetic results do not establish live response speed, live account reconciliation or trading
+correctness. Actual v2.3.0 broker check is pending separate publish/install approval and user operation.
+Actual orders/fills/cancels/FX, remote publication, installation and actual production rollback: NOT EXECUTED.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/.
