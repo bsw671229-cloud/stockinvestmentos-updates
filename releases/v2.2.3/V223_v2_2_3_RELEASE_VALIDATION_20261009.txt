@@ -1,0 +1,65 @@
+﻿StockInvestmentOS v2.2.3 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Scope: isolated development, synthetic inquiry/UI checks, packaging and upgrade/failure/recovery simulations.
+Source Version: v2.2.2
+Target Version: v2.2.3
+Package: StockInvestmentOS_v2_2_3_RELEASE.zip
+SHA-256: 9a3c96e9829bf8597b2a10d4e5398bc3061968e47d0068cf035b2c01f100ff2f
+Checked at: 2026-10-09T17:43:19.991983+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem/Evidence/Root Cause/Acceptance/Minimal Design: ../DESIGN.txt.
+User screenshot 2026-10-09 17:35:46: US balance succeeds at 17:35:24 KST (60ms), complete pagination,
+  OTCB inquiry-only notice shown. Buying-power at 17:35:05 KST (0ms) reports the order cent-price rule.
+Exact price used for that real query is NOT visible and remains UNKNOWN. Account holdings not copied into evidence.
+Confirmed code defect: read-only inquire_buying_power reuses validate_order and buying_power cent validation.
+Official API reference checked 2026-10-09 supports eight fractional digits for OVRS_ORD_UNPR:
+https://raw.githubusercontent.com/koreainvestment/open-trading-api/main/examples_llm/overseas_stock/inquire_psamount/inquire_psamount.py
+Synthetic price 100.1234 reproduces the exact message before any request in v2.2.2; v2.2.3 sends that exact
+  value in the read-only request without rounding and returns checked USD cash/quantity.
+
+Minimal change:
+- Only US read-only inquire_buying_power accepts positive prices with up to eight meaningful decimal places.
+- Existing price cap 1e9 remains; invalid/nonfinite/zero/negative/>8-place/over-cap prices fail before network.
+- Request identity restrictions, read-only route/TR ID, USD and finite cash/whole quantity checks remain.
+- Actual-order validate_order, buying_power, quote, sellable, send, cancel and other KisClient methods
+  remain AST-equivalent. Order engine/workbench, connection authorization and confirmation are unchanged.
+- No automatic rounding, order journal, polling or order submission is added.
+- UI shows exact quoted decimal precision; manual input appears only in MANUAL mode.
+- Stale quote remains blocked; balance and quote/power results remain independent; OTCB stays inquiry-only.
+
+Source compile: PASS (188 Python files).
+ZIP CRC / manifest / SHA-256: PASS (235 managed files).
+Change inventory: VERSION, connectors/kis_broker.py, broker_inquiries.py,
+  new RELEASE_NOTES_v2_2_3.txt and regenerated manifest only.
+Package excludes real account data, secrets, databases, tests, test support, bytecode and diagnostic evidence: PASS.
+Unit/regression: PASS (353 tests; zero failures/errors/skips; all external HTTP requests blocked).
+New tests: 66, covering exact precision/bounds/normalization, LIVE/PAPER IDs, malformed price/identity/response,
+  unchanged actual BUY/SELL order paths, KR rule, and synthetic UI with stale quote/manual mode/failure refresh.
+Synthetic inquiry UI: PASS, exact 100.1234 display/request, hidden inactive manual field, preserved OTCB balance,
+  no rerun requests or order journal, stale quote blocks, manual eight-place price works, ninth place blocks.
+Integrated AppTest: PASS (Start Here, Dashboard, Portfolio, Release Manager, Decision Workbench v2, KIS Execution).
+Integrated synthetic order UI: PASS (wrong confirmation rejection, one mocked send, halt, environment reset).
+Browser visual/responsive: NOT RETESTED; native text/metric/input behavior verified through AppTest.
+Existing pandas Copy-on-Write deprecation warning remains; screens completed without exceptions.
+
+Preview eligible=true, blockers=[], final release name, newer target: PASS (isolated).
+Wrong SHA blocking / approval simulation / v2.2.2 -> v2.2.3 apply: PASS.
+Post-apply managed code clean: PASS.
+Non-mutating recovery drill and recovery readiness: PASS.
+Isolated predecessor rollback: PASS (new note removed, adapter restored, synthetic ledger preserved).
+Injected post-apply verification failure auto-restoration: PASS.
+Managed-code drift blocks preview: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Actual production remains v2.2.2: PASS (234 managed file hashes verified unchanged).
+Actual production secrets/runtime-data: NOT ACCESSED. Production restart: NOT EXECUTED.
+
+Limits:
+- User screenshot proves current balance display success, not full broker account reconciliation.
+- Exact live error price UNKNOWN; the reproduced precision path matches the reported message.
+- Actual v2.2.3 quote/power verification: PENDING separate publish/install approval and user-triggered inquiry.
+- Actual orders, fills, cancellations, FX and OTCB trading: NOT EXECUTED.
+- No live speed improvement measured or promised.
+Remote publication, production installation, post-install E2E and actual production rollback: NOT EXECUTED.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+This PASS is development validation, not live brokerage certification.
