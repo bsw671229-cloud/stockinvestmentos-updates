@@ -1,0 +1,32 @@
+RESULT: PASS
+StockInvestmentOS v1.58.6 RELEASE CANDIDATE
+검증일: 2026-10-09
+Source Version: v1.58.5
+Target Version: v1.58.6
+PACKAGE_SHA256: 1db4fd3528622a1ae82a5fca0cd11694f94b8517fcf508d4a37864624b344a9d
+검증 범위: 격리 복제본. 운영 설치 및 원격 게시 제외.
+Python compile: PASS (119 files)
+ZIP CRC / manifest SHA-256: PASS (160 entries)
+0A display cases: PASS (3 cases)
+Browser layout: PASS (isolated display preview at 740px, 390px)
+Existing regression: PASS (5 tests: test_v1582, test_v1583, test_v1584; inherited engine dependencies supplemented in isolated copy)
+zip_crc: PASS
+manifest_sha256: PASS
+preview: PASS
+wrong_sha_blocked: PASS
+approve_simulation: PASS
+upgrade_v1585_to_v1586: PASS
+post_apply_managed_code_clean: PASS
+non_mutating_recovery_drill: PASS
+recovery_readiness: PASS
+isolated_predecessor_rollback: PASS
+failure_auto_restore: PASS
+managed_drift_blocked: PASS
+safety_boundary: PASS
+live_app_unchanged: PASS
+Auto Approval: DISABLED
+Auto Apply: DISABLED
+Execution Authorization: NONE
+Production app.py SHA-256 unchanged: cef6a43a2ff0e645710be8201e13f03b7910563c13196a02bc1137b79d1a36d2
+LIMITATIONS: Full production app browser E2E, remote publish/feed verification for v1.58.6, actual Windows production installation/restart were NOT RUN. Approval/apply/rollback tests used isolated replicas only. Failure injection targeted the first post-apply integrity check; restored predecessor files then underwent real integrity checks.
+No runtime-data or secrets accessed.
