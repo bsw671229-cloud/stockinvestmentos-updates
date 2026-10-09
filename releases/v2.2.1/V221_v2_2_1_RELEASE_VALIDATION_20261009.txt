@@ -1,0 +1,66 @@
+﻿StockInvestmentOS v2.2.1 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Scope: isolated development, synthetic response/UI checks, packaging and upgrade/failure/recovery simulations.
+Source Version: v2.2.0
+Target Version: v2.2.1
+Package: StockInvestmentOS_v2_2_1_RELEASE.zip
+SHA-256: c9bae3323913964915d80f221b9d9912b97c47bcac2255a7bb2297719446c252
+Checked at: 2026-10-09T16:22:57.891299+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem/Evidence/Root Cause/Acceptance/Minimal Design: ../DESIGN.txt.
+User screenshot: US balance error at 2026-10-09 16:08:53 KST, 75ms, generic exchange/symbol message.
+User separately reports quote and buying-power success. Those are user observations, not agent live tests.
+Confirmed code defect: returned balance identities were processed by the order-input validator.
+Official balance documentation lists NAS (NASDAQ) and NASD (US-all); old order validation rejects NAS.
+Synthetic before/after reproduction: NAS and padded NASD blocked before, accepted after; unknown code still blocked.
+Exact field/value rejected in the user's real response: UNKNOWN. Screenshot alone does not prove NAS was returned.
+Official API sources checked 2026-10-09: ../official-reference/sources.json.
+
+Minimal change:
+- Separate returned US balance identity validation; NAS/NASD/NYSE/AMEX allowlist, ASCII trim/uppercase.
+- Preserve returned exchange identity. No substitution of missing identity with NASD; no skipped invalid rows.
+- Retain strict symbol syntax, USD, numeric/finite/nonnegative quantities, sellable<=held and complete pagination.
+- Safe BALANCE_RESPONSE field/reason/row-index diagnostics, without raw response/account/key/token/held symbol.
+- Order inputs still reject NAS. All existing adapter methods except positions are unchanged by AST comparison.
+- Existing UI, order engine, authorization, confirmation and persistent order ledger code are unchanged byte-for-byte.
+
+Source compile: PASS (188 Python files).
+ZIP CRC / manifest / package SHA: PASS (233 managed files).
+Change inventory: VERSION, connectors/kis_broker.py, new RELEASE_NOTES_v2_2_1.txt and regenerated manifest only.
+Package excludes credentials, real data, databases, bytecode, test support and preview/test harnesses: PASS.
+Unit/regression: PASS (242 tests; zero failures/errors/skips in final run).
+New response tests: 49, including documented codes, padding/case, invalid/missing/type/non-ASCII identity,
+  mixed-exchange pagination, later-page rejection, secret canaries, unchanged order/request code gates.
+Synthetic inquiry UI: PASS using actual patched adapter and mocked HTTP; NAS shown, bad refresh removes old
+  balance display, field diagnostic retained, quote and buying-power results survive, subsequent balance refresh recovers.
+No automatic rerun requests / no order journal in inquiry UI: PASS.
+Integrated UI: PASS (Start Here, Dashboard, Portfolio, Release Manager, Decision Workbench v2, KIS Execution).
+Integrated synthetic order UI: PASS (wrong confirmation rejection, one mocked send, halt, environment isolation).
+Browser visual/responsive: NOT RETESTED for this adapter-only patch; UI source unchanged.
+Initial test harness run: 241 passed, 1 UI timeout from shared time.sleep monkeypatch. Fixture removed from new
+  UI test module; final complete suite passed. No product change made to suppress the timeout.
+Existing pandas Copy-on-Write deprecation warning remains; tested screens completed without exceptions.
+
+Preview eligible=true, blockers=[], final release name, target newer: PASS (isolated).
+Wrong SHA blocking / approval simulation / v2.2.0 -> v2.2.1 apply: PASS.
+Post-apply managed code clean: PASS.
+Non-mutating recovery drill and recovery readiness: PASS.
+Isolated rollback to v2.2.0: PASS (new release note removed, adapter restored, synthetic ledger preserved).
+Injected post-apply integrity failure auto-restoration: PASS.
+Managed-code drift blocks preview: PASS.
+Software auto-approval/auto-apply DISABLED; updater execution authorization NONE: PASS.
+Actual production remains v2.2.0: PASS (232 managed file hashes verified).
+Actual production secrets/runtime-data: NOT ACCESSED. Production restart: NOT EXECUTED.
+
+Limits and outstanding acceptance:
+- v2.2.1 actual Edge/broker balance verification: NOT EXECUTED; exact account-specific root cause UNKNOWN.
+- If the live error persists, the safe diagnostic field/reason/row can identify the next check without raw data.
+- Existing sellable pretrade method remains unchanged; this read-only balance correction does not certify real sells.
+- Actual order, fill, cancellation and FX operations: NOT EXECUTED. Release approval is not trading authority.
+- Live performance improvement/latency/startup speed: NOT MEASURED. No percentage speedup claim.
+- No background polling, margin/fractional orders or automatic strategy execution added.
+- API session reconnection after installation/restart remains necessary.
+Remote publication, production installation, post-install E2E and actual production rollback: NOT EXECUTED.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+This PASS is development validation, not live brokerage certification.
