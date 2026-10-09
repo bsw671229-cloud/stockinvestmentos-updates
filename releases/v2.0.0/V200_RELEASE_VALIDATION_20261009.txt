@@ -1,0 +1,33 @@
+﻿StockInvestmentOS v2.0.0 RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Scope: isolated development and release simulations; NOT production deployment certification.
+Source Version: v1.58.6
+Target Version: v2.0.0
+Package: StockInvestmentOS_v2_0_0_RELEASE.zip
+SHA-256: 21c72cc3579b1c9d1557909058fbc555311afed4e532406ad8b31280bc02d630
+Packaged Python compile: PASS (122 files)
+ZIP CRC / manifest SHA-256: PASS (164 manifest entries)
+Unit and existing regression: PASS (45 tests)
+Integrated full-app form: PASS (boot, unconfirmed evidence blocked, confirmed example review,
+  example warning, evidence clock preserved, zero assets blocked, real-mode placeholders blocked)
+Browser: PASS (1280px isolated example form and result)
+Responsive 740px / 390px: CHECK REQUIRED (viewport override returned unchanged 1280px)
+Preview / wrong SHA blocked: PASS
+Approval and v1.58.6 -> v2.0.0 apply simulation: PASS
+Post-apply managed code clean: PASS
+Non-mutating recovery drill / recovery readiness: PASS
+Isolated predecessor rollback / injected failure auto-restore: PASS
+Managed-code drift blocked: PASS
+Auto approval DISABLED / auto apply DISABLED / execution authorization NONE: PASS
+Production app unchanged: PASS
+Production publish / install / post-install E2E: NOT EXECUTED (separate user approvals)
+
+Changes: v1.58.7 display fix included; finalize refresh discards stale snapshots and refreshes once;
+manual schema-v2 review contract and risk workbench, explicit manual schema-v1 converter.
+Existing CSV formats remain unchanged; converter does not migrate operating datasets.
+Review limits: user-attested manual evidence; no verification of market prices or source truth;
+single factor per holding, unallocated weight assumed cash, additive scenario losses;
+no leverage or correlation model, no trade/order execution. REVIEW never means buy approval.
+Package is an incremental update for the existing v1.58.6 installation.
+Inherited pandas Copy-on-Write deprecation warning observed; UI tests passed.
+Simulation evidence: SIMULATION_RESULTS.json
