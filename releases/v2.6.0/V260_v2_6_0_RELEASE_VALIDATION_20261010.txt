@@ -1,0 +1,61 @@
+﻿StockInvestmentOS v2.6.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.5.0
+Target Version: v2.6.0
+Package: StockInvestmentOS_v2_6_0_RELEASE.zip
+SHA-256: 3310bdf699285d0656c666c500ef0457a53fe681d95e5468e12ef54a9a993a5b
+Checked at: 2026-10-10T08:02:58.206566+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem/evidence/root cause/acceptance/minimal design: ../DESIGN.txt.
+User screenshots showed generic numeric errors, default BUY after navigation,
+and a LIVE KR PREPARED record on a holiday at 23:25; no actual fill was verified.
+Synthetic reproduction: old generic error -> candidate labelled input error.
+Holiday-night preparation: baseline PREPARED (1 record) -> candidate BLOCKED (0).
+No external requests or actual order sends in reproductions or tests.
+
+Implementation: field-specific numeric errors without raw input disclosure;
+explicit BUY/SELL selection, unselected submit disabled, direction/market change
+clears attestation/pending display; Enter does not submit either form.
+LIVE KR basic regular-session gate before preparation and before submission,
+rechecked after queries. KST weekdays 09:00 inclusive to 15:30 exclusive;
+exact-date KIS opnd_yn must be Y. Unknown/duplicate/invalid/error calendars block.
+GET CTCA0903R /uapi/domestic-stock/v1/quotations/chk-holiday. No account in query.
+Successful result cached per connection/account/date under lock; failure cooldown
+120 seconds; no automatic retry. Disconnect clears cache. No calendar persistence.
+Read-only precheck remains available outside hours. PAPER/US execution gate unchanged.
+Existing adapter transmission/cancel/history methods and inquiry helpers unchanged.
+LIMITATIONS: calendar route mocked only; actual account acceptance unverified.
+Basic session gate does not certify temporary session changes/security halts/ticks
+or actual order acceptance/fill. No automatic reservation, send, cancel or FX.
+
+Static compile: PASS (193 packaged Python files).
+ZIP CRC/manifest/SHA: PASS (244 managed files).
+Exact tested source SHA binding to packaged Python bytes: PASS.
+Changed: VERSION, broker_precheck.py, broker_workbench.py, connectors/kis_broker.py, engine/broker_execution.py.
+Added: RELEASE_NOTES_v2_6_0.txt, engine/broker_market_session.py. Manifest regenerated. No removals.
+Package excludes runtime data/secrets/databases/tests/support/evidence: PASS.
+Unit/regression: PASS (556 tests, 47 new; zero failures/errors/skips).
+Initial run: 552 PASS, 2 FAIL due to copied tests expecting v2.5.0 report version;
+updated assertions to v2.6.0. Added cooldown/window regression cases afterward.
+Failure output preserved in ../evidence/unit-run-1.log and unit_tests_attempt1.xml.
+Representative AppTest pages: PASS (6); existing mocked order workflow PASS.
+UI checks: explicit direction, navigation reset to unselected, SELL disables buy
+risk fields, direction change clears pending send controls and attestation.
+Real-browser visual/responsive testing: NOT EXECUTED (AppTest used).
+
+Preview final name/newer version/eligible/blockers: PASS.
+Wrong-SHA block and isolated approve/apply v2.5.0 -> v2.6.0: PASS.
+Post-apply managed clean / managed drift block: PASS.
+Non-mutating recovery drill/readiness: PASS.
+Isolated rollback removes new module/note, restores v2.5.0, preserves synthetic ledger: PASS.
+Injected post-apply verification failure restores predecessor: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.5.0 managed files unchanged: PASS (242). No live app restart.
+Production runtime-data/secrets NOT ACCESSED. Real calendar/account requests,
+orders/fills/cancels/FX, publication, installation and actual rollback NOT EXECUTED.
+User acceptance requires separately authorized publication and installation.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+Official reference verified 2026-10-10:
+https://github.com/koreainvestment/open-trading-api/blob/main/examples_llm/domestic_stock/chk_holiday/chk_holiday.py
+https://global.krx.co.kr/contents/GLB/06/0602/0602010201/GLB0602010201T1.jsp

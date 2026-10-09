@@ -1,16 +1,16 @@
 {
   "channel": "stable",
   "feed_id": "stock-investment-os-stable",
-  "generated_at": "2026-10-09T22:49:10.555619+09:00",
+  "generated_at": "2026-10-10T08:08:08.485674+09:00",
   "release": {
-    "package_name": "StockInvestmentOS_v2_5_0_RELEASE.zip",
-    "package_sha256": "d560e40bb6b7a107a396a2e9e3a8edb8aaf759a1f6a1c5f5eb3a065398c23e25",
-    "package_url": "https://bsw671229-cloud.github.io/stockinvestmentos-updates/releases/v2.5.0/StockInvestmentOS_v2_5_0_RELEASE.zip",
-    "published_at": "2026-10-09T22:49:10.555619+09:00",
-    "validation_name": "V250_v2_5_0_RELEASE_VALIDATION_20261009.txt",
-    "validation_sha256": "30188bcb58035c576624e3efa94fabb370b224a056a3b2c941471a952ca7a8ff",
-    "validation_url": "https://bsw671229-cloud.github.io/stockinvestmentos-updates/releases/v2.5.0/V250_v2_5_0_RELEASE_VALIDATION_20261009.txt",
-    "version": "v2.5.0"
+    "package_name": "StockInvestmentOS_v2_6_0_RELEASE.zip",
+    "package_sha256": "3310bdf699285d0656c666c500ef0457a53fe681d95e5468e12ef54a9a993a5b",
+    "package_url": "https://bsw671229-cloud.github.io/stockinvestmentos-updates/releases/v2.6.0/StockInvestmentOS_v2_6_0_RELEASE.zip",
+    "published_at": "2026-10-10T08:08:08.485674+09:00",
+    "validation_name": "V260_v2_6_0_RELEASE_VALIDATION_20261010.txt",
+    "validation_sha256": "679e743e37db65ce872118b6b6073c6313a8135ea6eda6e8af951de10f48a08b",
+    "validation_url": "https://bsw671229-cloud.github.io/stockinvestmentos-updates/releases/v2.6.0/V260_v2_6_0_RELEASE_VALIDATION_20261010.txt",
+    "version": "v2.6.0"
   },
   "schema_version": 1
 }
