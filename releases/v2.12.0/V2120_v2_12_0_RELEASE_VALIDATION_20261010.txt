@@ -1,0 +1,68 @@
+﻿StockInvestmentOS v2.12.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.11.0
+Target Version: v2.12.0
+Package: StockInvestmentOS_v2_12_0_RELEASE.zip
+SHA-256: d3fdafca3004d278748499cdf3bbdfcc48f72f34b4a841b896770b282116fa6f
+Checked at: 2026-10-10T11:09:04.679584+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+Baseline AppTest: selecting US/NYSE/MSFT then manually opening PRECHECK opens
+KR/KRX with blank symbol. Candidate explicit button opens US/NYSE/MSFT.
+Both paths make zero broker method calls, external HTTP requests and journal opens.
+The change reduces re-entry of three identifiers, not API response latency.
+
+Implementation:
+Explicit inquiry-to-precheck buttons for SINGLE and BOTH. The callback reads
+current widget values, validates identifiers via the existing adapter validator,
+checks client identity/mode/instance and source view/range, then copies only
+market, exchange and symbol. Internal validator placeholders are never retained.
+Previous precheck inputs/calculation/PASS and order drafts/pending IDs/live
+permission/confirmation text are cleared. Direction remains unselected; quantity
+uses the existing editable default 1; price and cap use default 0; attestation
+is false. No quote, balance, cash, price or authorization is transferred.
+No query success prerequisite or freshness claim. Invalid inputs show fixed safe
+guidance without echoing raw values. Context change rejects the transfer.
+No persisted/pending transfer, polling, new broker request, journal or order.
+Further calculation and fresh precheck require explicit user actions.
+
+Changed managed files: VERSION, broker_inquiries.py, broker_market_overview.py.
+Added: broker_inquiry_transfer.py, RELEASE_NOTES_v2_12_0.txt.
+252 other previous managed files byte-identical, including workbench, precheck,
+inquiry/retry services, execution engine, adapter, calendar, credentials, updater
+and all legacy pages.
+Python compile: PASS (200 packaged Python files).
+ZIP CRC and manifest SHA-256: PASS (257 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (1124 total, 63 new, zero failures/errors/skips).
+Representative AppTest screens: PASS (6).
+Coverage: LIVE/PAPER, KR/US, NASD/NYSE/AMEX, SINGLE/BOTH, latest input at click,
+normalization/invalid ticker/unsupported exchange, changed client/mode/account/
+view/range, safe diagnostics, no partial copy, authority invalidation, stale
+draft cannot redirect to orders, rerun/session isolation, correction after error,
+return navigation, explicit local calculator and fresh precheck after transfer.
+Native Windows DPAPI regression uses synthetic credentials only: PASS.
+All external HTTP in automated tests is blocked or mocked.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift blocked: PASS.
+Approve/apply v2.11.0 to v2.12.0; post-apply managed_code_clean: PASS.
+Backup CRC, recovery readiness and non-mutating recovery drill: PASS.
+Isolated predecessor rollback removes new code and preserves records: PASS.
+Injected post-apply failure restores predecessor: PASS.
+Synthetic encrypted profile preserved through upgrade/rollback/failure and
+excluded from code backup: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.11.0 managed files unchanged: PASS (255).
+No production runtime-data/secrets or actual saved credentials accessed.
+
+NOT EXECUTED: actual broker inquiries/trades/fills/cancel/FX, remote publication,
+production installation/restart/rollback. Real-account UI acceptance remains
+after separately approved installation. No live speedup percentage is claimed.
+Non-managed legacy test support is excluded from the release package.
+Intended predecessor: existing v2.11.0 installation.
+Evidence: ../evidence/, ../tests/.
+Official framework reference checked 2026-10-10:
+https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state
