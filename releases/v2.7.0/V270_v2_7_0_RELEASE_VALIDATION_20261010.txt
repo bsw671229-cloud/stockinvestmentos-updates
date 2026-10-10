@@ -1,0 +1,113 @@
+﻿StockInvestmentOS v2.7.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.6.0
+Target Version: v2.7.0
+Package: StockInvestmentOS_v2_7_0_RELEASE.zip
+SHA-256: c64d0d3ad2f6636303dc5b1440750e9ad022c27332f29115eb1eed59305c42b0
+Checked at: 2026-10-10T09:13:24.869083+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem/evidence/root cause/acceptance/minimal design: ../DESIGN.txt and ../CREDENTIAL_DESIGN.txt.
+The user reported LIVE inquiry and input/inquiry precheck success on a weekend.
+Installed v2.6.0 already blocks preparation/transmission outside its basic session,
+but precheck intentionally omits that gate. Its page had no current session or
+explicit calendar status panel; an order-setting label could imply readiness.
+Synthetic baseline reproduction: read-only precheck PASS, no weekend status.
+Candidate reproduction: same precheck PASS, separate weekend warning and explicit
+calendar button visible; no order record created and no external HTTP request.
+
+Implementation: separate LIVE KR time/calendar panel in both input precheck and
+order preparation. Displays weekend, outside basic regular hours, calendar
+unconfirmed/error/closed/open, with the local status confirmation timestamp.
+Local time refresh performs no API call. Calendar lookup is only on button click,
+using unchanged KisClient.kr_open_day and its existing connection/day cache and
+120-second error cooldown. No automatic polling, retries, or persistent calendar.
+Display clears on connection/account/mode/market/date changes and disconnect.
+Wrong-date/malformed/missing/naive/future calendar timestamp is not accepted.
+Explicit lookup failure replaces prior success; raw exception/body is not shown.
+The order-setting label now says that user confirmation is required.
+Calendar/time status does not authorize, prepare, or transmit an order.
+The whole broker adapter, execution engine, inquiry service and inquiry view are
+byte-identical to v2.6.0. Existing check_kr_order_session body is AST-identical;
+the time rule was extracted without logic changes and is shared by the display.
+PAPER and US get no new calendar panel or trading rule.
+
+Additional user request: avoid re-entering API key/secret/account after restarting.
+Root cause: direct-input connection was retained only in session memory.
+Optional remember checkbox saves only after successful authentication; an already
+connected user can explicitly save too. Saved connection performs authentication
+only after clicking a button and always starts in the read-only inquiry view.
+No secret prefill, automatic login, global credential cache, or network-on-render.
+Windows DPAPI current-user scope (UI_FORBIDDEN, never LOCAL_MACHINE) protects a
+strict schema and inner SHA-256. LIVE/PAPER use different paths and entropy.
+Only encrypted bytes are atomically written to
+control/broker_operations/credentials/live.dpapi or paper.dpapi.
+No plaintext fallback; token, confirmation, pending order and send permission are
+not saved. No raw exceptions or secret values are shown in the new storage UI.
+Windows plus loopback server binding is checked in both UI and callbacks.
+Missing/corrupt/wrong-mode/invalid-schema/oversized data fails closed. Failed save
+preserves the previous file. Delete affects the selected mode and disconnects;
+normal disconnect leaves saved information intact.
+Native Windows DPAPI with synthetic credentials: PASS, including new process load,
+absence of plaintext key/secret/account bytes in the saved file and mode isolation.
+New browser session reconnect, opt-in/authentication-failure paths, no auto-load,
+save-failure connection retention, deletion and permission-reset UI tests: PASS.
+Different-Windows-user rejection: simulated error only, not a second-user login test.
+The normal installer launcher already uses --server.address=127.0.0.1.
+
+Static compile: PASS (195 packaged Python files).
+ZIP CRC/manifest/SHA: PASS (247 managed files).
+Exact tested source SHA binding to packaged Python bytes: PASS.
+Changed: VERSION, broker_precheck.py, broker_workbench.py, engine/broker_market_session.py.
+Added: RELEASE_NOTES_v2_7_0.txt, broker_session_status.py, connectors/kis_credential_store.py. Manifest regenerated. No removals.
+Package excludes runtime data/secrets/databases/tests/support/evidence: PASS.
+Unit/regression: PASS (639 tests, 83 new; zero failures/errors/skips).
+This includes 40 remembered-credential cases added after the first v2.7.0 candidate.
+An earlier run (637 PASS, 1 FAIL) was invalidated by changing the storage path
+while it was running, caught by the source-hash guard. Its new-process test saw
+different source revisions; UTF-8 subprocess stderr decoding was also corrected.
+Final rerun used the frozen packaged source. Prior log/XML evidence is retained.
+Includes weekend/time boundaries, UTC conversion, bad clock/calendar/timestamps,
+read-only failure/redaction, midnight rollover, cache reuse, explicit-only lookup,
+connection isolation, old-success invalidation and existing execution safety.
+Representative AppTest pages: PASS (6); existing mocked broker workflow PASS.
+UI workflow covers preparation, wrong confirmation, one synthetic transmission,
+halt and environment reset. No real account, order, fill, cancel or FX was used.
+Legacy pandas/Streamlit deprecation/context warnings are non-failing and retained
+in the test logs; no general performance benchmark or visual browser test claimed.
+
+Preview final name/newer version/eligible/blockers: PASS.
+Wrong-SHA block and isolated approve/apply v2.6.0 -> v2.7.0: PASS.
+Post-apply managed clean / managed drift block: PASS.
+Non-mutating recovery drill/readiness: PASS.
+Isolated rollback removes the new panel module/note, restores predecessor code
+including its session guard, and preserves a synthetic operational ledger: PASS.
+Encrypted synthetic profile preserved byte-for-byte and decryptable after isolated
+upgrade, rollback and failure restoration; excluded from code backup ZIP: PASS.
+Injected post-apply verification failure restores predecessor: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.6.0 managed files unchanged: PASS (244). No live app restart.
+Production runtime-data/secrets NOT ACCESSED.
+No actual user credential was read, migrated, stored or deleted. DPAPI tests used
+invented credentials confined to the isolated development fixtures.
+
+LIMITATIONS / NOT EXECUTED:
+Actual calendar API/account acceptance remains unverified; mocked responses only.
+This basic session rule does not certify temporary trading-time changes, security
+halts, tick rules, broker order acceptance or fill. The displayed time is a snapshot
+until rerender/refresh; existing preparation/send guards recheck independently.
+No actual brokerage requests, trades, cancels, FX, remote publication, production
+installation or actual production rollback were performed in this development.
+User acceptance follows separately authorized publication and installation.
+Windows profile loss or moving PC/account can require re-entry; same-user processes
+are within the DPAPI trust boundary. Browser/proxy/tunnel remote access is not an
+authorized multi-user mode. Password protection against the same logged-in Windows
+user is not claimed. Python string memory zeroization is not claimed.
+This revision supersedes the earlier unpublished v2.7.0 candidate with ZIP SHA
+873114599c02522a1813a45bd395b4c8554ec8e9cefc1cfc8d05de4724e7586d.
+Evidence: SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+Official references verified 2026-10-10:
+https://github.com/koreainvestment/open-trading-api/blob/main/examples_llm/domestic_stock/chk_holiday/chk_holiday.py
+https://global.krx.co.kr/contents/GLB/06/0602/0602010201/GLB0602010201T1.jsp
+https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata
+https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptunprotectdata
