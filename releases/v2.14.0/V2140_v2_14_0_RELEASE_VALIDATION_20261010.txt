@@ -1,0 +1,77 @@
+﻿StockInvestmentOS v2.14.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.13.0
+Target Version: v2.14.0
+Package: StockInvestmentOS_v2_14_0_RELEASE.zip
+SHA-256: e3684622f8574bb0a003b661ad04e910abdab96221ab1869e7acd18c65b05286
+Checked at: 2026-10-10T11:52:19.354523+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+Baseline AppTest moves the query input (KR 005930 / US NASD AAPL) even when
+the displayed holding is different (KR 000660 / US AMEX SPY).
+The candidate provides an explicit holding picker and separate navigation button.
+The chosen holding and its exchange arrive at precheck; quantity, direction,
+price and prior PASS do not transfer. Each reproduction makes one synthetic
+balance request and zero additional requests during selection/navigation/rerun.
+Balance codes, labels and quantities stay identical. External HTTP/journal opens=0.
+No real broker latency improvement or current market price is claimed.
+
+Implementation:
+Only a successful complete single-market balance supplies picker options.
+There is no default choice. Labels show name/code/exchange, but code and exchange
+alone identify the holding. Duplicate identities share one option; balance rows
+and quantities are not merged. No quantity, price, name or result authorizes orders.
+The selected row's venue is used. US NAS maps to NASD; NYSE/AMEX remain unchanged.
+OTCB stays visible and read-only with both UI and server callback enforcement.
+The callback checks client/account/mode/view/range/query/current record identity
+and rebuilds valid options. Refresh, failure, empty balances, connection and query
+changes clear previous selection. Old precheck, calculations, draft, pending and
+confirmation state is invalidated before copying only market/exchange/symbol.
+Precheck defaults remain side unselected, quantity 1, price/cap 0, attestation false.
+Fresh conditions and an explicit new precheck remain necessary.
+Existing input-based navigation shares the same clear/copy helpers and passes
+regression tests. No added broker call, polling, persistence or shared cache.
+
+Changed: VERSION, broker_inquiry_transfer.py, broker_inquiries.py.
+Added: broker_position_transfer.py, RELEASE_NOTES_v2_14_0.txt.
+256 other previous managed files byte-identical, including broker adapter,
+execution engine, inquiry services, precheck, calendar, credential storage,
+workbench, updater and all legacy pages.
+Python compile: PASS (202 packaged Python files).
+ZIP CRC and manifest SHA-256: PASS (261 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (1264 total, 72 new, zero failures/errors/skips).
+Representative AppTest screens: PASS (6).
+New coverage: LIVE/PAPER; KR/US; NAS/NASD/NYSE/AMEX mapping; OTCB rejection;
+malformed/incomplete/failed balances; duplicate identity; explicit choice then
+button; latest selection at callback; refresh invalidation; account/client/mode/
+market/symbol/exchange/range/view changes; forged/stale callbacks; session
+isolation; fresh BUY/SELL prechecks; no extra broker calls or journal access.
+Native Windows DPAPI regression uses synthetic credentials only: PASS.
+All external HTTP in automated tests is blocked or mocked.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift blocked: PASS.
+Approve/apply v2.13.0 to v2.14.0; post-apply managed_code_clean: PASS.
+Backup CRC, recovery readiness and non-mutating recovery drill: PASS.
+Isolated predecessor rollback removes new code and preserves records: PASS.
+Injected post-apply failure restores predecessor: PASS.
+Synthetic encrypted profile preserved through upgrade/rollback/failure and
+excluded from code backup: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.13.0 managed files unchanged: PASS (259).
+No production runtime-data/secrets or actual saved credentials accessed.
+
+NOT EXECUTED: actual broker inquiries/trades/fills/cancel/FX, remote publication,
+production installation/restart/rollback. Real-account holding navigation
+acceptance remains after separately approved installation.
+Non-managed legacy test support is excluded from the release package.
+Intended predecessor: existing v2.13.0 installation.
+Evidence: ../evidence/, ../tests/.
+Official sources checked 2026-10-10:
+KIS balance exchange NAS and order/precheck exchange NASD:
+https://github.com/koreainvestment/open-trading-api/blob/main/examples_user/overseas_stock/overseas_stock_functions.py
+https://docs.streamlit.io/develop/api-reference/widgets/st.selectbox
+https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state
