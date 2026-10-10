@@ -1,0 +1,71 @@
+﻿StockInvestmentOS v2.8.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.7.0
+Target Version: v2.8.0
+Package: StockInvestmentOS_v2_8_0_RELEASE.zip
+SHA-256: 3bd971e65b54d6a3f0202dbbeb56d1f97dffc1ebfaad1fa7e27a9cbaa00dbf0c
+Checked at: 2026-10-10T09:41:00.021321+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+Baseline reproduction: successful read-only precheck but no input-transfer control;
+switching to preparation requires re-entry and an explicit new direction.
+Candidate reproduction: checked US inputs transfer without further broker calls,
+prepared-order records or retained risk attestation.
+
+Implementation:
+Explicit form-submit callback receives pending browser edits and checks exact
+equality with the last prechecked order, limits and connection context. It accepts
+only COMPLETE/PASS from the same account/mode/client object, within 0..60 seconds.
+Expired, future, missing, malformed, failed and replaced results are rejected.
+Only order inputs and risk limits are carried in a transient session-only draft.
+Quotes, balances, tokens, confirmation strings, executable records and permissions
+are not carried. SELL's inapplicable downside/loss fields are reset to zero.
+The consumer validates before writing any widget and consumes the draft once.
+Pending order selection, previous confirmation, risk attestation and LIVE send
+permission are cleared. Existing preparation must perform new inquiries and its
+normal gates; actual transmission still requires the existing separate confirmation.
+Disconnect/environment/connection changes cannot reuse a previous draft.
+No automatic prepare/send, new broker endpoint, durable draft or saved permission.
+
+Changed managed files: VERSION, broker_precheck.py, broker_workbench.py.
+Added managed files: broker_order_draft.py, RELEASE_NOTES_v2_8_0.txt.
+Broker adapter, execution engine, calendar guards/panel, inquiry code, DPAPI store,
+updater, entrypoint and all 60 legacy page files are byte-identical to v2.7.0.
+Python compile: PASS (196 packaged Python files).
+ZIP CRC and per-file SHA: PASS (249 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (717 total; 78 new; failures/errors/skips zero).
+Representative AppTest screens: PASS (6).
+LIVE/PAPER x KR/NASD/NYSE/AMEX x BUY/SELL transfer, unsent browser edits,
+expiry/future timestamps/reconnect/context invalidation, one-time consumption,
+attestation reset and preparation's fresh inquiry requirement: PASS.
+Native Windows DPAPI regression uses synthetic credentials only: PASS.
+All request calls in these automated tests are blocked or mocked.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift are blocked: PASS.
+Approve/apply v2.7.0 to v2.8.0, post-apply managed_code_clean: PASS.
+Backup CRC, predecessor recovery readiness and non-mutating recovery drill: PASS.
+Isolated rollback removes new code and preserves synthetic operations record: PASS.
+Injected post-apply failure restores the predecessor: PASS.
+Encrypted synthetic credential profile is preserved byte-for-byte through upgrade,
+rollback and failure restoration, and is excluded from code backups: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.7.0 managed files unchanged: PASS (247).
+No production runtime-data/secrets or actual saved credentials were accessed.
+
+NOT EXECUTED / limitations:
+No actual broker inquiries, trades, fills, cancellations or FX in development.
+No remote publication, production installation/restart or production rollback.
+Input transfer is not order authorization or a guarantee of broker acceptance/fill.
+The screen is a snapshot until rerun; the callback rechecks age even if the browser
+still displays an enabled button. User acceptance follows publication/install.
+Legacy non-managed Python dependencies used as isolated test support are excluded
+from this incremental release; this is an update for the existing v2.7.0 app.
+
+Evidence: ../evidence/SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+Official references checked 2026-10-10:
+https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state
+https://docs.streamlit.io/develop/concepts/architecture/forms
