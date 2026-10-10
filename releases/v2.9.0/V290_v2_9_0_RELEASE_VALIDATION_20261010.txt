@@ -1,0 +1,77 @@
+﻿StockInvestmentOS v2.9.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.8.0
+Target Version: v2.9.0
+Package: StockInvestmentOS_v2_9_0_RELEASE.zip
+SHA-256: 37506afbae695f7bd5efb5d1e9a4ef0a7fc0f235f72a6fd3fdc979ed499ab0c6
+Checked at: 2026-10-10T10:07:05.800770+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+Baseline AppTest reproduction: missing cap stops the precheck before showing any
+amount; no arithmetic-only calculation button exists.
+Candidate AppTest reproduction: seven shares x 263000, fee buffer 0.5%, cap 0
+shows gross 1841000 and cap-comparison amount 1850205, preserving the cap.
+Additional broker calls / external requests / order journal files: zero.
+
+Implementation:
+Explicit form-submit callback reads newly submitted fields from session state.
+It validates order inputs using the existing validator and fee in 0..5 percent.
+Decimal arithmetic matches the unchanged execution guard. Gross, fee buffer and
+comparison amount are shown separately, with exact fractions and currency.
+Missing/zero or invalid caps do not hide otherwise valid arithmetic. Valid caps
+show WITHIN/EXCEEDS and an exact difference. No limit is chosen or increased.
+The amount is neither real fees/tax nor sale proceeds, broker buying power,
+an account affordability check, an investment recommendation or order authority.
+Calculation clears the preceding precheck PASS/draft and user-attestation checkbox.
+Transfer remains disabled until a new explicit inquiry precheck passes.
+The session snapshot is labelled; pending browser edits reach the callback.
+Context/input changes, disconnect and screen exit clear old calculation results.
+No disk persistence, broker request, order journal or automatic prepare/send.
+
+Changed managed files: VERSION, broker_precheck.py.
+Added managed files: broker_amount_preview.py, RELEASE_NOTES_v2_9_0.txt.
+247 other previous managed files are byte-identical, including broker adapter,
+execution engine, order preparation/confirmation UI, v2.8 input transfer module,
+calendar, inquiry, encrypted credential storage, updater and all legacy pages.
+Python compile: PASS (197 packaged Python files).
+ZIP CRC and per-file SHA: PASS (251 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (797 total, 80 new, zero failures/errors/skips).
+Representative AppTest screens: PASS (6).
+LIVE/PAPER x KR/US x BUY/SELL, missing/invalid/exceeded/exact caps, partial cents,
+NaN/Infinity/negative/oversized inputs, zero exponent formatting, unsent form
+edits, previous PASS invalidation, context switches, and mandatory new precheck:
+PASS. Native Windows DPAPI regression uses synthetic credentials only: PASS.
+Test support correction: the initial run had eight overly broad assertions
+that included the existing connection-success badge, plus one missing legacy
+page proof fixture. The badge assertion was narrowed to precheck PASS; all 60
+legacy pages were compared before restoring the historic proof. Corrected full
+suite above passed. Initial logs are retained separately.
+All external request calls in automated tests are blocked or mocked.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift blocked: PASS.
+Approve/apply v2.8.0 to v2.9.0, post-apply managed_code_clean: PASS.
+Backup CRC, predecessor recovery readiness and non-mutating recovery drill: PASS.
+Isolated rollback removes new code and preserves synthetic operations record: PASS.
+Injected post-apply failure restores predecessor: PASS.
+Synthetic encrypted profile preserved byte-for-byte across upgrade, rollback
+and failure restoration, and excluded from code backups: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.8.0 managed files unchanged: PASS (249).
+No production runtime-data/secrets or actual saved credentials were accessed.
+
+NOT EXECUTED / limitations:
+Actual broker inquiries, trades, fills, cancellations or FX.
+Remote publication, production installation/restart or production rollback.
+The result is a submitted-input snapshot; edited inputs require recalculation.
+Arithmetic speed was not benchmarked against live broker latency. Zero additional
+broker requests is verified; no end-to-end speedup percentage is claimed.
+Legacy non-managed dependencies used as isolated test support are excluded from
+this update package. Existing v2.8.0 installation is the intended predecessor.
+
+Evidence: ../evidence/SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+Official reference checked 2026-10-10:
+https://docs.streamlit.io/develop/concepts/architecture/forms
