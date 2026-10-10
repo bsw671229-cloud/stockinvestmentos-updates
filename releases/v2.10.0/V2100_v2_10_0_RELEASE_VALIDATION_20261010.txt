@@ -1,0 +1,73 @@
+﻿StockInvestmentOS v2.10.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.9.0
+Target Version: v2.10.0
+Package: StockInvestmentOS_v2_10_0_RELEASE.zip
+SHA-256: 9ff3f9c0af892d7343ca184349e0c7d48e92314362e53bea46d41b3eebe5f096
+Checked at: 2026-10-10T10:25:53.344271+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+Baseline AppTest reproduction: six invalid/missing fields produce only the first
+confirmation error and no correction list.
+Candidate AppTest reproduction: same first error plus six field-specific rows;
+cap/checkbox unchanged, transfer disabled, zero broker/external requests and
+zero order-journal files.
+
+Implementation:
+The original order and limit validators still run first and remain unchanged.
+Only after an INPUT rejection, a pure helper produces field names and hints.
+Independent order fields are probed using the existing order validator; numeric
+limits use the existing numeric validator and the same bounds/Decimal arithmetic.
+Cost/cap and scenario-loss/budget comparisons run only with valid operands.
+SELL ignores BUY-only risk assumptions, matching the original execution guard.
+No raw input, credentials or unexpected exception text is rendered in the list.
+Diagnostic failure preserves the original rejection. Valid checks and broker
+errors do not call this helper, and the successful inquiry sequence is unchanged.
+The compact table describes the submitted snapshot; corrections require a new
+explicit precheck. No automatic values, cap changes, confirmation, persistence,
+broker requests, journal access, order preparation or execution authority.
+
+Changed managed files: VERSION, broker_precheck.py, broker_precheck_service.py.
+Added: broker_input_diagnostics.py, RELEASE_NOTES_v2_10_0.txt.
+248 other previous managed files are byte-identical, including amount preview,
+adapter, execution engine, order preparation/confirmation, input transfer,
+calendar, inquiries, encrypted storage, updater and all legacy pages.
+Python compile: PASS (198 packaged Python files).
+ZIP CRC and manifest SHA-256: PASS (253 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (922 total, 125 new, zero failures/errors/skips).
+Representative AppTest screens: PASS (6).
+Coverage includes KR/US, LIVE/PAPER, BUY/SELL, multiple errors, submitted edits,
+invalid precision/format/bounds, exact subcent comparisons, no dependent false
+warnings, diagnostic failure, broker-error distinction, correction then fresh
+queries, previous PASS revocation, context clearing and session isolation.
+The previous regression asserting no tables after input rejection now expects
+the new hints table and still requires no order/snapshot result.
+Native Windows DPAPI regression uses synthetic credentials only: PASS.
+All external HTTP in automated tests is blocked or mocked.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift blocked: PASS.
+Approve/apply v2.9.0 to v2.10.0 and post-apply managed_code_clean: PASS.
+Backup CRC, recovery readiness and non-mutating recovery drill: PASS.
+Isolated rollback removes new code and preserves synthetic records: PASS.
+Injected post-apply failure restores predecessor: PASS.
+Synthetic encrypted profile preserved through upgrade/rollback/failure and
+excluded from code backup: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.9.0 managed files unchanged: PASS (251).
+No production runtime-data/secrets or actual saved credentials were accessed.
+
+NOT EXECUTED / limitations:
+Actual broker inquiries, trades, fills, cancellations or FX.
+Remote publication, production installation/restart or production rollback.
+The table is an explanation of submitted inputs, not account/order approval.
+No live latency benchmark or end-to-end speedup percentage is claimed.
+Unchanged non-managed legacy test support is excluded from the package.
+Intended predecessor: the existing v2.9.0 installation.
+
+Evidence: ../evidence/SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+Official forms reference checked 2026-10-10:
+https://docs.streamlit.io/develop/concepts/architecture/forms
