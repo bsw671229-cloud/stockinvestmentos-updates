@@ -1,0 +1,71 @@
+﻿StockInvestmentOS v2.13.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.12.0
+Target Version: v2.13.0
+Package: StockInvestmentOS_v2_13_0_RELEASE.zip
+SHA-256: a3840e8cb6e9bc84daf89f63ddfdce369e04536bf4777ce056286ac7c8abe2c5
+Checked at: 2026-10-10T11:31:11.821919+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+Baseline AppTest shows KR/US codes without names despite names in synthetic
+balance responses. Candidate shows the corresponding Korean/English names.
+Both versions issue one balance request per market; rerun adds zero requests.
+Code and quantity stay identical. External HTTP and journal opens are zero.
+No real broker latency improvement or current market price is claimed.
+
+Implementation:
+The existing positions response uses KR prdt_name / US ovrs_item_name for an
+optional display-only name. String/length/control checks, whitespace normalization
+and current key/secret/account/token echo rejection precede native TextColumn
+display. No HTML execution or additional lookup. Missing or malformed labels
+show 미제공 without bypassing symbol/exchange/currency/quantity checks.
+Names do not select an instrument, merge rows, enter orders, authorize execution,
+or enter sanitized diagnostic exports. OTCB read-only labeling remains unchanged.
+Same explicit refresh, pagination, retry, session isolation and result invalidation.
+No new persistence, shared cache, polling, broker request, journal or order flow.
+
+Changed managed files: VERSION, connectors/kis_broker.py, broker_inquiries.py.
+Added: connectors/kis_position_labels.py, RELEASE_NOTES_v2_13_0.txt.
+254 other previous managed files byte-identical. Adapter AST unchanged except
+positions and the new helper import. Execution, sellable, send/cancel, quotes,
+buying power, inquiry services, precheck, transfer, calendar, credential store,
+workbench, updater and all legacy pages retain existing behavior/code.
+Python compile: PASS (201 packaged Python files).
+ZIP CRC and manifest SHA-256: PASS (259 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (1192 total, 68 new, zero failures/errors/skips).
+Representative AppTest screens: PASS (6).
+Feature coverage: LIVE/PAPER, KR/US, request exchange selection, optional fields,
+whitespace/Unicode/plain text, malformed/control/overlong values, sensitive echo,
+invalid identity/currency/numbers, pagination, equal names with distinct codes,
+safe report, fallback display, refresh failure/recovery, OTCB, no rerun fetch,
+and instrument transfer preserving code without name/price/order authority.
+Native Windows DPAPI regression uses synthetic credentials only: PASS.
+All external HTTP in automated tests is blocked or mocked.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift blocked: PASS.
+Approve/apply v2.12.0 to v2.13.0; post-apply managed_code_clean: PASS.
+Backup CRC, recovery readiness and non-mutating recovery drill: PASS.
+Isolated predecessor rollback removes new code and preserves records: PASS.
+Injected post-apply failure restores predecessor: PASS.
+Synthetic encrypted profile preserved through upgrade/rollback/failure and
+excluded from code backup: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.12.0 managed files unchanged: PASS (257).
+No production runtime-data/secrets or actual saved credentials accessed.
+
+NOT EXECUTED: actual broker inquiries/trades/fills/cancel/FX, remote publication,
+production installation/restart/rollback. Real-account name display acceptance
+remains after separately approved installation. A broker may omit names.
+Non-managed legacy test support is excluded from the release package.
+Intended predecessor: existing v2.12.0 installation.
+Evidence: ../evidence/, ../tests/.
+Official sources checked 2026-10-10:
+KR prdt_name (상품명):
+https://github.com/koreainvestment/open-trading-api/blob/main/examples_llm/domestic_stock/inquire_balance/chk_inquire_balance.py
+US ovrs_item_name (해외종목명), official portal rendered response table:
+https://apiportal.koreainvestment.com/apiservice-apiservice?/uapi/overseas-stock/v1/trading/inquire-balance
+https://docs.streamlit.io/develop/api-reference/data/st.dataframe
