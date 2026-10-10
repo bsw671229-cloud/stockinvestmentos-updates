@@ -1,0 +1,101 @@
+﻿StockInvestmentOS v2.16.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.15.0
+Target Version: v2.16.0
+Package: StockInvestmentOS_v2_16_0_RELEASE.zip
+SHA-256: 527910e738ddcc53cd4e9dced38bd466defc950767625914dc2b4ed10eb6ce7f
+Checked at: 2026-10-10T12:57:22.233038+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+This integrated batch adds dual-market detail, holdings search/navigation, and
+six-step progress. No per-feature publication or installation is required.
+The baseline dual-market view retains only sanitized metadata after six inquiries.
+Reading a holding and navigating from it needs a selected-market inquiry again.
+
+Controlled before/after reproduction: PASS (4 cases; KR/US x LIVE/PAPER).
+Both versions perform the same initial six serial inquiries.
+Then viewing holdings and selecting a holding for precheck takes three additional
+inquiries in the exercised baseline route and zero in the new integrated route.
+Total request count for this route: 9 -> 6. Additional detail/navigation: 3 -> 0.
+Integrated metrics: 0 -> 4. Holdings tables: 0 -> 2.
+Progress changes from two market phases to six item phases, plus completion.
+Both routes end with the same identifiers and blank direction, default quantity 1,
+zero price/cap and unchecked attestation. No permission or PASS is transferred.
+Additional requests on plain rerun=0; external HTTP=0; order journal opens=0.
+These are synthetic request-count results, not real KIS latency measurements.
+
+Implementation:
+Optional observation callbacks collect existing raw results in the current browser
+session only. Context includes client identity/object, mode, all query inputs and
+app version. Detailed result metadata must match the sanitized market report.
+Every check/item timestamp must be within five minutes; future timestamps fail.
+Connection/view/range/input changes clear details. Expiration is checked at rerun
+and again at navigation; there is no background polling or timed screen refresh.
+Retried markets get new detail and selection state. A successful retained market
+keeps its original timestamp/record/selection. Failed new balance results never
+reuse a prior successful holdings table. No shared cache or new persistence.
+Each market shows its quote, native-currency buying power, original check times,
+balance scope and named holdings. KRW/USD are separate and are never summed.
+Local substring search covers name/code/exchange. Search filters the displayed
+table; the explicitly labelled selection box lists all holdings independently.
+The selectbox and separate navigation button are required. Invocation rechecks
+the connection, source record, current report and latest selected option.
+Only market/exchange/symbol transfer; previous order/precheck authority is cleared.
+OTCB remains read-only, and NAS is normalized to NASD for precheck.
+Incomplete balances do not expose selectable holdings.
+Full-query progress has six phases; failed-market retry has three per market.
+Callback failures do not interrupt the inquiry sequence. Existing request order,
+adapter routing, rate controls and failed-market retry semantics are unchanged.
+Downloaded reports keep the existing sanitized schema and exclude raw data,
+account identity, keys, holdings, symbols, prices and cash amounts.
+
+Changed: VERSION, broker_inquiries.py, broker_inquiry_service.py,
+broker_market_retry.py, broker_market_overview.py.
+Added: broker_market_details.py, RELEASE_NOTES_v2_16_0.txt.
+259 other previous managed files are byte-identical, including broker adapter,
+execution engine, precheck, calendar, credential store, holding-transfer module,
+workbench, updater and 60 legacy pages. Existing inquiry service functions are
+AST-identical except run_market_checks, which gains observation callbacks.
+Python compile: PASS (205 packaged Python files).
+ZIP CRC and manifest SHA-256: PASS (266 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (1460 total, 96 new, zero failures/errors/skips).
+Representative AppTest screens: PASS (6), plus mocked order-confirmation regression.
+New coverage: full/failed-market observation and callback failures; LIVE/PAPER;
+all supported US input venues; retained original records and timestamps; 5-minute
+boundary; corrupt/expired/context-switched snapshots; forged navigation callbacks;
+OTCB and NAS handling; local search; complete/incomplete/failed balances; separate
+sessions; safe report export; selection reset; exact progress events; zero extra
+queries during detail display, search, selection and navigation.
+Native Windows DPAPI tests use synthetic credentials only: PASS.
+All external HTTP in automated tests is blocked or mocked.
+Initial new UI tests detected a loop-bound selection formatter issue. The callback
+now binds each market's options separately; corrected targeted and full tests pass.
+New test fixtures were corrected to set PAPER mode consistently and use the public
+AppTest session-state mapping. Baseline version/AST checks were updated for the
+new version and scoped observer extension without weakening behavior assertions.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift blocked: PASS.
+Approve/apply v2.15.0 to v2.16.0; post-apply managed_code_clean: PASS.
+Backup CRC, recovery readiness and non-mutating recovery drill: PASS.
+Isolated predecessor rollback removes new files and preserves records: PASS.
+Injected post-apply failure restores predecessor: PASS.
+Synthetic encrypted profile survives upgrade/rollback/failure and is excluded
+from code backups: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.15.0 managed files unchanged: PASS (264).
+Production runtime-data/secrets and actual saved credentials were not accessed.
+
+NOT EXECUTED: actual broker inquiries/trades/fills/cancel/FX, remote publication,
+production installation/restart/rollback. Real-account acceptance and actual
+broker latency remain unverified until separately approved installation.
+Non-managed legacy test support is excluded from the package.
+Intended predecessor: existing v2.15.0 installation.
+Evidence: ../evidence/, ../tests/.
+Official docs checked 2026-10-10, with installed version-matched API docs:
+https://docs.streamlit.io/develop/api-reference/layout/st.expander
+https://docs.streamlit.io/develop/api-reference/widgets/st.selectbox
+https://docs.streamlit.io/develop/api-reference/status/st.progress
