@@ -1,0 +1,90 @@
+﻿StockInvestmentOS v2.15.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.14.0
+Target Version: v2.15.0
+Package: StockInvestmentOS_v2_15_0_RELEASE.zip
+SHA-256: 86db4657702d1d12b769d298143d8abe46810eb360821244a09cb0c3bb7c4318
+Checked at: 2026-10-10T12:24:52.479006+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+This is a single integrated development batch: failed-item-only recheck,
+phase progress, and operational result guidance. No per-feature installation.
+Baseline combined recovery repeats all three inquiries after one failed item.
+Its summary lacks item timestamps/provenance and specific next-action guidance.
+
+Controlled before/after reproduction: PASS (8 cases; domestic and US).
+Balance-only failure: recovery requests 3 -> 1 (balance).
+Buying-power failure with fresh quote: 3 -> 1 (buying power).
+Buying-power failure with 61-second-old quote: 3 -> 2 (quote, buying power).
+Quote failure: 3 -> 2 (quote, buying power); successful balance is retained.
+All recovered successfully; retained quote timestamps remain unchanged.
+Summary columns 2 -> 6; single-market native progress reports four events.
+Additional requests on a plain rerun=0; external HTTP=0; order journal opens=0.
+These are request-count results, not measurements of real KIS response speed.
+
+Implementation:
+Single-market failed-item retry requires an explicit button click and a complete
+combined-run snapshot in the same client/account/mode/query/version. Every record
+must still be the captured object and carry valid status/timing metadata.
+Snapshot and each item are limited to five minutes; a retry never refreshes the
+age of retained successful items. Changed or malformed context clears the combined
+report and requires a fresh full check. UI disabling is backed by invocation checks.
+Failed buying power reuses only a valid quote at most 60 seconds old; otherwise
+quote is refreshed first. Fresh quote forces new buying power. Quote failure skips
+dependent buying power while a failed independent balance still runs.
+Calls remain serial through the unchanged broker adapter and its existing limits.
+No automatic polling, shared cache, new persistence or additional render request.
+Summary records expose original timestamps, elapsed time, new/retained provenance,
+and fixed Korean next-action guidance. Dual-market summary gains guidance only;
+the failed-item button and phase progress belong to the selected-market view.
+Downloaded reports extend the existing allowlist with item enums only. Raw results,
+exceptions, account identity, credentials, positions, prices and amounts stay out.
+Progress callback failure does not interrupt independent inquiries.
+
+Changed: VERSION, broker_inquiries.py, broker_inquiry_service.py, broker_market_overview.py.
+Added: broker_inquiry_retry.py, broker_inquiry_feedback.py, RELEASE_NOTES_v2_15_0.txt.
+257 other previous managed files byte-identical, including broker adapter,
+execution engine, precheck, calendar, credential storage, holding navigation,
+workbench, updater and all legacy pages.
+Existing service functions are AST-identical; run_inquiry_check alone adds the
+optional progress parameter and notifications. Removing those explicit additions
+leaves the original request/result logic AST-identical.
+Python compile: PASS (204 packaged Python files).
+ZIP CRC and manifest SHA-256: PASS (264 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (1364 total, 100 new, zero failures/errors/skips).
+Representative AppTest screens: PASS (6).
+New coverage: all failure subsets across KR/US and LIVE/PAPER; stale/invalid quote;
+repeated retry age limits; context/client/version/query and record identity changes;
+malformed records; forged disabled-button invocation; session isolation; safe exports;
+retained timestamps; full refresh after retry; progress and callback failures;
+real adapter with synthetic transport validates read-only GET routes and call counts.
+Native Windows DPAPI regression uses synthetic credentials only: PASS.
+All external HTTP in automated tests is blocked or mocked.
+During development, two context-invalidation tests found stale retry state; fixed
+and rerun. One legacy exact-source assertion was updated to permit only the new
+progress notifications while still proving unchanged inquiry behavior.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift blocked: PASS.
+Approve/apply v2.14.0 to v2.15.0; post-apply managed_code_clean: PASS.
+Backup CRC, recovery readiness and non-mutating recovery drill: PASS.
+Isolated predecessor rollback removes new code and preserves records: PASS.
+Injected post-apply failure restores predecessor: PASS.
+Synthetic encrypted profile preserved through upgrade/rollback/failure and
+excluded from code backup: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.14.0 managed files unchanged: PASS (261).
+No production runtime-data/secrets or actual saved credentials accessed.
+
+NOT EXECUTED: actual broker inquiries/trades/fills/cancel/FX, remote publication,
+production installation/restart/rollback. Real-account UI acceptance and actual
+broker latency remain unverified until separately approved installation.
+Non-managed legacy test support is excluded from the release package.
+Intended predecessor: existing v2.14.0 installation.
+Evidence: ../evidence/, ../tests/.
+Official sources checked 2026-10-10, with installed version-matched API docs:
+https://docs.streamlit.io/develop/api-reference/status/st.progress
+https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state
