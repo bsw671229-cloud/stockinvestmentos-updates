@@ -1,0 +1,82 @@
+﻿StockInvestmentOS v2.11.0 DEVELOPMENT RELEASE CANDIDATE VALIDATION
+RESULT: PASS
+Source Version: v2.10.0
+Target Version: v2.11.0
+Package: StockInvestmentOS_v2_11_0_RELEASE.zip
+SHA-256: c4bcba68c0ca08c799181c59eee60897eecc10018ad6a280c546e6043e080ea7
+Checked at: 2026-10-10T10:48:39.758637+09:00
+Runtime: Python 3.14.6, Streamlit 1.65.0
+
+Problem / Evidence / Root Cause / Acceptance / Minimal Design: ../DESIGN.txt.
+Baseline AppTest reproduction: one US power failure followed by recovery needs
+six repeat broker method calls via full check; successful KR is queried again.
+Candidate AppTest reproduction: explicit failed-market retry makes only three
+US calls (quote/power/positions) and retains KR sanitized metadata unchanged.
+Both finish PASS. External requests, journal opens and journal files: zero.
+The table visibly labels retained KR records and newly queried US records with
+per-check timestamps. This is a synthetic call-count comparison, not a measured
+real-account latency improvement.
+
+Implementation:
+Explicit retry button only. No polling or automatic broker retry loop added.
+New broker_market_retry.py validates schema, scope, version, mode, exchanges,
+status consistency, timestamp order/age and generation metadata. Both markets'
+records must be within 300 seconds at retry invocation. This limit is for
+retaining inquiry records; it does not grant quote/order validity.
+Successful records are re-sanitized via the existing report allowlist. Raw data,
+messages, account identity, credentials, symbols, prices and holdings are not
+retained or exported. Arbitrary extra data is stripped from previous records.
+Every failed market is rechecked through the unchanged inquiry service: new
+quote, dependent buying power using that quote, independent balance. Existing
+60-second quote freshness and currency/precision checks remain authoritative.
+Expired/corrupt/context-mismatched records cannot trigger a retry. A new client
+instance, account, environment or input/range change removes prior history.
+All-success records disable retry. Partial retry success explicitly labels the
+combined result as historical records, shows retained timestamps, and reports
+only the latest retry duration. A full check remains available for fresh results.
+State is per-session; ordinary reruns/downloads do not issue broker inquiries.
+
+Changed managed files: VERSION, broker_market_overview.py.
+Added: broker_market_retry.py, RELEASE_NOTES_v2_11_0.txt.
+251 other previous managed files byte-identical, including adapter, execution
+engine, inquiry service, precheck/calculator, order preparation/confirmation,
+credential storage, calendar, updater and all legacy pages.
+Python compile: PASS (199 packaged Python files).
+ZIP CRC and manifest SHA-256: PASS (255 managed files).
+Exact tested Python source to package binding: PASS.
+Tests: PASS (1061 total, 139 new, zero failures/errors/skips).
+Representative AppTest screens: PASS (6).
+Coverage: KR/US, LIVE/PAPER, all supported US exchanges, each failure type,
+partial/repeated failures, both-market failures, fresh price/precision, quote
+failure/stale/future/currency mismatch, independent balance, all-success block,
+corrupt/mismatched reports, five-minute boundary, expiry between render/click,
+old retained record with new top-level time, safe diagnostics/export, timestamps,
+progress failure, session/context isolation and unchanged order safety checks.
+Native Windows DPAPI regression uses synthetic credentials only: PASS.
+All external HTTP in automated tests is blocked or mocked.
+
+Isolated lifecycle simulations:
+Preview eligible=true, blockers=[]: PASS.
+Wrong SHA approval and managed-code drift blocked: PASS.
+Approve/apply v2.10.0 to v2.11.0 and post-apply managed_code_clean: PASS.
+Backup CRC, recovery readiness and non-mutating recovery drill: PASS.
+Isolated rollback removes new code and preserves synthetic records: PASS.
+Injected post-apply failure restores predecessor: PASS.
+Synthetic encrypted profile preserved through upgrade/rollback/failure and
+excluded from code backup: PASS.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE: PASS.
+Operating v2.10.0 managed files unchanged: PASS (253).
+No production runtime-data/secrets or actual saved credentials accessed.
+
+NOT EXECUTED / limitations:
+Actual broker inquiries, trades, fills, cancellations or FX.
+Remote publication, production installation/restart or production rollback.
+Historical inquiry success is not current market data or order authorization.
+No live latency benchmark or end-to-end speedup percentage is claimed.
+Unchanged non-managed legacy test support is excluded from the package.
+Intended predecessor: existing v2.10.0 installation.
+
+Evidence: ../evidence/SIMULATION_RESULTS.json, ../evidence/, ../tests/.
+Official Streamlit references checked 2026-10-10:
+https://docs.streamlit.io/develop/concepts/architecture/session-state
+https://docs.streamlit.io/develop/concepts/architecture/widget-behavior

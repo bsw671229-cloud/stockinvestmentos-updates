@@ -217,8 +217,16 @@
       "validation_name": "V2100_v2_10_0_RELEASE_VALIDATION_20261010.txt",
       "validation_sha256": "53a29e67a5dcaab7797f74e8cc928a7aac179f5f775287fda2626b6680fe238b",
       "version": "v2.10.0"
+    },
+    {
+      "package_name": "StockInvestmentOS_v2_11_0_RELEASE.zip",
+      "package_sha256": "c4bcba68c0ca08c799181c59eee60897eecc10018ad6a280c546e6043e080ea7",
+      "published_at": "2026-10-10T10:51:36.665689+09:00",
+      "validation_name": "V2110_v2_11_0_RELEASE_VALIDATION_20261010.txt",
+      "validation_sha256": "51c3b895a861f0b1e28765e35a76f3c58789a8c321a3312da6b43ec5447ef296",
+      "version": "v2.11.0"
     }
   ],
   "schema_version": 1,
-  "updated_at": "2026-10-10T10:28:39.741365+09:00"
+  "updated_at": "2026-10-10T10:51:36.665689+09:00"
 }
