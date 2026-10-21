@@ -1,0 +1,45 @@
+StockInvestmentOS v2.28.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_28_0_RELEASE.zip
+TargetVersion: v2.28.0
+SHA256: bc1cf8b1f367e4104f1b5c331ed893c869951fec70f15de2d28bf6aa39237743
+SourceVersion: v2.27.0
+SourcePackageSHA256: 8b910ed6b4b5c93fc75d3d35548f92b236180a47501d302413d72629e597fc3f
+
+Problem: independent sells required current holdings before a planned buy filled.
+Design: one earlier same-instrument BUY prerequisite per SELL, same run/account,
+child quantity <= buy quantity; full matched receipt required. No chains or OCO.
+Partial fills wait. Cancelled parent skips child without reserving an attempt.
+Unknown results stop; linked order, account, payload and exact fill quantities
+checked at reserve/preparation/final send. Fresh sellable remains required.
+Rehearsal counts both orders and labels future holdings unverified until fill.
+Linked plans persist; deleting a referenced buy is blocked, other removal reindexes.
+Legacy plans remain compatible. Restart cannot auto-resume a previous capability.
+
+Regression: PASS (763 tests).
+Python compilation: PASS (223 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (308 files).
+Source operating files: CLEAN (306 files), unchanged during development.
+Changed: VERSION, broker_automation.py, engine/paper_automation.py, engine/paper_plans.py, engine/paper_rehearsal.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_28_0.txt, release_baselines/v2_27_0.json.
+Unchanged previous files: 300.
+Synthetic tests: KR/US buy/partial/full/sell flow; no early sell; cancel partial/zero;
+invalid dependencies; changed account/order/attempt/fill proof; final-send guard;
+insufficient holdings; unknown response; restart; daily caps; read-only rehearsal;
+saved links and reindex; UI add/delete protection and confirmation reset.
+Actual browser fixture: PASS, synthetic only, external requests forbidden.
+Lifecycle: PASS (15 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, process restart gate, recovery,
+isolated rollback to v2.27.0, injected failure restore, drift block, safety flags.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Those lifecycle results are recorded separately after publication/installation.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+PAPER only, one attempt/condition, session-owned max 60 minutes, no auto-resume.
+KIS official quantity fields checked 2026-10-21; broker endpoints unchanged:
+https://raw.githubusercontent.com/koreainvestment/open-trading-api/main/examples_llm/domestic_stock/inquire_daily_ccld/chk_inquire_daily_ccld.py
+https://raw.githubusercontent.com/koreainvestment/open-trading-api/main/examples_llm/overseas_stock/inquire_ccnl/chk_inquire_ccnl.py
+Evidence: V2280_DEVELOPMENT_EVIDENCE.zip
