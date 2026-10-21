@@ -1,0 +1,63 @@
+StockInvestmentOS v2.22.0 release candidate validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_22_0_RELEASE.zip
+TargetVersion: v2.22.0
+SHA256: d8685023d315ef2a189d5f0f8fc6186b3f04ea9007eafd51449f131185026707
+SourceVersion: v2.21.0
+SourcePackageSHA256: bcc41ff912f67a47784c75cdb539d876ab81ad6381d5ade7e76fd71bbf32293a
+
+Scope: isolated development and synthetic-data validation on Windows.
+Python 3.14.6 / Streamlit 1.65.0 / pytest 9.1.1 from installed environment.
+Unit, real Streamlit AppTest and existing portfolio regressions: PASS (165 tests).
+Complete managed Python syntax: PASS (214 files).
+ZIP CRC, safe unique paths, exact manifest membership: PASS.
+Managed SHA-256 verification: PASS (287 files).
+Baseline production v2.21.0 managed code: CLEAN (283 files before and after).
+Changes: VERSION, app.py, app_pages/legacy_21.py, updater/release_manager.py,
+         updater/safe_update_orchestrator.py, updater/operator_batch.py (version pins).
+Added: updater/runtime_identity.py, updater/runtime_ui.py,
+       RELEASE_NOTES_v2_22_0.txt, release_baselines/v2_21_0.json.
+Prior managed files unchanged: 277.
+
+Problem reproduced: baseline acknowledgement clears restart without process proof;
+baseline finalizer returns FINAL_PASS with mocked passing E2E/recovery.
+The actual v2.21.0 incident is separately supported by runtime-restart evidence.
+Fix: OS process start must be after the successful install journal completion;
+cached process/root/version/manifest identity must match current installed files.
+Missing, malformed, stale or mismatched evidence stays CHECK_REQUIRED/RESTART_REQUIRED.
+Rerun, new session and false restart flag do not bypass the gate.
+Finalization blocks before network/recovery if restart proof is missing.
+Old session FINAL_PASS is displayed as REVIEW unless it matches the current gate.
+The restart metric uses current process proof rather than the persisted flag.
+
+Isolated lifecycle checks: PASS (15 recorded groups).
+- Preview eligible=true; blockers=[]; final_release_name=true; target newer.
+- Exact package SHA/report binding; wrong SHA/report rejected.
+- Approve and Apply on a disposable v2.21.0 copy; v2.22.0 managed_code_clean=true.
+- Real apply journal blocks its originating process; actual new child process passes.
+- Non-mutating recovery drill and technical readiness PASS.
+- Repeated version blocked; operator batch version and repeat identity checked.
+- Isolated actual rollback restores v2.21.0 and removes new files.
+- Injected post-apply failure automatically restores exact baseline code.
+- Managed drift blocks installation; all auto-approval/apply boundaries retained.
+- Production managed code remains unchanged.
+
+Browser: PASS for candidate sidebar navigation and restart warning/button states,
+using real Windows process timestamps and synthetic local installation records.
+Real/example input flags are not set by navigation. No actual holdings were read.
+Successful E2E/finalizer unit cases mock external E2E/recovery results.
+Real backup/restore and recovery simulations run in disposable filesystem copies.
+The operator batch runtime probe alone is mocked; Windows runtime/UI independently
+run in real AppTest, child processes and browser. External test requests blocked.
+
+Not performed: production v2.22.0 installation, restart, E2E, public-feed verification,
+remote publication, live rollback, real account/price/order execution, Linux execution.
+Linux procfs fallback is implemented but not executed on Linux in this validation.
+Unsupported OS or unavailable process timestamp remains CHECK_REQUIRED.
+CLI orchestrator-finalize without app-process identity returns REVIEW by design;
+use the restarted app's final-check button for authoritative finalization.
+No runtime-data/secrets accessed. Auto Approval/Auto Apply disabled;
+Execution Authorization NONE. No automatic restart introduced.
+
+Final sidecar uses canonical UTF-8/LF bytes; preserve exact bytes during publication.
+Evidence: V2220_DEVELOPMENT_EVIDENCE.zip
