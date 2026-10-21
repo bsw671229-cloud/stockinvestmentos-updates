@@ -1,0 +1,47 @@
+StockInvestmentOS v2.35.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_35_0_RELEASE.zip
+TargetVersion: v2.35.0
+SHA256: a7e5c91962dcf8af0ff722fd3a182ecf7ea8ccf3255bd0b7f1f99748100948f6
+SourceVersion: v2.34.0
+SourcePackageSHA256: a3393a855bf467cc3699079e840615e407678bc45ed27cc58ba145dddf94fdbe
+
+Problem: saved stop notes were omitted from history; different inactive causes
+collapsed into REVIEW_REQUIRED without any explanation or next check.
+Evidence: four isolated reproductions in development/next-run-diagnostics/audit.json.
+Design: read-only allowlisted recorded explanations plus current observations for
+ARMED runs: process, expiry, heartbeat, halt and Korean date. All matches retained.
+Previously stopped/completed runs are not reinterpreted from the current clock.
+Unknown notes never expose arbitrary error strings. No new schema or execution path.
+Existing effective status semantics, permissions and execution provenance retained.
+
+Regression: PASS (1006 tests).
+Python compilation: PASS (227 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (326 files).
+Source operating files: CLEAN (323 files), unchanged during development.
+Changed: VERSION, broker_automation.py, engine/paper_recovery.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_35_0.txt, engine/run_diagnostics.py, release_baselines/v2_34_0.json.
+Unchanged previous files: 319.
+Synthetic tests: all fixed stop messages, unknown/legacy notes and secret canaries,
+LIVE/PAPER account isolation, KR/US rules, process replacement, expiry boundaries,
+heartbeat stale/future/boundary values, halt, date change, simultaneous causes,
+stopped-run historical separation, unchanged journal bytes, zero broker calls,
+native UI diagnostic rendering and history report consistency.
+External requests blocked during automated tests and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.34.0, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This release changes read-only run diagnostics and their UI/report projection.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V2350_DEVELOPMENT_EVIDENCE.zip
