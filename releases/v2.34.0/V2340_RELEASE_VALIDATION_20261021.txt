@@ -1,0 +1,45 @@
+StockInvestmentOS v2.34.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_34_0_RELEASE.zip
+TargetVersion: v2.34.0
+SHA256: a3393a855bf467cc3699079e840615e407678bc45ed27cc58ba145dddf94fdbe
+SourceVersion: v2.33.0
+SourcePackageSHA256: 3db2eeb413a3e16ca98c494b08bddfd6c782de18ea7cb9e6ea77b2bd37052c4e
+
+Problem: run history did not identify the loaded saved plan or subsequent edits.
+Design: account/mode-bound source reread at explicit arm; compare all saved fields
+and persist provenance in the same transaction as run/rules/event. No new schema.
+Source name is omitted when unavailable, archived, mismatched or corrupt.
+History and download retain the immutable arm-time snapshot after source archive.
+Legacy runs remain unattributed; LIVE intent covers the provenance with config.
+No execution authority is restored or granted by a plan reference.
+
+Regression: PASS (965 tests).
+Python compilation: PASS (226 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (323 files).
+Source operating files: CLEAN (320 files), unchanged during development.
+Changed: VERSION, broker_automation.py, broker_plan_library.py, engine/live_automation.py, engine/paper_automation.py, engine/paper_recovery.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_34_0.txt, engine/plan_origin.py, release_baselines/v2_33_0.json.
+Unchanged previous files: 313.
+Synthetic tests: LIVE/PAPER, KR/US, saved/modified/direct/unavailable/legacy,
+rule, risk, budget, count, duration and ordering changes; numeric equivalence;
+archive, source corruption, account/mode separation, atomic failure rollback,
+restart/history preservation, LIVE intent tampering rejection, UI load/clear/history.
+External requests blocked during automated tests and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.33.0, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This release adds local provenance metadata at explicitly confirmed arming.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V2340_DEVELOPMENT_EVIDENCE.zip
