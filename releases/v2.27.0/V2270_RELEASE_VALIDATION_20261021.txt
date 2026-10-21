@@ -1,0 +1,57 @@
+StockInvestmentOS v2.27.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_27_0_RELEASE.zip
+TargetVersion: v2.27.0
+SHA256: 8b910ed6b4b5c93fc75d3d35548f92b236180a47501d302413d72629e597fc3f
+SourceVersion: v2.26.0
+SourcePackageSHA256: 3920911c09fb6c6c48461ea93e25a596f6cb139c9ddef0523847fc158492ccf4
+
+Problem: automatic-trading draft conditions and budgets were session-only; restart
+required re-entry, and the editor could only clear the entire rule list.
+Minimal design: a separate local PAPER-account plan store and explicit editor load.
+No changes to broker API requests, order lifecycle, start permissions or daily usage.
+
+Regression: PASS (732 tests).
+Python compilation: PASS (223 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (306 files).
+Source operating files: CLEAN (302 files), unchanged throughout development.
+Changed: VERSION, broker_automation.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_27_0.txt, broker_plan_library.py, engine/paper_plans.py, release_baselines/v2_26_0.json.
+Unchanged previous files: 299.
+
+Plan save/load tests: current PAPER account and endpoint guards; no broker calls;
+passive reads create no plan DB; maximum 20 active plans and 1-10 rules; unique
+names; concurrent duplicate save; canonical numeric fields; corrupt hash/schema,
+extra fields, invalid numeric values, duplicates and stale revisions blocked.
+Storage is separate paper_plans.sqlite3 beside the existing order journal.
+Save is transactional; interrupted write rolls back. Archive is soft and revision
+bound. Plans carry no quotes, holdings, credentials, permits or start attestations.
+Existing orders, halt state and daily attempt records remain unchanged.
+
+Streamlit tests: saving submits current budgets/minutes from the same form; a new
+session can list/load saved plans, with no network calls or automatic start.
+Load replaces the editor before widget creation, invalidates old rehearsal and
+start confirmation. Individual removal preserves other rules and clears confirmation.
+Reconnect clears old editor budgets and confirmation. Existing start preflight remains.
+Actual browser fixture: PASS (synthetic accounts; all broker requests forbidden).
+Saved plan survives reload; explicit load restores conditions/budgets/minutes;
+confirmation remains unchecked; individual deletion works without transmissions.
+
+Lifecycle: PASS (15 groups).
+Preview eligible=true, blockers=[], final_release_name=true, target newer than source.
+Wrong SHA/report blocked. Approve/apply simulation PASS and managed code CLEAN.
+Old process cannot acknowledge restart; actual new child process can.
+Non-mutating recovery PASS; isolated rollback restores v2.26.0; injected post-apply
+failure restores baseline; managed drift blocks install. Safety flags unchanged.
+Final validation report byte binding and git filter roundtrip PASS.
+
+Not performed in development: real KIS PAPER account authentication/order flow,
+production install/restart/E2E, remote publication/public-feed verification.
+No runtime-data/secrets accessed. No investment order sent or permission enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Plans are local editor inputs; saved limits do not reserve cash or reset daily use.
+Real broker integration and unattended operation remain separate work.
+Streamlit forms/session-state official docs checked 2026-10-21:
+https://docs.streamlit.io/develop/concepts/architecture/forms
+https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state
+Canonical report bytes: UTF-8 LF. Evidence: V2270_DEVELOPMENT_EVIDENCE.zip
