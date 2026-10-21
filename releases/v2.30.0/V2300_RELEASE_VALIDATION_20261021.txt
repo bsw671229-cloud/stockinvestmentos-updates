@@ -1,0 +1,47 @@
+StockInvestmentOS v2.30.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_30_0_RELEASE.zip
+TargetVersion: v2.30.0
+SHA256: f56f947082623bf76d2b8e86f61888c6fcc9c27161727c6871d42ddaa23c00ba
+SourceVersion: v2.29.0
+SourcePackageSHA256: 590a6c939c71df1756cefda8a4739a034975a234a94212546d9acbcb7e4b0f87
+
+Problem: the user has a LIVE account, while the automation screen only accepted PAPER.
+Design: separate LIVE session class, typed start phrase and unchecked consent.
+Fresh aggregate read-only checks are mandatory in the engine before arming.
+Capability binds process, session connection, account, mode, rules, budgets and expiry.
+Every broker call rechecks the lease; final send rechecks session/calendar.
+KR requires broker opening-day response and regular time; US uses verified calendar.
+Existing one-attempt, durable pending-order, linked-exit and budget checks remain.
+No selected securities, positive price/budget presets, automatic start or resume.
+LIVE saved-plan loading and terminal-fill refresh are unavailable in this release.
+
+Regression: PASS (838 tests).
+Python compilation: PASS (224 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (313 files).
+Source operating files: CLEAN (310 files), unchanged during development.
+Changed: VERSION, app.py, broker_automation.py, broker_plan_library.py, broker_workbench.py, engine/paper_automation.py, engine/paper_recovery.py, engine/paper_rehearsal.py, updater/operator_batch.py, updater/runtime_ui.py.
+Added: RELEASE_NOTES_v2_30_0.txt, engine/live_automation.py, release_baselines/v2_29_0.json.
+Unchanged previous files: 300.
+Synthetic tests: LIVE KR/US buy/sell, open/partial/full fills, linked exits,
+missing consent/phrase, aggregate cost/loss/count/cash/quantity, stale quotes,
+account/mode/endpoint/connection/process changes, rule/budget/expiry mutation,
+opening-day failure, closing time, final US session check, stop, ambiguous send,
+read-only recovery and AppTest consent/reconnection behavior. External requests blocked.
+Lifecycle: PASS (15 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.29.0, injected failure restore, drift block, safety flags.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+LIVE quote/power/positions 6/6 were observed on v2.29.0 at 19:06 KST, 2026-10-21.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+Official KIS order references checked 2026-10-21; endpoints/requests unchanged:
+https://raw.githubusercontent.com/koreainvestment/open-trading-api/main/examples_llm/domestic_stock/order_cash/order_cash.py
+https://raw.githubusercontent.com/koreainvestment/open-trading-api/main/examples_llm/overseas_stock/order/order.py
+Evidence: V2300_DEVELOPMENT_EVIDENCE.zip
