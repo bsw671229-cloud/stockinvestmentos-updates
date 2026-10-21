@@ -1,0 +1,51 @@
+StockInvestmentOS v2.33.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_33_0_RELEASE.zip
+TargetVersion: v2.33.0
+SHA256: 3db2eeb413a3e16ca98c494b08bddfd6c782de18ea7cb9e6ea77b2bd37052c4e
+SourceVersion: v2.32.0
+SourcePackageSHA256: d5d96f78539e2e465e152aeb4e94a87670e820e1521a29c9e39bf45131dbd7e4
+
+Problem: a saved plan could replace the editor without a visible detail preview.
+Design: read-only projection of every saved rule field, linked buys, currency limits
+and duration; positional differences against registered rules and submitted limits.
+Explicit local form submit includes pending daily limits without a brokerage call.
+Preview selection does not modify draft, consent, saved plan or order journal.
+Load revalidates and binds to the previously displayed account/mode/plan digest.
+Changed or tampered plans cannot silently replace the displayed editor.
+No database schema or broker endpoint change; fresh consent required after load.
+
+Regression: PASS (933 tests).
+Python compilation: PASS (225 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (320 files).
+Source operating files: CLEAN (317 files), unchanged during development.
+Changed: VERSION, broker_automation.py, broker_plan_library.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_33_0.txt, engine/plan_preview.py, release_baselines/v2_32_0.json.
+Unchanged previous files: 313.
+Synthetic tests: LIVE/PAPER, KR/US, all order/risk/trigger/link fields, all daily
+limits, duration, additions/removals, numeric spelling equality, malformed current
+limits, positional order changes, plan tampering and concurrent plan changes,
+selection and comparison with zero broker calls, unchanged journal and plan bytes,
+load revalidation and consent reset. Existing account/mode isolation tests retained.
+External requests blocked during automated tests and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.32.0, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This release changes local plan preview/comparison only.
+Streamlit form/session semantics checked on 2026-10-21 (Asia/Seoul):
+https://docs.streamlit.io/develop/concepts/architecture/forms
+https://docs.streamlit.io/develop/api-reference/caching-and-state/st.session_state
+Unsubmitted form fields do not reach the backend; the UI explicitly states the
+comparison scope and provides a submit that refreshes only the local comparison.
+Evidence: V2330_DEVELOPMENT_EVIDENCE.zip
