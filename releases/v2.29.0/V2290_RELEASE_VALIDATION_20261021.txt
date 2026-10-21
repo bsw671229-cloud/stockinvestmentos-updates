@@ -1,0 +1,47 @@
+StockInvestmentOS v2.29.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_29_0_RELEASE.zip
+TargetVersion: v2.29.0
+SHA256: 590a6c939c71df1756cefda8a4739a034975a234a94212546d9acbcb7e4b0f87
+SourceVersion: v2.28.0
+SourcePackageSHA256: bc1cf8b1f367e4104f1b5c331ed893c869951fec70f15de2d28bf6aa39237743
+
+Problem: v2.28 allowed only one sell condition after a fully filled buy.
+Design: up to two same-quantity exits for the same buy; LE lower < GE upper.
+A durable unique (run,parent) choice, sibling skip and attempt commit together.
+Preparation and final send recheck choice and peer suppression evidence.
+Failure/cancel/partial fill/unknown outcome never releases the alternative.
+No brokerage-server OCO, automatic cancel/replacement or guaranteed stop loss.
+Preflight conservatively sums both exits; actual usage counts chosen attempts.
+Saved plans retain both links; v2.28 reader rejects paired plans, old plans work.
+Separate SQLite table preserves previous schema layouts on rollback.
+History shows linked parent, selected exit and skipped alternative.
+
+Regression: PASS (799 tests).
+Python compilation: PASS (223 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (310 files).
+Source operating files: CLEAN (308 files), unchanged during development.
+Changed: VERSION, broker_automation.py, engine/paper_automation.py, engine/paper_recovery.py, engine/paper_rehearsal.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_29_0.txt, release_baselines/v2_28_0.json.
+Unchanged previous files: 302.
+Synthetic tests: KR/US upper and lower exits; partial buy and price reversal;
+invalid pair; parent cancellation; insufficient holdings, rejection, unknown
+send, cancellation, history failure and restart; atomic rollback; competing
+reservations; missing/changed choice and peer evidence at final send;
+aggregate preflight; save/load/reindex/old-reader block; UI pair/third rejection.
+Actual browser fixture: PASS, synthetic only, external requests forbidden.
+Lifecycle: PASS (15 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.28.0, injected failure restore, drift block, safety flags.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+PAPER only, one attempt/condition, session-owned max 60 minutes, no auto-resume.
+Official KIS order references checked 2026-10-21; endpoints/requests unchanged:
+https://raw.githubusercontent.com/koreainvestment/open-trading-api/main/examples_llm/domestic_stock/order_cash/order_cash.py
+https://raw.githubusercontent.com/koreainvestment/open-trading-api/main/examples_llm/overseas_stock/order/order.py
+Evidence: V2290_DEVELOPMENT_EVIDENCE.zip
