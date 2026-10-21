@@ -1,0 +1,81 @@
+StockInvestmentOS v2.26.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_26_0_RELEASE.zip
+TargetVersion: v2.26.0
+SHA256: 3920911c09fb6c6c48461ea93e25a596f6cb139c9ddef0523847fc158492ccf4
+SourceVersion: v2.25.0
+SourcePackageSHA256: 232deb45ff7acecaca7e48d6c88dcf7b9f63b589a31620e4d65d4a88053e0759
+
+Scope: cumulative fill amount evidence, PAPER terminal-detail refresh and US PAPER
+history filter compatibility. No new order permission or automation-start behavior.
+Problem/code evidence: v2.25.0 stored filled/remaining quantities but discarded
+order-level gross amounts; the US PAPER history request supplied a symbol while
+the official KIS example requires an empty symbol filter for the PAPER endpoint.
+Minimal design: add optional monetary evidence in existing result JSON, keep all
+order identity and lifecycle checks, present unknowns separately from known sums.
+
+Python 3.14.6 / Streamlit 1.65.0 / pytest 9.1.1; Windows isolated fixtures.
+Unit, Streamlit AppTest, broker, portfolio and updater regressions:
+PASS (694 tests).
+External broker requests forbidden; all broker responses synthetic.
+Python compilation: PASS (221 files).
+ZIP CRC / exact manifest membership / per-file SHA-256: PASS (302 files).
+Operating v2.25.0 managed files before and after: CLEAN (298 files).
+Changed: VERSION, broker_automation.py, connectors/kis_broker.py, engine/broker_execution.py, engine/paper_automation.py, engine/paper_recovery.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_26_0.txt, engine/broker_fills.py, engine/paper_fills.py, release_baselines/v2_25_0.json.
+Unchanged prior managed files: 291.
+
+Verified behavior:
+- KR/US BUY/SELL partial then complete fills replace cumulative gross evidence;
+  repeated reads do not double count. Partial cancellation retains executed money.
+- Actual amount comes only from the matched order row. Derived average is gross
+  amount divided by filled quantity; it is never substituted with the limit price.
+- Missing, zero/invalid positive-fill amounts, unconfirmed USD currency, amount
+  regression and limit/increment conflicts remain CHECK_REQUIRED without changing
+  a separately verified order status. Missing amount never becomes a numeric zero.
+- Gross-vs-limit checks tolerate at most one minor currency unit in the cumulative
+  or incremental amount: KRW 1 / USD 0.01. This is a conservative application rule,
+  not an exchange rounding guarantee. Fees, tax and FX are not part of these sums.
+- Last verified cumulative amount is retained for detecting repeated contradictory
+  responses, while unconfirmed current amounts are excluded from current totals.
+- Terminal PAPER refresh can enrich legacy records, cannot reopen an order, and
+  rejects a different quantity/status. Conditional result update preserves a
+  concurrent change. No send/cancel/arm/unhalt/budget refund occurs.
+- PAPER endpoint/mode/account guards around explicit terminal refresh reads block
+  connection switches. Network failures preserve prior evidence and redact errors.
+- History is account scoped, passive and limited to ten runs; explicit completed
+  order refresh is at most twenty linked orders. No broker reads on default render.
+- Reports use allowlisted fields, separate KRW/USD BUY/SELL amounts and disclose
+  missing amounts/not-yet-queried orders. No credential/hash/permit leakage.
+- US PAPER query uses empty symbol/exchange filters and full side/fill filters;
+  LIVE query keeps its symbol and exchange filter. Existing exact order matching
+  is still required after the broader PAPER response is read.
+
+Isolated lifecycle checks: PASS (15 groups).
+Preview eligible=true, blockers=[], final_release_name=true, newer version.
+Wrong SHA/report binding blocked. Approve/Apply simulation PASS; installed hashes CLEAN.
+Originating process rejected as restart; new child process acknowledged.
+Non-mutating recovery drill and recovery readiness PASS.
+Repeated version blocked; operator batch target/repeated install identity PASS.
+Isolated rollback restores v2.25.0 and removes added files.
+Injected post-apply failure restores baseline; managed drift blocks Apply.
+No production install, production rollback or publication performed.
+
+Actual browser: PASS with synthetic domestic BUY and US SELL completed orders.
+US missing amount displays a warning and is excluded from sums. Explicit completed
+order refresh displays KRW 198 BUY and USD 202 SELL, averages 99/101, without new
+sends. Repeat refresh does not double count. Reload reads saved evidence with
+zero broker reads/sends. UI shows gross amounts are not realized profit.
+
+CHECK REQUIRED / not performed:
+- Real KIS PAPER authentication, history payloads, actual fills and cancellation.
+- Production install/restart/E2E, remote publication and public feed verification.
+- Broker account-wide reconciliation, legacy orders not linked to recent runs,
+  fees/taxes/FX, realized P&L, actual portfolio loss limits and unattended operation.
+- KR holidays, temporary closures, source quote delay and US years outside 2026.
+Order status and amount-evidence status are separate; a FILLED order can still
+have unknown monetary evidence. The report is not profit or investment advice.
+No runtime-data/secrets accessed. Existing LIVE confirmation retained.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Official KIS example fields/filters verified 2026-10-21. No new API endpoints.
+Canonical report bytes: UTF-8 LF. Evidence: V2260_DEVELOPMENT_EVIDENCE.zip
