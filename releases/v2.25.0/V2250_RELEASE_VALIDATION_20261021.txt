@@ -1,0 +1,76 @@
+StockInvestmentOS v2.25.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_25_0_RELEASE.zip
+TargetVersion: v2.25.0
+SHA256: 232deb45ff7acecaca7e48d6c88dcf7b9f63b589a31620e4d65d4a88053e0759
+SourceVersion: v2.24.0
+SourcePackageSHA256: f0ad1914434ea59604a42b17b6db1a6a85a283e2ed80834019f0a708508b2f67
+
+Scope: read-only aggregate PAPER automation rehearsal and fresh UI start check.
+Problem: v2.24.0 checks funding/holdings and reserves daily budget one rule at a
+time. It does not inspect all planned rules together before starting.
+Minimal change: new read-only service and native Streamlit controls; no broker
+endpoint, journal schema, underlying order execution gate or authorization change.
+
+Python 3.14.6 / Streamlit 1.65.0 / pytest 9.1.1; Windows isolated fixtures.
+Unit, Streamlit AppTest, broker, portfolio and updater regressions:
+PASS (649 tests).
+External broker requests forbidden; all broker responses synthetic.
+Python compilation: PASS (219 files).
+ZIP CRC / exact manifest membership / per-file SHA-256: PASS (298 files).
+Operating v2.24.0 managed files before and after: CLEAN (295 files).
+Changed: VERSION, broker_automation.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_25_0.txt, engine/paper_rehearsal.py, release_baselines/v2_24_0.json.
+Unchanged prior managed files: 292.
+
+Verified behavior:
+- KR/US BUY/SELL whole-plan cash and fee requirements, per-instrument quantities,
+  daily attempted cost/loss/count plus today's previous attempts are checked.
+- Cash observations use the minimum per currency; instrument quantities use
+  the minimum observed capacity. Expected sale proceeds/future bought shares
+  are never netted; no FX. This can conservatively reject otherwise feasible plans.
+- Aggregate shortfalls block before arming. Closed hours/unmet triggers show WAIT;
+  unsupported US calendar years and matched-condition price-gap excess block.
+- Active orders, valid previews, unresolved attempts, current active runs and
+  persistent halt block. Expired unsent previews are preserved without mutation.
+- Mode, PAPER URL and account are checked before/after each broker read.
+- Invalid/stale values, wrong currency, provider errors, records/day changes and
+  a first quote becoming stale during a long batch fail closed.
+- Journal bytes remain unchanged by rehearsal. No send, cancel, prepare,
+  reservation, arm, automatic resume or halt changes occur during rehearsal.
+- Reports contain allowlisted order/check fields; no credentials, raw provider
+  errors, identity hashes or permit tokens. They expire after 60 seconds.
+- Input/connection changes invalidate displayed reports. Default page render,
+  empty plan and unchecked start make no new broker queries.
+- Explicit UI start always performs a new rehearsal; cash falling after an
+  earlier successful report blocks before arming/sending. Existing per-order
+  execution checks remain in force. The report is not execution authorization.
+
+Isolated lifecycle checks: PASS (15 groups).
+Preview eligible=true, blockers=[], final_release_name=true, newer version.
+Wrong SHA/report binding blocked. Approve/Apply simulation PASS; installed hashes CLEAN.
+Originating process rejected as restart; new child process acknowledged.
+Non-mutating recovery drill and recovery readiness PASS.
+Repeated version blocked; operator batch target/repeated install identity PASS.
+Isolated rollback restores v2.24.0 and removes added files.
+Injected post-apply failure restores baseline; managed drift blocks Apply.
+No production install, actual production rollback or publication performed.
+
+Actual browser: PASS using synthetic KR BUY and US SELL conditions.
+Initial zero reads/sends; whole-plan cash shortage shown; sufficient cash shows
+completed amount/quantity check with waiting conditions. Subsequent cash drop
+blocks confirmed start with fresh queries and zero sends. Reload makes zero reads.
+
+CHECK REQUIRED / not performed:
+- Real KIS PAPER authentication, quotes, buying capacity, fills and cancellation.
+- Production install/restart/E2E, remote publication and public feed verification.
+- KR holidays, temporary hours, trading halts and exchange-source quote delay.
+- Realized P&L, portfolio-wide actual loss control, unattended operation,
+  real-account automatic execution, automatic FX and guaranteed stop losses.
+Read-only checks do not reserve funds; outside activity can change capacity after
+the report. Existing send-time guards still apply. WAIT does not promise a fill.
+Stop does not cancel accepted orders; already in-flight requests may complete.
+No runtime-data/secrets accessed. Existing manual LIVE confirmation retained.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Official KIS inquiry examples verified 2026-10-21; existing connector reused.
+Canonical report bytes: UTF-8 LF. Evidence: V2250_DEVELOPMENT_EVIDENCE.zip
