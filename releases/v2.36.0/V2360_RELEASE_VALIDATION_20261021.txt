@@ -1,0 +1,46 @@
+StockInvestmentOS v2.36.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_36_0_RELEASE.zip
+TargetVersion: v2.36.0
+SHA256: c7f5118a597436726fbf5619b40c68ded54087b6e19793a57bd2e937117651e5
+SourceVersion: v2.35.0
+SourcePackageSHA256: a7e5c91962dcf8af0ff722fd3a182ecf7ea8ccf3255bd0b7f1f99748100948f6
+
+Problem: WAITING rows did not distinguish order reconciliation, linked buys,
+closed registered sessions or last recorded price conditions.
+Evidence: tick has these separate gates, but snapshot/UI exposed state and price only.
+Design: read-only snapshot explanation follows gate priority without granting execution
+rights, fetching quotes, changing state or storing new data. No schema change.
+Last-price conditions are explicitly historical, without a saved quote timestamp.
+No claim that a condition match means an executable order or completed fill.
+Existing order paths, permissions, daily limits and linked-exit protections retained.
+
+Regression: PASS (1040 tests).
+Python compilation: PASS (228 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (329 files).
+Source operating files: CLEAN (326 files), unchanged during development.
+Changed: VERSION, broker_automation.py, engine/paper_automation.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_36_0.txt, engine/rule_waiting.py, release_baselines/v2_35_0.json.
+Unchanged previous files: 322.
+Synthetic tests: terminal/pending/unknown/claimed/skipped states, inactive and
+invalid runs, existing-order priority, linked-buy wait/cancel/review, calendar state,
+absent/invalid/matching/nonmatching recorded price, LIVE/PAPER KR/US snapshots,
+halt/expiry, unchanged journal bytes, zero extra broker calls, pending order priority.
+External requests blocked during automated tests and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.35.0, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This release adds local snapshot waiting explanations and a native UI column.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V2360_DEVELOPMENT_EVIDENCE.zip
