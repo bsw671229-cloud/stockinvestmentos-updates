@@ -1,0 +1,56 @@
+StockInvestmentOS v2.32.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_32_0_RELEASE.zip
+TargetVersion: v2.32.0
+SHA256: d5d96f78539e2e465e152aeb4e94a87670e820e1521a29c9e39bf45131dbd7e4
+SourceVersion: v2.31.0
+SourcePackageSHA256: f2b8c281e5ae94ee2d69310720a80a29820e58c5459c8d973b27ce6e0a7c8a86
+
+Problem: terminal monetary-evidence refresh was PAPER-only in v2.31.
+Design: explicit account/mode/official-host-bound LIVE terminal read, using the
+existing order-history connector and cumulative fill parser. No new API endpoint.
+Terminal quantity/status are immutable; match failures keep prior bytes. Only
+validated result evidence is updated with compare-and-update concurrency checks.
+History-only client has no send/cancel capability. No arm/resume/unhalt/refund.
+At most 20 unique terminal orders from the last 10 linked automation runs.
+Verified amounts, uncertain amounts and query failures have distinct counts.
+Per-order monetary check timestamps appear in both history and active monitor.
+Currencies remain separate; amounts exclude fees/taxes/FX and are not realized P&L.
+
+Regression: PASS (899 tests).
+Python compilation: PASS (224 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (317 files).
+Source operating files: CLEAN (315 files), unchanged during development.
+Changed: VERSION, broker_automation.py, engine/broker_execution.py, engine/paper_fills.py, engine/paper_recovery.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_32_0.txt, release_baselines/v2_31_0.json.
+Unchanged previous files: 309.
+Synthetic tests: LIVE KR/US buy/sell full fill, partial cancellation and rejection;
+repeat query with no duplicate total; invalid/missing/conflicting amounts; mismatched
+order identity, connection changes, direct/wrapped terminal readers, capped references,
+no cross-account/mode access, network failure and prior evidence preservation,
+concurrent evidence preservation, UI click-only refresh and permission preservation.
+External requests blocked during automated tests and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.31.0, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This release extends terminal evidence refresh; no new broker API endpoint or order permission.
+Official KIS API examples checked online on 2026-10-21 (Asia/Seoul):
+https://github.com/koreainvestment/open-trading-api/blob/main/examples_llm/domestic_stock/inquire_daily_ccld/inquire_daily_ccld.py
+https://github.com/koreainvestment/open-trading-api/blob/main/examples_llm/domestic_stock/inquire_daily_ccld/chk_inquire_daily_ccld.py
+https://github.com/koreainvestment/open-trading-api/blob/main/examples_llm/overseas_stock/inquire_ccnl/chk_inquire_ccnl.py
+https://github.com/koreainvestment/open-trading-api/blob/main/examples_user/overseas_stock/overseas_stock_functions.py
+Existing GET history TRs: TTTC0081R and TTTS3035R. Existing output1/output field
+allowlists and matching remain unchanged. No actual production completed order
+was available for this new-path end-to-end verification.
+Evidence: V2320_DEVELOPMENT_EVIDENCE.zip
