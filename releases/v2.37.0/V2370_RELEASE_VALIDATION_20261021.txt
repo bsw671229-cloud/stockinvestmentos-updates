@@ -1,0 +1,43 @@
+StockInvestmentOS v2.37.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_0_RELEASE.zip
+TargetVersion: v2.37.0
+SHA256: d4c8ac9691d77f59fe9a633b0b0f29c1fed6caf63dfd46ec4ab757d7317c26b7
+SourceVersion: v2.36.0
+SourcePackageSHA256: c7f5118a597436726fbf5619b40c68ded54087b6e19793a57bd2e937117651e5
+
+Problem: eight core review screens retained English presentation after Korean menus.
+Evidence: actual operating screens expose English headings, buttons, metrics and tables.
+Design: presentation-only Korean vocabulary and read-only table copies. Option values,
+editor schema, CSV exports, persistent codes and business decisions remain unchanged.
+Acceptance: Korean labels, preserved numeric values and identities, no extra requests,
+no scan/record/order triggered by changing display language.
+
+Regression: PASS (1075 tests).
+Python compilation: PASS (229 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (332 files).
+Source operating files: CLEAN (329 files), unchanged during development.
+Changed: VERSION, app_pages/legacy_12.py, app_pages/legacy_17.py, app_pages/legacy_18.py, app_pages/legacy_19.py, app_pages/legacy_42.py, app_pages/legacy_47.py, app_pages/legacy_48.py, app_pages/legacy_52.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_0.txt, release_baselines/v2_36_0.json, ui_korean.py.
+Unchanged previous files: 319.
+Synthetic tests: display vocabulary, canonical option values, editor schema,
+unchanged source DataFrames, numbers/URLs/user narratives preserved, native widgets,
+and AST equivalence of every localized page after stripping presentation adapters.
+External requests blocked during automated tests and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.36.0, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This release changes eight core review screens to Korean presentation.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V2370_DEVELOPMENT_EVIDENCE.zip
