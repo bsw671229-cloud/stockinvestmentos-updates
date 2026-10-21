@@ -1,0 +1,47 @@
+StockInvestmentOS v2.31.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_31_0_RELEASE.zip
+TargetVersion: v2.31.0
+SHA256: f2b8c281e5ae94ee2d69310720a80a29820e58c5459c8d973b27ce6e0a7c8a86
+SourceVersion: v2.30.0
+SourcePackageSHA256: f56f947082623bf76d2b8e86f61888c6fcc9c27161727c6871d42ddaa23c00ba
+
+Problem: v2.30 LIVE conditions and budgets had to be re-entered after reconnecting.
+Design: explicit LIVE plan store, physically separate from PAPER, account-bound.
+Only canonical rules, budgets and duration persist; no API keys, quotes, balances,
+execution state, permits, confirmation text or checkbox are saved.
+Saving clears consent; loading clears both consent inputs and previous check results.
+Loading preserves daily usage/halt state and requires fresh checks before manual start.
+Plan names are unique per account, maximum 20; archive keeps original records.
+Hash, schema, mode and numeric checks reject corrupted or unsupported plans.
+Connection changes before write commit abort the transaction.
+PAPER payload format remains compatible; v2.30 rejects LIVE payloads.
+Broker execution/authorization code and requests are unchanged.
+
+Regression: PASS (860 tests).
+Python compilation: PASS (224 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (315 files).
+Source operating files: CLEAN (313 files), unchanged during development.
+Changed: VERSION, broker_automation.py, broker_plan_library.py, engine/paper_plans.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_31_0.txt, release_baselines/v2_30_0.json.
+Unchanged previous files: 308.
+Synthetic tests: LIVE KR/US and linked-exit plan restart roundtrip; mode/endpoint/
+account/product isolation; tampered hashes/schema/fields/numbers; stripped secrets;
+mid-transaction connection change; same-name PAPER/LIVE plans; capacity/archive;
+unchanged journal and halt state; old-reader rejection; UI save/load consent reset,
+failed-load draft preservation and account switch. External requests blocked.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.30.0, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan database bytes survive upgrade, drill, rollback and failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This release changes plan storage/UI only; no new broker API endpoint or permission.
+Evidence: V2310_DEVELOPMENT_EVIDENCE.zip
