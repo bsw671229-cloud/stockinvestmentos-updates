@@ -1,0 +1,74 @@
+StockInvestmentOS v2.23.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_23_0_RELEASE.zip
+TargetVersion: v2.23.0
+SHA256: f9661c251a3941d83544ae781adc132750acc93d203264d9bb3048f90d5a7830
+SourceVersion: v2.22.0
+SourcePackageSHA256: d8685023d315ef2a189d5f0f8fc6186b3f04ea9007eafd51449f131185026707
+
+Scope: bounded PAPER-only conditional automation, domestic and US equities/ETFs.
+Python 3.14.6 / Streamlit 1.65.0 / pytest 9.1.1; Windows isolated fixtures.
+Unit, real Streamlit AppTest, brokerage and portfolio/restart regressions: PASS (538 tests).
+External requests are forbidden during tests. Broker responses are synthetic.
+Managed Python syntax: PASS (216 files).
+ZIP CRC / exact manifest membership / per-file SHA-256: PASS (291 files).
+Baseline production code before and after: CLEAN (287 files).
+Changed: VERSION, app.py, broker_workbench.py, updater/operator_batch.py, updater/runtime_identity.py, updater/runtime_ui.py.
+Added: RELEASE_NOTES_v2_23_0.txt, broker_automation.py, engine/paper_automation.py, release_baselines/v2_22_0.json.
+Unchanged previous managed files: 281.
+
+Automated workflow verification:
+- KR and US, BUY and SELL, <= and >= conditions, all three US venues.
+- Fresh response timestamp, condition reversal, quote expiry while checking cash,
+  cash/sellable shortage, currency/quantity/price risk gates inherited from engine.
+- PAPER endpoint/mode checks at start and before every broker operation;
+  account/mode change during precheck blocks transmission. No automatic LIVE path.
+- One attempt per rule, atomic durable reservation before prepare/send, six
+  concurrent cycles send once; concurrent arming has one owner.
+- Separate KRW/USD KST-day attempted-cost, assumed-loss and count budgets;
+  previous runs and rejected attempts continue consuming that day's allowance.
+- Partial then full fills reconciled; uncertain sends/rejections/history errors
+  stop new orders; no automatic resend. Manual terminal resolution permits fresh review.
+- Session-only capability, new process cannot resume, expired heartbeat/window
+  or changed KST day stops; stale busy/claimed work is never automatically taken over.
+- Stop during precheck and journal reservation failure prevent sending.
+- Basic market clock boundaries and New York DST covered with synthetic timestamps.
+- Defaults do not transmit; explicit unchecked confirmation blocks starting;
+  mixed-market UI start/stop and LIVE UI blocking pass real AppTest.
+
+Small regression correction: OS sub-microsecond start time could round above the
+same persisted ISO install time. Deterministic baseline reproduction fails;
+candidate requires >1 microsecond separation and passes. Existing v2.22.0 actual
+restart journal evidence is unchanged. One v2.5-era UI assertion was updated to
+expect the already-shipped field-correction table; baseline reproduced that mismatch.
+
+Isolated lifecycle checks: PASS (15 recorded groups).
+Preview eligible=true, blockers=[], final release filename, newer version.
+Wrong package SHA and report binding blocked; Approve/Apply simulation PASS.
+Post-apply managed_code_clean=true, actual originating process rejected as restart,
+new child process acknowledged, non-mutating recovery drill/readiness PASS.
+Repeated version blocked, operator batch identity gates PASS, isolated rollback
+restores v2.22.0 and removes newly added files; injected apply failure restores
+baseline; managed drift blocks installation. Production code unchanged.
+
+Browser: PASS for candidate components with synthetic client/account/prices/hours.
+Two-market condition list, explicit start, automatic fill progression, stop,
+and LIVE mode blocking verified. No actual broker paper/live request executed.
+
+CHECK REQUIRED / not performed:
+- Real KIS PAPER authentication, market data, order acceptance or fills.
+- Production install/restart/E2E, remote publication, public feed verification.
+- Exchange holidays, temporary hours, early closes, halts, exchange-source quote
+  delay, real tax/fees, real daily realized P&L or portfolio-level loss accounting.
+- Unattended daemon operation, real-account automated execution, automatic FX,
+  fractional orders, market orders, stop-loss execution guarantees.
+Each start lasts 1-60 minutes while the page is active, with 10-second cycles;
+over 60 seconds without a cycle stops on the next check. Already sent orders are
+not cancelled by Stop, navigation, timeout or disconnect. In-flight requests may
+finish. Ambiguous crash claims require investigation and are not silently cleared.
+KRW/USD daily limits count reserved attempts, not actual filled notional/P&L.
+
+No runtime-data/secrets accessed. Existing manual LIVE confirmation retained.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Publish/install/actual rollback retain separate user approval steps.
+Canonical report bytes: UTF-8 LF. Evidence: V2230_DEVELOPMENT_EVIDENCE.zip
