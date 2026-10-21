@@ -1,0 +1,80 @@
+StockInvestmentOS v2.24.0 isolated release validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_24_0_RELEASE.zip
+TargetVersion: v2.24.0
+SHA256: f0ad1914434ea59604a42b17b6db1a6a85a283e2ed80834019f0a708508b2f67
+SourceVersion: v2.23.0
+SourcePackageSHA256: f9661c251a3941d83544ae781adc132750acc93d203264d9bb3048f90d5a7830
+
+Scope: stopped PAPER automation review, atomic prepare linkage, bounded US calendar.
+Python 3.14.6 / Streamlit 1.65.0 / pytest 9.1.1; Windows isolated fixtures.
+Unit, Streamlit AppTest, brokerage, portfolio and updater regressions: PASS (590 tests).
+External broker requests forbidden; all broker responses synthetic.
+Python compilation: PASS (218 files).
+ZIP CRC / exact manifest membership / per-file SHA-256: PASS (295 files).
+Operating v2.23.0 managed files before and after: CLEAN (291 files).
+Changed: VERSION, app.py, broker_automation.py, engine/broker_execution.py, engine/paper_automation.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_24_0.txt, engine/paper_calendar.py, engine/paper_recovery.py, release_baselines/v2_23_0.json.
+Unchanged prior managed files: 285.
+
+Reproduced root cause:
+- v2.23.0 simulated process loss after order preparation leaves one PREPARED order
+  and a CLAIMED attempt with no order ID. Send count zero.
+- v2.24.0 same interruption preserves the prepared order ID on the attempt/rule.
+  Optional preparation hook runs inside the existing SQLite transaction.
+- Callback failure rolls back order and event creation. No network call runs in
+  that transaction. Existing manual prepare path retains its behavior.
+
+Recovery verification:
+- Explicit stopped review first halts new orders and invalidates account runs.
+- New-protocol reservation without an order ID can close as pre-send only because
+  order creation and linkage commit atomically. Older orphan attempts remain blocked.
+- PREPARED closure uses compare-and-update; SENDING/UNKNOWN without a receipt are
+  never inferred as rejected, retried or cleared.
+- KR/US BUY/SELL known receipts reconcile OPEN/PARTIAL/FILLED after process change.
+- History failure preserves uncertainty and does not expose raw provider errors.
+- Mode, endpoint and account changes during history reads block result acceptance.
+- In-flight send may complete after stop; later reconciliation resolves its known
+  receipt without another send. Daily reserved budgets are not refunded by review.
+- Passive history makes no broker calls or state changes, is account-scoped, and
+  excludes credential values, account identity hashes and ephemeral permit tokens.
+- Additive protocol table preserves v2.23.0 positional INSERT schema compatibility.
+- UI shows previous runs after session loss; only explicit review reads history.
+  Persistent halt stays enabled and the session permit is not restored.
+
+Time filter verification:
+- Published US 2026 closed dates, 13:00 early closes, opening/closing boundaries,
+  existing DST tests, unsupported-year fail-closed and pre-quote blocking PASS.
+- Calendar verified against NYSE and Nasdaq on 2026-10-21.
+- KR remains BASIC_HOURS_ONLY and explicitly labels holiday verification missing.
+
+Isolated lifecycle checks: PASS (15 groups).
+Preview eligible=true, blockers=[], final_release_name=true, newer version.
+Wrong SHA/report binding blocked. Approve/Apply simulation PASS; installed hashes CLEAN.
+Originating process rejected as restart; new child process acknowledged.
+Non-mutating recovery drill and recovery readiness PASS.
+Repeated version blocked; operator batch target/repeated install identity PASS.
+Isolated rollback restores v2.23.0 and removes added files.
+Injected post-apply failure restores baseline; managed drift blocks Apply.
+No production install, actual production rollback or publication performed.
+
+Actual browser: PASS with synthetic fixture.
+Reload preserves two-market records and triggers zero history requests/sends.
+Explicit review reads the known receipt once, shows both rows FILLED, sends zero
+new orders and retains account halt. LIVE view blocks automation.
+
+CHECK REQUIRED / not performed:
+- Real KIS PAPER authentication, market data, acceptance, fills and cancellation.
+- Production install/restart/E2E, remote publication and public feed verification.
+- KR holidays, temporary/unscheduled hours, halts and exchange-source quote delay.
+- US calendar years outside 2026 (automatic new US orders are blocked).
+- Realized P&L/portfolio-level loss controls, unattended daemon operation,
+  real-account automatic execution, automatic FX and stop-loss guarantees.
+
+Stop/review does not cancel accepted orders. Requests already in flight may finish.
+New attempts remain session-bound, at most 60 minutes, with a 60-second heartbeat
+gap limit; review never resumes a run, unhalts an account or refunds budgets.
+Reports cover ten recent runs; unresolved count covers all account attempts.
+No runtime-data/secrets accessed. Existing manual LIVE confirmation retained.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Canonical report bytes: UTF-8 LF. Evidence: V2240_DEVELOPMENT_EVIDENCE.zip
