@@ -1,0 +1,46 @@
+StockInvestmentOS v2.21.0 release candidate validation / 2026-10-21
+RESULT: PASS
+Package: StockInvestmentOS_v2_21_0_RELEASE.zip
+TargetVersion: v2.21.0
+SHA256: bcc41ff912f67a47784c75cdb539d876ab81ad6381d5ade7e76fd71bbf32293a
+SourceVersion: v2.20.0
+SourcePackageSHA256: 97283c8c4e40a00ef0da3b50c7da977ba45e336906562582b0cee00a8922115c
+
+Scope: isolated development and synthetic-input validation on Windows.
+Python 3.14.6 / Streamlit 1.65.0 / pytest 9.1.1 from installed app environment.
+Unit, real Streamlit AppTest and existing v2 regressions: PASS (126 tests).
+150 seeded portfolio scenarios and individual-reviewer parity included in tests.
+Real browser rendering and example submission: PASS (see browser.json and screenshot).
+Complete managed Python syntax: PASS (212 files).
+ZIP CRC, safe unique paths, exact manifest membership: PASS.
+Managed SHA-256 verification: PASS (283 files).
+Baseline live v2.20.0 managed code: CLEAN (279 files, checked before/after).
+Changes: VERSION, decision_workbench_v2.py, updater/operator_batch.py (version pins only).
+Added: engine/portfolio_plan_v2.py, portfolio_plan_workbench.py,
+       RELEASE_NOTES_v2_21_0.txt, release_baselines/v2_20_0.json.
+Prior managed files unchanged: 276.
+
+Isolated lifecycle checks: PASS (13 recorded groups).
+- Preview eligible=true; blockers=[]; final_release_name=true; target newer.
+- Exact package SHA and validation binding; wrong SHA/report blocked.
+- Approve and Apply on a disposable v2.20.0 copy; v2.21.0 managed_code_clean=true.
+- Non-mutating recovery drill; technical readiness PASS; no live code changed by drill.
+- Repeated version blocked; operator batch target check and already-installed identity.
+- Actual rollback in disposable fixture restores v2.20.0 and removes all added code.
+- Injected post-apply verification failure restores exact v2.20.0 managed code.
+- Managed code drift blocks installation.
+- Production code unchanged. Auto Approval/Auto Apply disabled; Execution Authorization NONE.
+
+Model checks include shared loss/factor headroom, current vs target replacement,
+cash conservation, current breach reduction, all-cash target, non-finite/malformed
+input, duplicate normalized symbols, 100-position limit, consent and evidence clock.
+UI checks include real/example distinction, pending table edits, stale/future evidence,
+changed budgets, invalid assets, session separation, old single-candidate mode.
+
+Not performed: production installation/restart/E2E, real account/price/FX/order/fill,
+remote publication or live public-feed verification. No user runtime-data/secrets read.
+The operator batch runtime probe alone was mocked in disposable lifecycle tests;
+actual Windows Python/Streamlit execution is independently verified by AppTest/browser.
+The Windows sandbox loopback restriction required local execution of UI tests.
+No financial return forecast, full portfolio optimizer or guaranteed maximum loss claim.
+Evidence: V2210_DEVELOPMENT_EVIDENCE.zip
