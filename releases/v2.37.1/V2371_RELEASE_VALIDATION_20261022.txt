@@ -1,0 +1,43 @@
+StockInvestmentOS v2.37.1 isolated release validation / 2026-10-22
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_1_RELEASE.zip
+TargetVersion: v2.37.1
+SHA256: 05c873e1af9935fe191bc0093153f59813add2e39a360d31e062739520d1c97e
+SourceVersion: v2.37.0
+SourcePackageSHA256: d4c8ac9691d77f59fe9a633b0b0f29c1fed6caf63dfd46ec4ab757d7317c26b7
+
+Problem: the Start Here entry page retained English checklist and workflow terms.
+Evidence: installed legacy_01.py is outside v2.37.0's eight localized screens.
+Design: dedicated presentation adapter for app-owned checklist values and labels.
+The original eight screens and shared glossary are byte-identical to v2.37.0.
+Acceptance: Korean entry title/checklist/steps; preserved business logic and fields;
+no market scan, decision record, order or permission change as a translation action.
+
+Regression: PASS (1079 tests).
+Python compilation: PASS (230 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (335 files).
+Source operating files: CLEAN (332 files), unchanged during development.
+Changed: VERSION, app_pages/legacy_01.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_1.txt, release_baselines/v2_37_0.json, ui_start_korean.py.
+Unchanged previous files: 329.
+Synthetic tests: original canonical checklist values preserved, AST equivalence
+of the complete start page, original eight pages unchanged, actual native start-page
+render using fake inputs, Korean workflow and no action buttons.
+External requests blocked during automated tests and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.37.0, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This patch changes the entry checklist and basic workflow to Korean presentation.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V2371_DEVELOPMENT_EVIDENCE.zip
