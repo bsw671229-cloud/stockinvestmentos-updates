@@ -1,0 +1,40 @@
+StockInvestmentOS v2.37.2 isolated release validation / 2026-10-23
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_2_RELEASE.zip
+TargetVersion: v2.37.2
+SHA256: 9fabb4b54156ba3c2deee5678742d91bb9bd0d6922b7ea854148db5930205633
+SourceVersion: v2.37.1
+SourcePackageSHA256: 05c873e1af9935fe191bc0093153f59813add2e39a360d31e062739520d1c97e
+
+Problem: Decision Summary retained English titles, metric labels and hints.
+Design: translate only static app-owned UI literals; preserve expression values,
+user prose, numeric data, status codes, route callback arguments and business logic.
+Acceptance: localized labels with unchanged decisions, storage and navigation.
+
+Regression: PASS (1082 tests).
+Python compilation: PASS (230 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (337 files).
+Source operating files: CLEAN (335 files), unchanged during development.
+Changed: VERSION, app_pages/legacy_03.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_2.txt, release_baselines/v2_37_1.json.
+Unchanged previous files: 332.
+Synthetic tests: AST equivalence excluding only UI literal segments, native
+summary render preserving user text/status values, canonical route callback,
+and earlier nine localized pages byte-identical. External requests blocked.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.37.1, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This patch localizes Decision Summary labels, hints and navigation buttons.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V2372_DEVELOPMENT_EVIDENCE.zip
