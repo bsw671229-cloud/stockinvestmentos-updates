@@ -457,8 +457,16 @@
       "validation_name": "V2377_RELEASE_VALIDATION_20261023.txt",
       "validation_sha256": "69455ddd3b57005aae360897300c7b1d1a15b767440f040bbec86c763fb75e0a",
       "version": "v2.37.7"
+    },
+    {
+      "package_name": "StockInvestmentOS_v2_37_8_RELEASE.zip",
+      "package_sha256": "3de59ec4732576380fbc3aabd28bae141270fe2bd2c10db1e27d076246f9a909",
+      "published_at": "2026-10-23T22:25:43.533377+09:00",
+      "validation_name": "V2378_RELEASE_VALIDATION_20261023.txt",
+      "validation_sha256": "cd694cdf8796dcd48bc3546022275edd69ca21dde67f6f1936d6e749322714fd",
+      "version": "v2.37.8"
     }
   ],
   "schema_version": 1,
-  "updated_at": "2026-10-23T22:16:56.032101+09:00"
+  "updated_at": "2026-10-23T22:25:43.533377+09:00"
 }
