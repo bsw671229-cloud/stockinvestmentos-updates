@@ -1,0 +1,41 @@
+StockInvestmentOS v2.37.12 isolated release validation / 2026-10-24
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_12_RELEASE.zip
+TargetVersion: v2.37.12
+SHA256: 88d690c8c7b0a3e6dc1e35ad484965fe983b5796c562c2c311f784aab0bd1549
+SourceVersion: v2.37.11
+SourcePackageSHA256: 2f22a56b68557e143a1f421fba8707dd5c5ff94b1ec41065d6acf8b2a0832209
+
+Problem: planner gate table exposes English column names and codes.
+Design: copy-only exact table labels; preserve canonical frame and descriptions.
+Unknown codes, numeric values, user narratives and detail columns stay unchanged.
+Acceptance: Korean gate table labels, unchanged canonical frame, descriptions, saved values and navigation.
+
+Regression: PASS (1104 tests).
+Python compilation: PASS (237 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (364 files).
+Source operating files: CLEAN (361 files), unchanged during development.
+Changed: VERSION, app_pages/legacy_04.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_12.txt, release_baselines/v2_37_11.json, ui_planner_table.py.
+Unchanged previous files: 358.
+Synthetic tests: exact known-code handling, source frame unchanged, unknown
+extensions and user details preserved; AST equivalence after removing adapters;
+native summary render and original flow and action details and route preserved.
+External requests blocked during regression and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.37.11, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This patch translates known gate table labels on a display-only copy.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V23712_DEVELOPMENT_EVIDENCE.zip
