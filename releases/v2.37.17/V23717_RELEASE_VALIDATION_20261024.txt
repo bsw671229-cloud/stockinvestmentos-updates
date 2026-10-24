@@ -1,0 +1,36 @@
+StockInvestmentOS v2.37.17 — application Korean display completion
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_17_RELEASE.zip
+TargetVersion: v2.37.17
+SHA256: 40df3f0dd65dbeec3284c72f9681ea4bfa054b70ed9e8a76d5e2178a611352b6
+SourceVersion: v2.37.16
+SourcePackageSHA256: 5ee395e3931d789bcfc7b35d27d9d387de2695e7aa0aff325150c2d61fd75b3c
+
+Problem: live planner gate table retained generated price ceiling, execution share count and factor-status descriptions.
+Design: extend existing planner detail display only for exact reconstructed source-summary values; preserve numeric formatting, comparator and complete factor name. Map fixed scenario sentences by exact gate/source text. Preserve unknown/custom prose and source frames.
+Acceptance: original business logic after removing narrowly defined presentation adapters; unchanged storage keys, callbacks, options, returned editor values, company names, free-form narrative columns, paths and numbers.
+Unknown future codes, external raw errors, diagnostic payloads, product/exchange identifiers and user prose are intentionally retained verbatim.
+Cumulative scope from original reference: 5946 fixed display expressions in 60 files plus native title/toolbar and source-aware review queue presentation. The changed-file list below is relative to v2.37.16.
+Native isolated menu check: 61 menus rendered without exceptions with empty synthetic data. This is initial-render coverage, not every data-dependent branch.
+Native widget checks: Korean option labels with canonical BUY/SELL return values and unchanged editor columns and source values.
+
+Regression: PASS (1122 tests).
+Python compilation: PASS (241 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (379 files).
+Source operating files: CLEAN (377 files), unchanged during development.
+Changed: VERSION, ui_planner_detail.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_17.txt, release_baselines/v2_37_16.json.
+Unchanged previous files: 374.
+Lifecycle: PASS (17 groups): eligible preview, wrong SHA/report blocking,
+approve/apply, clean installed manifest, real-process restart gate simulation,
+non-mutating recovery drill, isolated rollback, injected failure restore and drift block.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill, rollback and injected failure restore.
+External requests blocked in regression/lifecycle; UI fixture permits only internal loopback and blocks external requests.
+Business modules remain AST-equivalent after presentation masking and release metadata normalization. Display helper changes have dedicated preservation tests. Directory/version token tests cover the discovered gap.
+Report UTF-8 LF and Git filter byte roundtrip checked separately.
+
+Not performed in development: production installation/restart/final E2E, remote publication/public verification, real brokerage authentication or orders.
+No production runtime-data/secrets accessed. No live order or investment execution authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Actual LIVE trading/fill end-to-end is not tested or claimed by this UI release.
+Evidence: V23717_DEVELOPMENT_EVIDENCE.zip
