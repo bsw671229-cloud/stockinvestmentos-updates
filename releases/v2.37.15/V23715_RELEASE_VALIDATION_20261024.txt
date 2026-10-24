@@ -1,0 +1,36 @@
+StockInvestmentOS v2.37.15 — application Korean display completion
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_15_RELEASE.zip
+TargetVersion: v2.37.15
+SHA256: c7ccbaefb50fd36eeb10303191f4f9b7ad63e186d8fe5e312e568f080f21464c
+SourceVersion: v2.37.14
+SourcePackageSHA256: 157a1760a725e757d4029384701132c746c82687ce9b53456b8f8e2bb707d80f
+
+Problem: live UI review found translated directory/version identifiers and remaining generated review-queue labels/issues after the broad Korean UI update.
+Design: preserve directory/version tokens; translate only source-generated queue templates under 20 category allowlists on a display copy; preserve user-origin lifecycle reasons; Korean document title and native minimal toolbar.
+Acceptance: original business logic after removing narrowly defined presentation adapters; unchanged storage keys, callbacks, options, returned editor values, company names, free-form narrative columns, paths and numbers.
+Unknown future codes, external raw errors, diagnostic payloads, product/exchange identifiers and user prose are intentionally retained verbatim.
+Cumulative scope from original reference: 5946 fixed display expressions in 60 files plus native title/toolbar and source-aware review queue presentation. The changed-file list below is relative to v2.37.14.
+Native isolated menu check: 61 menus rendered without exceptions with empty synthetic data. This is initial-render coverage, not every data-dependent branch.
+Native widget checks: Korean option labels with canonical BUY/SELL return values and unchanged editor columns and source values.
+
+Regression: PASS (1118 tests).
+Python compilation: PASS (241 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (375 files).
+Source operating files: CLEAN (372 files), unchanged during development.
+Changed: VERSION, app.py, app_pages/legacy_05.py, app_pages/legacy_14.py, app_pages/legacy_20.py, app_pages/legacy_21.py, app_pages/legacy_31.py, app_pages/legacy_32.py, app_pages/legacy_38.py, app_pages/legacy_54.py, app_pages/legacy_55.py, app_pages/legacy_59.py, ui_engine_messages.json, ui_locale.py, ui_locale_glossary.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_15.txt, release_baselines/v2_37_14.json, ui_review_queue_display.py.
+Unchanged previous files: 356.
+Lifecycle: PASS (17 groups): eligible preview, wrong SHA/report blocking,
+approve/apply, clean installed manifest, real-process restart gate simulation,
+non-mutating recovery drill, isolated rollback, injected failure restore and drift block.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill, rollback and injected failure restore.
+External requests blocked in regression/lifecycle; UI fixture permits only internal loopback and blocks external requests.
+Business modules remain AST-equivalent after presentation masking and release metadata normalization. Display helper changes have dedicated preservation tests. Directory/version token tests cover the discovered gap.
+Report UTF-8 LF and Git filter byte roundtrip checked separately.
+
+Not performed in development: production installation/restart/final E2E, remote publication/public verification, real brokerage authentication or orders.
+No production runtime-data/secrets accessed. No live order or investment execution authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Actual LIVE trading/fill end-to-end is not tested or claimed by this UI release.
+Evidence: V23715_DEVELOPMENT_EVIDENCE.zip
