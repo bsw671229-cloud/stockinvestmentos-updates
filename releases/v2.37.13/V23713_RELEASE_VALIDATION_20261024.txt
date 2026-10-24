@@ -1,0 +1,41 @@
+StockInvestmentOS v2.37.13 isolated release validation / 2026-10-24
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_13_RELEASE.zip
+TargetVersion: v2.37.13
+SHA256: 7c87d9afa7426fd4cc5255a461116662e8e2545536aa08936a5ac052e8468eeb
+SourceVersion: v2.37.12
+SourcePackageSHA256: 88d690c8c7b0a3e6dc1e35ad484965fe983b5796c562c2c311f784aab0bd1549
+
+Problem: planner descriptions expose English status explanations.
+Design: Translate five exact generated descriptions only with corroborating summary states; preserve canonical frame.
+Unknown codes, numeric values, edited narratives and non-target details stay unchanged.
+Acceptance: Korean generated descriptions, unchanged canonical frame, user narratives, saved values and navigation.
+
+Regression: PASS (1108 tests).
+Python compilation: PASS (238 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (367 files).
+Source operating files: CLEAN (364 files), unchanged during development.
+Changed: VERSION, app_pages/legacy_04.py, ui_planner_table.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_13.txt, release_baselines/v2_37_12.json, ui_planner_detail.py.
+Unchanged previous files: 360.
+Synthetic tests: exact known-code handling, source frame unchanged, unknown
+extensions and user details preserved; AST equivalence after removing adapters;
+native summary render and original flow and action details and route preserved.
+External requests blocked during regression and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.37.12, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This patch translates five known engine description families on a display-only copy.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V23713_DEVELOPMENT_EVIDENCE.zip
