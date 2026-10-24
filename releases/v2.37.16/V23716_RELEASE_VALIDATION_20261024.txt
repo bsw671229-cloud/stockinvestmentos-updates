@@ -1,0 +1,36 @@
+StockInvestmentOS v2.37.16 — application Korean display completion
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_16_RELEASE.zip
+TargetVersion: v2.37.16
+SHA256: 5ee395e3931d789bcfc7b35d27d9d387de2695e7aa0aff325150c2d61fd75b3c
+SourceVersion: v2.37.15
+SourcePackageSHA256: c7ccbaefb50fd36eeb10303191f4f9b7ad63e186d8fe5e312e568f080f21464c
+
+Problem: live populated review queue revealed conditional Evidence Impact categories and composite NEW / ROUTINE states that initial-render checks did not cover.
+Design: extend source-bound category allowlists for conditional Evidence Impact rows; accept only uppercase canonical compound status codes; translate the known OTHER classification suffix while preserving the entire disclosure title. Add explicit UP_TO_DATE and yes/no display meanings. Preserve unknown/user values and prior path/version protections.
+Acceptance: original business logic after removing narrowly defined presentation adapters; unchanged storage keys, callbacks, options, returned editor values, company names, free-form narrative columns, paths and numbers.
+Unknown future codes, external raw errors, diagnostic payloads, product/exchange identifiers and user prose are intentionally retained verbatim.
+Cumulative scope from original reference: 5946 fixed display expressions in 60 files plus native title/toolbar and source-aware review queue presentation. The changed-file list below is relative to v2.37.15.
+Native isolated menu check: 61 menus rendered without exceptions with empty synthetic data. This is initial-render coverage, not every data-dependent branch.
+Native widget checks: Korean option labels with canonical BUY/SELL return values and unchanged editor columns and source values.
+
+Regression: PASS (1120 tests).
+Python compilation: PASS (241 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (377 files).
+Source operating files: CLEAN (375 files), unchanged during development.
+Changed: VERSION, ui_locale.py, ui_locale_glossary.py, ui_review_queue_display.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_16.txt, release_baselines/v2_37_15.json.
+Unchanged previous files: 370.
+Lifecycle: PASS (17 groups): eligible preview, wrong SHA/report blocking,
+approve/apply, clean installed manifest, real-process restart gate simulation,
+non-mutating recovery drill, isolated rollback, injected failure restore and drift block.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill, rollback and injected failure restore.
+External requests blocked in regression/lifecycle; UI fixture permits only internal loopback and blocks external requests.
+Business modules remain AST-equivalent after presentation masking and release metadata normalization. Display helper changes have dedicated preservation tests. Directory/version token tests cover the discovered gap.
+Report UTF-8 LF and Git filter byte roundtrip checked separately.
+
+Not performed in development: production installation/restart/final E2E, remote publication/public verification, real brokerage authentication or orders.
+No production runtime-data/secrets accessed. No live order or investment execution authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Actual LIVE trading/fill end-to-end is not tested or claimed by this UI release.
+Evidence: V23716_DEVELOPMENT_EVIDENCE.zip
