@@ -1,0 +1,41 @@
+StockInvestmentOS v2.37.10 isolated release validation / 2026-10-24
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_10_RELEASE.zip
+TargetVersion: v2.37.10
+SHA256: 98d2d8165d973f00f844d51c88ce883a01522a7f4cf70c760da8d30a75ec72ea
+SourceVersion: v2.37.9
+SourcePackageSHA256: e00537a123c8496ca47afc4cdf86f641138e6e714ca412a289a6e8b5b91d6c50
+
+Problem: planner status values retained English and long metric text was clipped.
+Design: exact known status display and native wrapping text; preserve original values.
+Unknown codes, numeric values, user narratives and detail columns stay unchanged.
+Acceptance: Korean status display, unchanged canonical values and navigation.
+
+Regression: PASS (1098 tests).
+Python compilation: PASS (235 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (358 files).
+Source operating files: CLEAN (355 files), unchanged during development.
+Changed: VERSION, app_pages/legacy_04.py, updater/operator_batch.py.
+Added: RELEASE_NOTES_v2_37_10.txt, release_baselines/v2_37_9.json, ui_planner_status.py.
+Unchanged previous files: 352.
+Synthetic tests: exact known-code handling, source frame unchanged, unknown
+extensions and user details preserved; AST equivalence after removing adapters;
+native summary render and original flow and action details and route preserved.
+External requests blocked during regression and lifecycle simulations.
+Lifecycle: PASS (17 groups): eligible preview, no blockers, wrong
+SHA/report blocked, approve/apply, managed clean, restart gate, recovery,
+isolated rollback to v2.37.9, injected failure restore, drift block, safety flags.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill,
+rollback and injected failure restore.
+Report UTF-8 LF and git filter byte roundtrip PASS.
+
+Not performed in development: actual KIS account authentication/order flow,
+production installation/restart/final E2E, remote publication/public verification.
+Lifecycle publication/install outcomes are recorded separately after execution.
+No runtime-data/secrets accessed. No investment order or authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+LIVE and PAPER remain separate; one attempt/condition, max 60 minutes, no auto-resume.
+Actual LIVE order transmission/fill end-to-end NOT PERFORMED. No readiness claim for it.
+This patch translates known planner statuses and wraps long nonnumeric values.
+Broker endpoints, order submission and explicit start confirmations are unchanged.
+Evidence: V23710_DEVELOPMENT_EVIDENCE.zip
