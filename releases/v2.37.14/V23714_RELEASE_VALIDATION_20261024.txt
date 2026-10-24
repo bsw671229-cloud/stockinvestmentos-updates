@@ -1,0 +1,36 @@
+StockInvestmentOS v2.37.14 — application Korean display completion
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_14_RELEASE.zip
+TargetVersion: v2.37.14
+SHA256: 157a1760a725e757d4029384701132c746c82687ce9b53456b8f8e2bb707d80f
+SourceVersion: v2.37.13
+SourcePackageSHA256: 7c87d9afa7426fd4cc5255a461116662e8e2545536aa08936a5ac052e8468eeb
+
+Problem: mixed English display labels, system messages, statuses and table headings throughout the legacy application.
+Design: source-local fixed display translations, exact message catalog, canonical status formatters, native select/column formatting and display-only frame copies.
+Acceptance: original business logic after removing narrowly defined presentation adapters; unchanged storage keys, callbacks, options, returned editor values, company names, free-form narrative columns, paths and numbers.
+Unknown future codes, external raw errors, diagnostic payloads, product/exchange identifiers and user prose are intentionally retained verbatim.
+Scope: 5947 fixed display expressions in 60 files; adapters in 72 files.
+Native isolated menu check: 61 menus rendered without exceptions with empty synthetic data. This is initial-render coverage, not every data-dependent branch.
+Native widget checks: Korean option labels with canonical BUY/SELL return values and unchanged editor columns and source values.
+
+Regression: PASS (1115 tests).
+Python compilation: PASS (240 files).
+ZIP CRC / exact manifest / per-file SHA-256: PASS (372 files).
+Source operating files: CLEAN (367 files), unchanged during development.
+Changed: VERSION, app.py, app_pages/legacy_01.py, app_pages/legacy_02.py, app_pages/legacy_03.py, app_pages/legacy_04.py, app_pages/legacy_05.py, app_pages/legacy_06.py, app_pages/legacy_07.py, app_pages/legacy_08.py, app_pages/legacy_09.py, app_pages/legacy_10.py, app_pages/legacy_11.py, app_pages/legacy_12.py, app_pages/legacy_13.py, app_pages/legacy_14.py, app_pages/legacy_15.py, app_pages/legacy_16.py, app_pages/legacy_17.py, app_pages/legacy_18.py, app_pages/legacy_19.py, app_pages/legacy_20.py, app_pages/legacy_21.py, app_pages/legacy_22.py, app_pages/legacy_23.py, app_pages/legacy_24.py, app_pages/legacy_25.py, app_pages/legacy_26.py, app_pages/legacy_27.py, app_pages/legacy_28.py, app_pages/legacy_29.py, app_pages/legacy_30.py, app_pages/legacy_31.py, app_pages/legacy_32.py, app_pages/legacy_33.py, app_pages/legacy_34.py, app_pages/legacy_35.py, app_pages/legacy_36.py, app_pages/legacy_37.py, app_pages/legacy_38.py, app_pages/legacy_39.py, app_pages/legacy_40.py, app_pages/legacy_41.py, app_pages/legacy_42.py, app_pages/legacy_43.py, app_pages/legacy_44.py, app_pages/legacy_45.py, app_pages/legacy_46.py, app_pages/legacy_47.py, app_pages/legacy_48.py, app_pages/legacy_49.py, app_pages/legacy_50.py, app_pages/legacy_51.py, app_pages/legacy_52.py, app_pages/legacy_53.py, app_pages/legacy_54.py, app_pages/legacy_55.py, app_pages/legacy_56.py, app_pages/legacy_57.py, app_pages/legacy_58.py, app_pages/legacy_59.py, broker_automation.py, broker_inquiries.py, broker_market_details.py, broker_market_overview.py, broker_plan_library.py, broker_position_transfer.py, broker_precheck.py, broker_session_status.py, broker_workbench.py, decision_workbench_v2.py, portfolio_plan_workbench.py, updater/operations_panel.py, updater/operator_batch.py, updater/runtime_ui.py.
+Added: RELEASE_NOTES_v2_37_14.txt, release_baselines/v2_37_13.json, ui_engine_messages.json, ui_locale.py, ui_locale_glossary.py.
+Unchanged previous files: 292.
+Lifecycle: PASS (17 groups): eligible preview, wrong SHA/report blocking,
+approve/apply, clean installed manifest, real-process restart gate simulation,
+non-mutating recovery drill, isolated rollback, injected failure restore and drift block.
+LIVE/PAPER plan and synthetic execution journal bytes survive upgrade, drill, rollback and injected failure restore.
+External requests blocked in regression/lifecycle; UI fixture permits only internal loopback and blocks external requests.
+Historical label/file-equality tests updated to presentation-stripped AST equality against v2.37.13, retaining behavior assertions.
+Report UTF-8 LF and Git filter byte roundtrip checked separately.
+
+Not performed in development: production installation/restart/final E2E, remote publication/public verification, real brokerage authentication or orders.
+No production runtime-data/secrets accessed. No live order or investment execution authorization enabled.
+Auto Approval=DISABLED; Auto Apply=DISABLED; Execution Authorization=NONE.
+Actual LIVE trading/fill end-to-end is not tested or claimed by this UI release.
+Evidence: V23714_DEVELOPMENT_EVIDENCE.zip
