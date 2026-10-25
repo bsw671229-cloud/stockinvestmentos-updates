@@ -1,0 +1,16 @@
+StockInvestmentOS v2.40.0 selected-order evidence and inquiry feedback
+RESULT: PASS
+Package: StockInvestmentOS_v2_40_0_RELEASE.zip
+TargetVersion: v2.40.0
+SourceVersion: v2.39.0
+SHA256: d73fa3254563d6f27503e1077b177892e3e9b9af71851add9637f7a853f94588
+Problem:12 fake PAPER/LIVE KR/US scenarios reproduced absent broker-check provenance and silently ignored terminal/prepared query clicks. Saved last_checked_at and fill_view existed but were not presented.
+Design: selected-order saved state/quantity/gross amount/average/currency and timezone-aware last broker-check evidence. Explicit active or terminal evidence refresh via existing reconcile_order only. Callback executes before full-page rendering so table/selection/evidence agree. Per-action success/no-new-evidence/failure receipt bound to client/account/mode/journal/order, no raw server text. Ineligible pretransmission/no-number records explain why no inquiry. No automatic query/retry/send/cancel/unhalt or schema/permission changes.
+Prototype:55 focused checks PASS covering PAPER/LIVE KR/US OPEN/FILLED/PREPARED, failure with prior evidence, active-to-terminal empty-scope receipt, no order number, terminal mismatch preservation, account switch, verified amounts and cancelled partial fills, normal no-op and invalid timestamps. Initial51PASS/4 callback-injection registration failures preserved; fixture re-registers injected callback before click; product unchanged.
+Additional screen-to-screen audit:4 fake full workbench flows PASS, manual query to automation history and explicit result sync; no extra query/send or automatic resume. Inherited locale fixture/path errors initially1404PASS/4FAIL were preserved, repaired without product changes, then complete suite rerun.
+Regression: PASS (1408 full-suite tests).
+Compile: PASS (244 Python files).
+Manifest/SHA/ZIP CRC: PASS (404 managed files).
+Lifecycle: PASS (17 groups) including upgrade/wrongSHA/wrongreport/repeat/version/process checks, failure restore, isolated rollback, non-mutating recovery and journal/plan preservation.
+Production v2.39.0 CLEAN during development. Existing trading engines and manual send/cancel code unchanged. No real broker requests/orders/cancellation/actual rollback performed.
+Actual installation/restart/UI finalization not performed by this validation. Auto Approval/Apply disabled. Execution Authorization NONE.
