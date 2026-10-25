@@ -1,0 +1,17 @@
+StockInvestmentOS v2.38.1 bounded terminal fill review
+RESULT: PASS
+Package: StockInvestmentOS_v2_38_1_RELEASE.zip
+TargetVersion: v2.38.1
+SourceVersion: v2.38.0
+SHA256: fb2a0f25ceb006942fac70ab944af9a6cfdea809edb9b30ca6dc2903f9cc5015
+Problem: repeated terminal fill refresh selected the same first20 references; later completed orders remained without refreshed monetary evidence.
+Design: explicit next20 refresh over a fixed reference snapshot from latest10 runs, bound to account/mode/journal. New runs are excluded until the user starts a new refresh. No automatic next-page requests.
+Acceptance: fake KR/US1/20/21/30/41/100 references, invalid cursor rejection, newly inserted runs, deleted order, account/mode replacement, Streamlit explicit navigation; existing PAPER/LIVE fill regressions.
+Prior monetary evidence is preserved on failed reads. Coverage completion does not mean all monetary amounts are verified. Send/cancel/start/unhalt logic unchanged.
+Regression: PASS (1212 full-suite tests including synthetic UI).
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (391 managed files).
+Lifecycle: PASS (17 groups) including upgrade, wrong SHA/report, repeated version, process identity, isolated rollback, injected failure restore, non-mutating recovery, journal/plan preservation.
+Production v2.38.0 CLEAN during development. No actual broker requests/orders/cancellation/rollback.
+Actual install/restart/UI finalization not performed by this validation.
+Auto Approval/Apply disabled. Execution Authorization NONE. No stored schema migration.
