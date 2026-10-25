@@ -1,0 +1,17 @@
+StockInvestmentOS v2.37.18 connection consistency guard
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_18_RELEASE.zip
+TargetVersion: v2.37.18
+SourceVersion: v2.37.17
+SHA256: ac678b4abf9f24b28a50dc0d72110e7e831e0a4f8a438f12c3240a0e545ff430
+Problem: active direct reconciliation did not recheck account/mode after broker history returned.
+Design: compare account identity and stored mode before/after history and before active journal update. Preserve existing terminal checks and guarded automation clients.
+Acceptance: synthetic KR/US account and mode switches reject history without journal writes or extra sends/cancels. Same-context flow remains covered.
+Regression: PASS (1127 unique cases across full run and targeted fixture recheck). Initial full run:1125 pass,2 missing-fixture failures; both rechecked PASS after restoring unchanged historical localization fixture. Original XML retained.
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (381 managed files).
+Lifecycle: PASS (17 groups), including preview/blockers, wrong SHA/report, approve/apply, restart identity, non-mutating recovery, isolated rollback, injected failure restore, plan/journal preservation, policy boundaries.
+Production code remains v2.37.17 CLEAN during development.
+No actual broker requests, live orders, production rollback, production install/restart or final UI check performed by this validation.
+No UI/schema/permissions changes. Auto Approval/Apply disabled, Execution Authorization NONE.
+This protects checked boundaries; it does not claim a global atomic lock on mutable client credentials.
