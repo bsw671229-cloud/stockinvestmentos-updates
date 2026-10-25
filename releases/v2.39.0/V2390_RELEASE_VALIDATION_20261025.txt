@@ -1,0 +1,15 @@
+StockInvestmentOS v2.39.0 local order review navigation
+RESULT: PASS
+Package: StockInvestmentOS_v2_39_0_RELEASE.zip
+TargetVersion: v2.39.0
+SourceVersion: v2.38.4
+SHA256: 9fd72a0ca34310129517472311d2bbc9074250fc9413042daf04e5fb60fffc9c
+Problem: an older ACKNOWLEDGED order disappears from manual selection after100 newer preview records. Eight actual fake prepare_order boundary scenarios confirmed4 hidden cases and4 controls.
+Design: default unfinished-order review, explicit unfinished/all local scopes,100-record keyset pages ordered by created/id, account/scope/journal-bound cursors, local counts and observation time, reset on connection replacement and recover via first-page action. Existing manual send/cancel/confirmation controls and trading engines unchanged.
+Prototype:39 focused checks PASS, including account/mode/client/journal changes, tied timestamps, added/deleted/status-changed records, malformed cursors/data and stale-cursor recovery. Initial35 passed/3 trailing-whitespace UI assertion failures preserved; test rendering expectation corrected and journal-change test strengthened before full39 PASS.
+Regression: PASS (1353 full-suite tests).
+Compile: PASS (243 Python files).
+Manifest/SHA/ZIP CRC: PASS (401 managed files).
+Lifecycle: PASS (17 groups) including upgrade/wrongSHA/wrongreport/repeat/version/process checks, failure restore, isolated rollback, non-mutating recovery and journal/plan preservation.
+Production v2.38.4 CLEAN during development. Real broker requests, orders, cancellation and actual rollback not performed. No schema migration. No execution permission changes.
+Actual installation/restart/UI finalization not performed by this validation. Auto Approval/Apply disabled. Execution Authorization NONE.
