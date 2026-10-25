@@ -1,0 +1,17 @@
+StockInvestmentOS v2.38.0 bounded stopped-run review
+RESULT: PASS
+Package: StockInvestmentOS_v2_38_0_RELEASE.zip
+TargetVersion: v2.38.0
+SourceVersion: v2.37.21
+SHA256: a3513d7db571f982336180d9ca2f5a7fe10c2e4a36c1cd5578b162ca09caca22
+Problem: oldest20 unresolved historical attempts could indefinitely hide later attempts from repeated review.
+Design: explicit next20 review, stable rowid upper bound, account/mode/journal-bound cursor validated before side effects. New attempts beyond original scope are counted separately. No automatic next-page requests.
+Acceptance: bounds1/20/21/41 across fake PAPER/LIVE KR/US, invalid cursor blocked without writes, inserts and resolutions between pages, empty scope, Streamlit explicit navigation, source isolation.
+Existing unresolved records are not guessed resolved. Coverage completion never means all orders resolved. Send/cancel/start/unhalt logic unchanged.
+Regression: PASS (1192 full-suite tests including synthetic UI).
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (389 managed files).
+Lifecycle: PASS (17 groups) including upgrade, wrong SHA/report, repeated version, process identity, isolated rollback, injected failure restore, non-mutating recovery, journal/plan preservation.
+Production v2.37.21 CLEAN during development. No actual broker requests/orders/cancellation/rollback.
+Actual install/restart/UI finalization not performed by this validation.
+Auto Approval/Apply disabled. Execution Authorization NONE. No stored schema migration.
