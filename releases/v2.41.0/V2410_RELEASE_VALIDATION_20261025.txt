@@ -1,0 +1,15 @@
+StockInvestmentOS v2.41.0 source-owned inquiry diagnosis and safe local report
+RESULT: PASS
+Package: StockInvestmentOS_v2_41_0_RELEASE.zip
+TargetVersion: v2.41.0
+SourceVersion: v2.40.0
+SHA256: f222468fbc23dc7ea92641df15a04da234e53e22f4521b49b2ed1d45d148d842
+Problem:8 PAPER/LIVE KR/US fake cases showed a confirmed local order-price mismatch and an unknown broker read failure receive the same generic connection guidance. Existing record preservation and arbitrary error secrecy were correct.
+Design:12 source-owned EvidenceCheckError(BrokerError) codes at existing reconciliation validation checks. Exact original messages/conditions/record updates preserved; unknown/future errors stay unclassified without reading arbitrary exception text. UI displays confirmed validation category and specific next action. Safe local JSON contains only fixed code/action/status, validated short opaque reference and timestamps, excluding account/key/broker response. Download uses installed Streamlit1.65 frontend-only on_click=ignore, without extra query/rerun.
+Prototype:240 focused+broker/fill/context checks PASS. Exact reverse transformation proves12 typed raises and one local import are the only engine changes; manual send/cancel and all other execution code unchanged. UI AST scope proves only query callback/notice changed plus pure diagnostic report function. Invalid/future codes, secret exceptions, reference/time validation and read-only report tested. Actual fake browser price mismatch/unknown error and JSON download verified; download preserved history request count and fake send count. No new schema or execution permission.
+Regression: PASS (1455 full-suite tests).
+Compile: PASS (245 Python files).
+Manifest/SHA/ZIP CRC: PASS (407 managed files).
+Lifecycle: PASS (17 groups) including upgrade/wrongSHA/wrongreport/repeat/version/process checks, failure restore, isolated rollback, non-mutating recovery and journal/plan preservation.
+Production v2.40.0 CLEAN during development. No real broker requests/orders/cancellation/actual rollback performed. Known errors are emitted at local validation source, not guessed from provider text.
+Actual installation/restart/UI finalization not performed by this validation. Auto Approval/Apply disabled. Execution Authorization NONE.
