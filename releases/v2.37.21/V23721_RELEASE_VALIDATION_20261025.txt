@@ -1,0 +1,18 @@
+StockInvestmentOS v2.37.21 inactive pending order guidance
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_21_RELEASE.zip
+TargetVersion: v2.37.21
+SourceVersion: v2.37.20
+SHA256: 1ac7a663d4c138ef97659adea5c44b057aa29a9670e33a484eb0ade23c3cb30e
+Problem: PENDING order explanation claimed ongoing confirmation after run stopped/expired/stale/blocked.
+Root cause: non-WAITING branch ignored execution validity.
+Design: show direct-check guidance only for PENDING and inactive/invalid run. Active guidance and all other states unchanged.
+Acceptance: 20 synthetic PAPER/LIVE KR/US active/stopped/expired/heartbeat/halted cases; exact source delta; no snapshot API requests or database mutation. Baseline16 failures/4 passes; corrected21 targeted passes.
+Regression: PASS (1164 full-suite tests).
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (387 managed files).
+Lifecycle: PASS (17 groups), including preview/blockers, wrong SHA/report, approve/apply, restart identity, non-mutating recovery, isolated rollback, injected failure restore, plan/journal preservation, policy boundaries.
+Production remains v2.37.20 CLEAN during development. No broker requests/orders/cancellation or production rollback.
+Isolated Streamlit UI start/stop rendering PASS using fake client; pending guidance verified and fake-send count unchanged after stop.
+Actual installation/restart/UI finalization not performed by this validation.
+User strings, judgement logic, schemas and permissions unchanged. Auto Approval/Apply disabled, Execution Authorization NONE.
