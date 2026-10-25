@@ -1,0 +1,17 @@
+StockInvestmentOS v2.38.4 monitor/history freshness
+RESULT: PASS
+Package: StockInvestmentOS_v2_38_4_RELEASE.zip
+TargetVersion: v2.38.4
+SourceVersion: v2.38.3
+SHA256: f0406667a4486fa286e171a862e8110d1486cda7a1ce1e38ede24d3003ae27d2
+Problem:12 synthetic PAPER/LIVE KR/US stop/query-failure/completion cases showed stale ARMED history after monitor state changed. Root: history rendered before and outside the10-second monitor fragment.
+Design: active history shares the monitor fragment and reads after its state cycle; inactive history remains passive. History action callbacks suppress an automatic cycle both before handlers and during their own app rerender. Clear skip flag on session stop. Show the local history observation timestamp.
+Acceptance: same-render run state consistency; existing recovery/fill actions produce no additional automatic cycles; next ordinary cycle remains available; stop clears transient flags; original execution engines unchanged byte-for-byte.
+Focused checks:49 PASS. Actual isolated Streamlit1.65.0 browser fragment stop: full-app render count1 unchanged, history and monitor stopped together, broker-history count1 unchanged on later timer reruns. Screenshot saved.
+Regression: PASS (1313 full-suite tests including synthetic UI).
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (397 managed files).
+Lifecycle: PASS (17 groups), including upgrade/failure restore/isolated rollback/non-mutating recovery and order journal/plan preservation.
+Production v2.38.3 CLEAN during development. No actual broker requests/orders/cancellation/rollback.
+Actual install/restart/finalization not performed by this validation. Auto Approval/Apply disabled. Execution Authorization NONE. No schema migration.
+Official fragment reference: https://docs.streamlit.io/1.65.0/develop/api-reference/execution-flow/st.fragment
