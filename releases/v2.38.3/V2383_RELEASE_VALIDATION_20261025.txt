@@ -1,0 +1,18 @@
+StockInvestmentOS v2.38.3 recovery result consistency
+RESULT: PASS
+Package: StockInvestmentOS_v2_38_3_RELEASE.zip
+TargetVersion: v2.38.3
+SourceVersion: v2.38.2
+SHA256: 42ebe6efd9f2d8622801618837c3ffba58fd582e45eabd4ebb24c93cae0e1f35
+Problem: four synthetic PAPER/LIVE KR/US manual-fill cases showed FILLED order rows alongside unresolved1 warning. Root cause: persisted automation attempts lagged authoritative order records.
+Design: read-only account/mode-scoped classification distinguishes order-result review from already-recorded terminal results awaiting automation-record synchronization. Retain original unresolved count and all persisted schemas. Existing explicit review applies the result and reports synchronized count, preserving the halt.
+Acceptance: manual fill reflection without another broker call, terminal/active/missing/wrong-account/wrong-mode/malformed-data boundaries, reconnect/expiry/heartbeat recovery journeys and no auto-resume. No new send/cancel/start/unhalt path.
+Regression: PASS (1292 full-suite tests including synthetic Streamlit UI).
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (395 managed files).
+Lifecycle: PASS (17 groups) including upgrade, wrong SHA/report, repeat version, process identity, isolated rollback, injected failure restore, non-mutating recovery, journal/plan preservation.
+Production v2.38.2 CLEAN during development. No actual broker requests/orders/cancellation/rollback.
+Audit fixture corrections: reconnect legitimately writes a protective stop event; LIVE expiry simulated through clock advancement rather than altering attested expiration. Original audit failures preserved, corrected24 journeys and4 mismatch reproductions passed.
+Initial full-suite result1291 passed/1 previous-release scope-guard failure retained. Updated allowed function scope for this change while preserving exact execution-engine byte checks; full suite rerun passed.
+Actual install/restart/UI finalization not performed by this validation.
+Auto Approval/Apply disabled. Execution Authorization NONE. No stored schema migration.
