@@ -1,0 +1,17 @@
+StockInvestmentOS v2.37.20 restart display correction
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_20_RELEASE.zip
+TargetVersion: v2.37.20
+SourceVersion: v2.37.19
+SHA256: ad63fc6d9013b9550da00fc32061f1baa19ea7ba4c12d51d312f5cbe367cedfe
+Problem: restart-required metric displayed prohibition instead of no when runtime identity was verified.
+Root cause: pretranslated Korean literal bypassed canonical status translation.
+Design: change only that metric's true branch input to NO. Preserve eligible expression and YES branch.
+Acceptance: two isolated metric branches display no/yes in Korean; single display literal change confirmed.
+Regression: PASS (1143 full-suite tests).
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (385 managed files).
+Lifecycle: PASS (17 groups), including preview/blockers, wrong SHA/report, approve/apply, restart identity, non-mutating recovery, isolated rollback, injected failure restore, plan/journal preservation, policy boundaries.
+Production remains v2.37.19 CLEAN during development. No broker requests/orders/cancellation or production rollback.
+Actual installation/restart/UI finalization not performed by this validation.
+User strings, judgement logic, schemas and permissions unchanged. Auto Approval/Apply disabled, Execution Authorization NONE.
