@@ -1,0 +1,17 @@
+StockInvestmentOS v2.37.19 connection consistency guard
+RESULT: PASS
+Package: StockInvestmentOS_v2_37_19_RELEASE.zip
+TargetVersion: v2.37.19
+SourceVersion: v2.37.18
+SHA256: 0073f768cea23cf2fd182f5b88a15f98b73abe823bcd59a41a86e15ce5ca3d97
+Problem: direct prepare, submit and cancellation lacked post-snapshot or post-claim account/mode binding.
+Design: compare original account/mode after preparation snapshot, before send claim, and after send/cancel claim. Never dispatch on mismatch. Before-send claim is closed as FAILED_PRECHECK; before-cancel mismatch restores previous order state.
+Acceptance: synthetic KR/US account/mode switches block preparation, post-snapshot submission, post-claim send and cancellation. No extra requests. Unrelated broker functions remain structurally identical.
+Regression: PASS (1143 tests in full suite).
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (383 managed files).
+Lifecycle: PASS (17 groups), including preview/blockers, wrong SHA/report, approve/apply, restart identity, non-mutating recovery, isolated rollback, injected failure restore, plan/journal preservation, policy boundaries.
+Production code remains v2.37.18 CLEAN during development.
+No actual broker requests, live orders, production rollback, production install/restart or final UI check performed by this validation.
+No UI/schema/permissions changes. Auto Approval/Apply disabled, Execution Authorization NONE.
+This protects checked boundaries; it does not claim a global atomic lock on mutable client credentials.
