@@ -1,0 +1,17 @@
+StockInvestmentOS v2.38.2 cumulative terminal fill diagnostics
+RESULT: PASS
+Package: StockInvestmentOS_v2_38_2_RELEASE.zip
+TargetVersion: v2.38.2
+SourceVersion: v2.38.1
+SHA256: 25c69858e33d9da5b04814f6c2ebb866c2e115b79bde3c5e71571f0a774214b4
+Problem: a successful later batch overwrote prior failed-batch feedback. Two actual synthetic KR/US Streamlit reproductions confirmed that20 earlier failures were no longer shown after the21st order succeeded.
+Design: safe per-record outcome codes plus session-bound cumulative issue tracking. Preserve earlier failed, insufficient-evidence and uncertain-amount records across batches. Show reasons and next actions; allow an explicit diagnostic JSON download. Reset on a fresh review or connection replacement.
+Acceptance: fake KR/US first-batch failures or uncertain amounts survive later success, fresh successful review clears old issues, replaced client resets UI context, five safe result categories, unchanged controls and no additional sends; all previous pagination/fill regressions retained.
+Prior monetary evidence is preserved on failed reads. Coverage completion does not mean all monetary amounts are verified. Send/cancel/start/unhalt logic unchanged.
+Regression: PASS (1226 full-suite tests including synthetic UI).
+Compile: PASS (241 Python files).
+Manifest/SHA/ZIP CRC: PASS (393 managed files).
+Lifecycle: PASS (17 groups) including upgrade, wrong SHA/report, repeated version, process identity, isolated rollback, injected failure restore, non-mutating recovery, journal/plan preservation.
+Production v2.38.1 CLEAN during development. No actual broker requests/orders/cancellation/rollback.
+Actual install/restart/UI finalization not performed by this validation.
+Auto Approval/Apply disabled. Execution Authorization NONE. No stored schema migration.
