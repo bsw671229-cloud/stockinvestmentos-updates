@@ -1,0 +1,18 @@
+StockInvestmentOS v2.42.0 Stop confirmation and bounded recovery
+RESULT: PASS
+Package: StockInvestmentOS_v2_42_0_RELEASE.zip
+TargetVersion: v2.42.0
+SourceVersion: v2.41.0
+SHA256: 95ee8bbb56b1c5138d2ed2f17ada2369f495e4e479bcb7230af8cf3f21bf2993
+Problem:26 baseline fake PAPER/LIVE KR/US checks reproduced lost persistent-stop targets after storage failure and fake sends after a failed manual stop; actual SQLite locks included. No real broker request or order was used.
+Acceptance:revoke runnable session capability before fallible I/O; retain original journal/account/mode stop target and retry; block new execution/allow controls until local stop is confirmed. Preserve multiple contexts and fail closed for malformed intent. No automatic resume/unhalt/cancel.
+Design:session-only stop target queue. Existing transactional engine.stop followed by halted readback. Early navigation/view/disconnect/monitor/review capture; pending gate before broker controls. Local safe diagnosis/retry, no private exception text. App/browser restart persistence is NOT guaranteed. In-flight requests may complete, accepted orders are NOT cancelled.
+Scope:all existing engine/connector bytes, investment policy and complete order preparation/send/cancel and rule registration/start handlers unchanged. Exact app stop-capture reversal and history callback reversal checked. All unrelated managed files identical to v2.41.0.
+Prototype:103 focused tests PASS, initial2 exact scope checks PASS; actual fake browser pending0sends/capabilityfalse then successful retry STOPPED/halttrue, no auto resume. Initial fixture fragment-hook issue corrected before final browser proof.
+Regression:PASS (1505 full-suite tests, no skipped tests).
+Historical contracts:8 original release-delta assertions rerun against their actual v2.40.0/v2.41.0 ancestor pair PASS. Current candidate additionally checks full engine/inquiry byte identity and exact allowed UI delta. Initial full1496PASS/8FAIL evidence retained; no failed run labeledPASS.
+Compile:PASS (246 Python files).
+Manifest/SHA/ZIP CRC:PASS (410 managed files).
+Lifecycle:PASS (17 groups:upgrade, wrongSHA/report, repeated version, runtime identity, simulated failure restore, isolated rollback, non-mutating recovery, journal/plan preservation).
+Actual production install/restart/UI final checks are NOT executed by this candidate validation. Source version preserved during tests. No actual broker orders/cancel/live start/actual rollback.
+Auto Approval/Apply disabled. Execution Authorization NONE. Operating managed files never directly overwritten.
