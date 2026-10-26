@@ -1,0 +1,18 @@
+StockInvestmentOS v2.42.1 Atomic owned-run failure stop
+RESULT: PASS
+Package: StockInvestmentOS_v2_42_1_RELEASE.zip
+TargetVersion: v2.42.1
+SourceVersion: v2.42.0
+SHA256: 480dab7ebec906204564590bddca1fbce1fb4aa69d06f7c653f14884c22acf2d
+Problem:8 real independent-process fake PAPER/LIVE KR/US observations.4 waiting cases reproduced an old retired owner's error handler halting a newly explicitly armed run.4 pending-order controls correctly blocked new arm. No duplicate sends and no real broker requests.
+Root cause:token-valid old row remained owned after retirement; error handler invoked account-wide stop in a separate transaction after the owner read.
+Change:only existing tick exception transaction. If owner/token/process/account valid and row currently ARMED, exact-run stop, account halt and fixed event are committed in one transaction. Retired owned rows return their own snapshot without writing or halting newer runs. Invalid capabilities still raise. Public user account-wide stop unchanged.
+Acceptance:184focused existing+new tests PASS;8 actual independent-process candidate cases PASS. Waiting handoff preserves new ARMED run and exactly1fake send; pending-order arm blocked. Current-owner expiry/heartbeat/quote/halt failures remain stopped+halted. Concurrent new arm cannot enter before atomic stop commit. Manual stop, rule/claim/submit, authorization, schema and every other source file unchanged except release metadata.
+Scope:exact reversible byte delta for the exception block;4 negative mutations(extra/wrong scope/missing/duplicate) rejected. Prior assertions remain, using this exact reversal solely for the reviewed file; current immediate410managed scope and prior stop-capture contracts also checked. No skip/xfail/deselection.
+Regression:PASS (1540 full-suite tests).
+Initial full run1532PASS/8FAIL:universal-newline text reader behavior was lost while adding byte-scope checks. Restored CRLF-to-LF reading ONLY in textual reversal helper; exact raw byte checks remain. Initial log/XML retained and full suite rerun.
+Compile:PASS (246 Python files).
+Manifest/SHA/ZIP CRC:PASS (412managed files).
+Lifecycle:PASS (17 upgrade/failure/recovery/runtime-identity/journal-and-plan-preservation groups).
+Initial focused176PASS/4FAIL were test setup issues:tampering LIVE signed expiry instead of advancing clock, and outer LIVE preflight rejecting before the shared arm transaction. Corrected fixtures and repeated184checks; original failures retained. An isolated direct pytest invocation without runner imports failed collection; corrected runner used. No failed run labeledPASS.
+Production install/restart/actualUI final checks are NOT executed by this candidate validation. Actual broker order/cancel/live start/actual rollback NOT performed. Auto Approval/Apply disabled,Execution Authorization NONE.
