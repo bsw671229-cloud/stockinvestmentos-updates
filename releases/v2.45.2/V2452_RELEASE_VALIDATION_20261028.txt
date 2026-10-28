@@ -1,0 +1,14 @@
+StockInvestmentOS v2.45.2 저장 작업 결과 불확실성 안내
+RESULT: PASS
+Package: StockInvestmentOS_v2_45_2_RELEASE.zip
+TargetVersion: v2.45.2
+SourceVersion: v2.45.1
+SHA256: 2c60bd393fb0b73ef490dfd78cb5f0d35df244e5a436c22fd15ea16c5fc8875a
+문제: 실행 준비/조건 점검/계획 저장/차단 해제 중 저장소 오류가 원문 예외 또는 입력 오류로 잘못 표시됨. 저장 직후 오류이면 이미 기록된 결과의 확인이 필요함.
+개선: 저장 완료 여부를 단정하지 않는 복구 안내, 같은 작업 자동 재시도 없음, 커밋된 기록과 차단 상태 보존, 렌더 전 시작 확인 초기화. 주문 엔진/업데이트 엔진 불변.
+Regression: PASS (최종후보1865,fail/error/skip0; 모듈원천 확인 및 검사 전후 SHA 불변).
+Focused: PASS (가짜 PAPER/LIVE KR/US 조건 점검, 실행 준비·계획 저장의 커밋 전후, 차단 해제 전후 24개). 주문 전송0, 세션 자동실행권한 없음, 재렌더 자동재개 없음. 실증권사 검증 아님.
+Compile/Manifest/SHA/CRC: PASS (254Python/434관리파일).
+Lifecycle: PASS (공식 ZIP 설치/실패/복구17개 및 writer경계/시작실패거래보존2개 격리모의).
+초기시제품의 렌더 후 확인란 삭제 오류는 재현증거를 보존하고 렌더 전 초기화로 수정. 최종 전체검사 재실행 결과만 Gate에 사용.
+안전: 실제주문/취소/실전시작/롤백/투자권한변경 없음. 실제 게시/설치/재시작/UI/복구는 후속 최종보고서에서 확인.
