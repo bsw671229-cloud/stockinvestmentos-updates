@@ -1,0 +1,15 @@
+StockInvestmentOS v2.45.1 실행 전 저장소 장애 안내
+RESULT: PASS
+Package: StockInvestmentOS_v2_45_1_RELEASE.zip
+TargetVersion: v2.45.1
+SourceVersion: v2.45.0
+SHA256: 6ac0eae18b15b9c2f5c3570c7ed4318b26d588424b59a33a712cefc8144062e0
+문제: 비실행 자동매매 이력/미확인 상세 저장소 읽기 오류가 원문 예외로 노출되어 복구 행동을 안내하지 못함. PAPER/LIVE 4개 기준코드 재현.
+개선: 실행 전 이력·계획·차단상태의 SQLite/OSError 발생시 준비를 중단하고 저장소/이전 주문 확인 안내. 기존 주문 자동취소·자동재개 없음. 정상화 후 다시 열어 정상 화면 복귀.
+Regression: PASS (최종후보1841,fail/error/skip0,모듈원천검사,전후SHA불변). 포함된10개 집중검사: PAPER/LIVE × 이력/미확인상세/계획/차단조회/실제EXCLUSIVE잠금; 신규요청·주문·권한없음,DB바이트보존,오류해소후정상렌더. 신규잠금2건은 운영과같은10초제한. 기존잠금8건은 격리fixture50ms/운영10초불변.
+Scope: PASS (제품오류처리 broker_automation.render 및 sqlite3 import만 변경; 추가VERSION/릴리스메타/노트/baseline/manifest. 주문실행엔진·업데이트엔진 동일.)
+Compile/Manifest/SHA/CRC: PASS (254Python/432관리파일)
+Lifecycle: PASS (공식ZIP설치·실패·복구17개 및 writer경계/시작실패거래보존2개 격리모의). 업무기록/계획보존.
+초기검사설정오류: 시제품 초기스키마비교 및 전체검사 임시부모누락, 후보 test_storage 이름충돌 및 명세 CRLF/LF 직렬화 차이. 명세의 관리 해시·다른 파일은 동일함을 확인 후 정규화된 최종후보 전체검사를 재실행. 최초로그/XML보존후 시험설정만수정하고 전체재실행. 최종Gate에 초기결과 사용안함.
+한계: 가짜클라이언트·격리UI/DB검사. 실제증권사 주문·취소검증 아님. 운영게시·설치·재시작·실제UI/비변경복구는 별도 최종보고서에서 확인.
+안전: 실제주문/취소/실전시작/롤백/투자권한변경 없음.
