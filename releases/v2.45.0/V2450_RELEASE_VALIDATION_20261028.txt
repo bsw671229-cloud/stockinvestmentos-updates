@@ -1,0 +1,17 @@
+StockInvestmentOS v2.45.0 전체 미확인 실행 상세 및 안전 종료 확인
+RESULT: PASS
+Package: StockInvestmentOS_v2_45_0_RELEASE.zip
+TargetVersion: v2.45.0
+SourceVersion: v2.44.1
+SHA256: e28330fb93bf42adf179616fc516cefccc3b9e6c8cf7aefcb251b415715b76f0
+문제: 최근10회 밖에 남은 연결주문 없는 미확인 시도가 경고건수에만 포함되고 식별 불가. 가짜 PAPER/LIVE KR/US4환경 실제격리화면 재현.
+개선: 전체 미확인 시도를20건씩 로컬조회. 실행ID/조건번호/시도상태/연결주문/다음확인을 제공. 종료된 연결주문은 실행기록 반영 대기를 구분. 연결변경시범위초기화. 조회는 주문·증권요청·중지·재개·차단해제를 수행하지 않음.
+추가 재현: 격리가짜앱 종료시 메타데이터 조회실패 후 즉시 종료신호가 없어 안전차단3/5재현. 동일핸들의 종료신호만 최대250ms대기;타임아웃/오류/권한불명은 기존차단. 수정후 실제격리5/5통과, 네이티브21집중검사통과. 실제운영설치오류 아님.
+Regression: PASS (최종후보1831,skip/error/fail0,후보모듈원천검사,전후파일SHA불변). UI집중12검사와 새종료경계6검사 포함. SQLite잠금8조건은 실제EXCLUSIVE/SQLITE_BUSY,격리fixture50ms만 적용하며 운영10초불변.
+Scope: PASS (기존4변경:VERSION/릴리스메타데이터/화면2줄호출/Windows종료확인. 4추가:표시2모듈/노트/baseline. 기존422바이트불변. 주문·실행엔진불변.)
+Compile/Manifest/SHA/CRC: PASS (254Python/430관리파일)
+Lifecycle: PASS (새ZIP17설치·실패·복구+추가2offline설치경계/시작실패거래보존 모의)
+초기시제품 회귀694PASS/1131ERROR는 임시부모경로누락. 수정후1824PASS/1FAIL은 종료확인 경계. 초기증거를 보존하며 최종Gate로 재사용하지 않음.
+한계: 가짜클라이언트·격리UI/DB검증이며 실제증권사 주문검증 아님. 불명확한 기존기록은 자동해제하지 않음.
+안전:실제주문/취소/실전시작/롤백/권한변경 없음. 운영게시·설치·재시작·UI/비변경복구는 별도최종보고서에서 확인.
+공식자료 확인2026-10-28:https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject
