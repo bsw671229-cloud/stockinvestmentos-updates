@@ -1,0 +1,18 @@
+StockInvestmentOS v2.44.1 설치 실패 후 복구 프로세스 식별
+RESULT: PASS
+Package: StockInvestmentOS_v2_44_1_RELEASE.zip
+TargetVersion: v2.44.1
+SourceVersion: v2.44.0
+SHA256: c141e7ae7b9d3aa974ae6518f5b00eb6666088a73cc90e85382c9e9c74e126e4
+문제/근거: 종료된 설치 프로세스 PID가 다른 프로그램으로 재사용된 모델에서 FAILED/INSTALLING 원본 복구가 차단됨. 격리 DB의 PID 치환과 실제 가짜 프로세스로 재현했으며 실제 OS PID 재사용 발생을 주장하지 않음.
+변경: 설치 소유권/PID/Windows 커널 생성 ticks를 별도 유지보수 표에 기록. 같은 OpenProcess 핸들에서 종료와 정확한 생성 근거 확인, 기존 설치자와 다른 프로세스만 구별. 다른 프로그램을 종료하지 않음. 기존 fence 스키마·업무 주문·이벤트·계획 보존.
+원본 전체 파일/manifest/VERSION, 새 호출 프로세스, 직접 확인, 미완료 주문 없음 조건 유지. 동일 프로세스·생성근거 없음·권한/조회 불명·owner/PID 불일치·과거 identity 없는 살아있는 PID는 차단 유지.
+Regression:PASS (1813 최종 후보 전체 통합 회귀, 후보11모듈 원천 고정/검사별 확인, 전후 모든 코드 해시 불변, skip/error/failure 0)
+Scope/Compile:PASS (3기존 파일 변경: 보호모듈·VERSION·릴리스 메타데이터.2추가: 릴리스 노트/직전버전 baseline.421기존파일 바이트 불변.252Python 구문)
+Manifest/SHA/ZIP CRC:PASS (426 관리파일). 시험된 관리파일 바이트는 그대로이며 생성 manifest의 JSON 내용은 동일; Windows CRLF와 ZIP LF 차이만 최종화 때 정규화한 근거는 manifest-normalization.json.
+Lifecycle:PASS (실제 새 v2.44.1 ZIP 설치/실패/복구/새프로세스/업무기록·계획 보존17)
+Offline install:PASS (추가2검사: writer 내부 callback·커밋 후 시작, 시작 실패 시 APPLIED 거래 보존/롤백 없음)
+최종 집중39 PASS(31복구식별·4권한/조회불명·3빈DB/직전버전호환·1정확한변경범위)는 전체에도 포함. 빈 DB는 추가 identity 표를 생성하지 않아 직전버전 표 구조를 유지하며 이 경우 근거 없는 PID는 기존처럼 보수적 차단. 최초fixture 부모폴더 누락8PASS/23ERROR 증거 보존·경로 조치 후31PASS. 시제품 전체1805PASS/1FAIL은 실제 빈DB 유지보수표 판단 결함으로, 원인 수정 뒤 직전버전의 빈DB 읽기 호환 문제도 격리 모델로 발견·보완. 두 차례 후보 전체검사는 수정 전에 직접 실행한 격리 검사 프로세스만 식별해 중지하고 로그를 보존했으며 최종Gate로 사용하지 않음. 수정 후 전체 및 새ZIP 모의를 다시 실행하여 본 결과를 작성함.
+반복SQLite잠금8조건은 동일한 실제 EXCLUSIVE/SQLITE_BUSY를 유지하고 오직 격리fixture 연결대기50ms로 검사. 운영Journal 기본10초와 원래 assertion 유지.
+경계: 이전 기록의 생성근거를 추측하여 보충하지 않음. 불명확한 과거 기록은 원래 보수적 차단 유지. 실제 증권 API/주문/취소/실전 시작·실제 롤백 없음. 투자 조건/권한/상시 자동승인·적용 유지. 운영 설치·재시작·실제 UI/비변경 복구는 별도 최종 보고서에서 확인하며 본 문서의 PASS는 후보 검증.
+공식 구현 근거(2026-10-28 확인): https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes
